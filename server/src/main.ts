@@ -12,8 +12,7 @@ async function bootstrap() {
     .setTitle('TimeCamp Geofencing')
     .setDescription('TimeCamp Geofencing API')
     .setVersion('1.0')
-    .addServer(APP_URL, 'Local Server')
-    .addServer('http://geofence.timecamp.ai', 'Development Server')
+    .addServer(APP_URL, 'Dev Server')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
