@@ -1,3 +1,5 @@
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { FindManyOptions, Like, Repository } from 'typeorm';
 import { JobSite } from './entities/jobsite.entity';
@@ -6,17 +8,20 @@ import { paginate } from '../common/pagination/paginate';
 import { CreateJobSiteDto } from './dto/create-jobsite.dto';
 import { UpdateJobSiteDto } from './dto/update-jobsite.dto';
 import { GEOFENCE_REPOSITORIES } from 'src/common/constants';
+import { IUser } from 'src/users/user.interface';
 
 @Injectable()
 export class JobSitesService {
   constructor(
     @Inject(GEOFENCE_REPOSITORIES.JOBSITE_REPOSITORY)
     private jobSiteRepository: Repository<JobSite>,
+    @Inject(REQUEST) private readonly request: Request,
   ) {}
-  private jobsites: JobSite[] = [];
 
   async create(createJobSiteDto: CreateJobSiteDto) {
     const newJobSite = this.jobSiteRepository.create(createJobSiteDto);
+
+    newJobSite.createdBy = (this.request.user as IUser).user_id;
 
     await this.jobSiteRepository.save(newJobSite);
 

@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Patch,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -39,7 +39,7 @@ export class JobSitesController {
     return this.jobsitesService.get(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updateJobSitesDto: UpdateJobSiteDto) {
     return this.jobsitesService.update(id, updateJobSitesDto);
   }
