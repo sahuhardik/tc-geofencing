@@ -1,7 +1,6 @@
 import Alert from "@components/ui/alert";
 import Button from "@components/ui/button";
 import Input from "@components/ui/input";
-import PasswordInput from "@components/ui/password-input";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,19 +12,17 @@ import * as yup from "yup";
 import { setAuthCredentials } from "@utils/auth-utils";
 
 type FormValues = {
-  email: string;
-  password: string;
+  token: string;
 };
+
 const loginFormSchema = yup.object().shape({
-  email: yup
+  token: yup
     .string()
-    .email("form:error-email-format")
-    .required("form:error-email-required"),
-  password: yup.string().required("form:error-password-required"),
+    .required("form:error-token-required"),
 });
+
 const defaultValues = {
-  email: "",
-  password: "",
+  token: "",
 };
 
 const LoginForm = () => {
@@ -36,27 +33,26 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
     resolver: yupResolver(loginFormSchema),
   });
+
   const router = useRouter();
 
-  function onSubmit({ email, password }: FormValues) {
+  function onSubmit({ token }: FormValues) {
     login(
       {
         variables: {
-          email,
-          password,
+          token
         },
       },
       {
         onSuccess: ({ data }) => {
           if (data?.token) {
 
-            setAuthCredentials(data?.token, data?.permissions);
+            setAuthCredentials(data?.token);
             router.push(ROUTES.DASHBOARD);
             return;
           } else {
@@ -71,36 +67,16 @@ const LoginForm = () => {
     <>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Input
-          label={t("form:input-label-email")}
-          {...register("email")}
-          type="email"
+          label={t("form:input-label-token")}
+          {...register("token")}
+          type="token"
           variant="outline"
           className="mb-4"
-          error={t(errors?.email?.message!)}
-        />
-        <PasswordInput
-          label={t("form:input-label-password")}
-          forgotPassHelpText={t("form:input-forgot-password-label")}
-          {...register("password")}
-          error={t(errors?.password?.message!)}
-          variant="outline"
-          className="mb-4"
-          forgotPageLink="/forgot-password"
+          error={t(errors?.token?.message!)}
         />
         <Button className="w-full" loading={loading} disabled={loading}>
           {t("form:button-label-login")}
         </Button>
-
-        <div className="flex flex-col items-center justify-center relative text-sm text-heading mt-8 sm:mt-11 mb-6 sm:mb-8">
-          <hr className="w-full" />
-          <span className="absolute start-2/4 -top-2.5 px-2 -ms-4 bg-light">
-            {t("common:text-or")}
-          </span>
-        </div>
-
-        <div className="text-sm sm:text-base text-body text-center">
-          {t("form:text-no-account")}{" "}
-        </div>
 
         {errorMsg ? (
           <Alert

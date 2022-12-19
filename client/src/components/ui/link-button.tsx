@@ -1,5 +1,6 @@
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 import cn from "classnames";
+import React from "react";
 
 const classes = {
   root: "inline-flex items-center justify-center flex-shrink-0 font-semibold leading-none rounded outline-none transition duration-300 ease-in-out focus:outline-none focus:shadow",
@@ -24,7 +25,7 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
-const LinkButton: React.FC<NextLinkProps & ButtonProps> = ({
+const LinkButton: React.FC<NextLinkProps & ButtonProps & { children?: React.ReactNode }> = ({
   href,
   children,
   className,

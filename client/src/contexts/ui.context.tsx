@@ -18,31 +18,31 @@ const initialState = {
 
 type Action =
   | {
-      type: "OPEN_SIDEBAR";
-    }
+    type: "OPEN_SIDEBAR";
+  }
   | {
-      type: "CLOSE_SIDEBAR";
-    }
+    type: "CLOSE_SIDEBAR";
+  }
   | {
-      type: "OPEN_CART_SIDEBAR";
-    }
+    type: "OPEN_CART_SIDEBAR";
+  }
   | {
-      type: "CLOSE_CART_SIDEBAR";
-    }
+    type: "CLOSE_CART_SIDEBAR";
+  }
   | {
-      type: "OPEN_MODAL";
-    }
+    type: "OPEN_MODAL";
+  }
   | {
-      type: "CLOSE_MODAL";
-    }
+    type: "CLOSE_MODAL";
+  }
   | {
-      type: "SET_MODAL_VIEW";
-      view: MODAL_VIEWS;
-    }
+    type: "SET_MODAL_VIEW";
+    view: MODAL_VIEWS;
+  }
   | {
-      type: "SET_MODAL_DATA";
-      data: MODAL_DATA;
-    };
+    type: "SET_MODAL_DATA";
+    data: MODAL_DATA;
+  };
 
 type MODAL_VIEWS =
   | "SIGNUP_VIEW"
@@ -109,7 +109,7 @@ function uiReducer(state: State, action: Action) {
   }
 }
 
-export const UIProvider: FC = (props) => {
+export const UIProvider: React.FC<{ children: React.ReactNode }> = (props) => {
   const [state, dispatch] = React.useReducer(uiReducer, initialState);
 
   const openSidebar = () => dispatch({ type: "OPEN_SIDEBAR" });

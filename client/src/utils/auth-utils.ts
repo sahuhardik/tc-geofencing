@@ -2,8 +2,8 @@ import Cookie from 'js-cookie';
 import SSRCookie from 'cookie';
 import { AUTH_CRED, TOKEN } from './constants';
 
-export function setAuthCredentials(token: string, permissions: any) {
-  Cookie.set(AUTH_CRED, JSON.stringify({ token, permissions }));
+export function setAuthCredentials(token: string) {
+  Cookie.set(AUTH_CRED, token);
 }
 
 export function getAuthCredentials(context?: any): {
@@ -16,7 +16,7 @@ export function getAuthCredentials(context?: any): {
     authCred = Cookie.get(AUTH_CRED);
   }
   if (authCred) {
-    return JSON.parse(authCred);
+    return { token: authCred };
   }
   return { token: null };
 }
