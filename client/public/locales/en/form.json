@@ -269,7 +269,7 @@
   "input-label-website": "Website",
   "input-label-longitude": "Longitude",
   "input-label-latitude": "Latitude",
-  "input-label-radius": "Radius",
+  "input-label-radius": "Radius (in meter)",
   "input-label-taskId": "TimeCamp Task ID",
   "shop-settings": "Shop Settings",
   "shop-settings-helper-text": "Add your shop settings information from here",
