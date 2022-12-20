@@ -67,7 +67,6 @@ export declare type CreateJobSiteInput = {
   notifyOnEntry: Scalars['Boolean'];
   notifyOnExit: Scalars['Boolean'];
   taskId: null | Scalars['Float'];
-  createdBy: Scalars['String'];
 };
 
 export declare type UpdateJobSiteInput = {
@@ -78,7 +77,6 @@ export declare type UpdateJobSiteInput = {
   notifyOnEntry: Scalars['Boolean'];
   notifyOnExit: Scalars['Boolean'];
   taskId: null | Scalars['Float'];
-  createdBy: Scalars['String'];
   id: Scalars['ID'];
 };
 

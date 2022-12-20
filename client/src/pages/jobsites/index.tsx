@@ -58,7 +58,7 @@ export default function JobSites() {
             href={`${ROUTES.JOBSITES}/create`}
             className="h-12 md:ms-6 w-full md:w-auto"
           >
-            <span>+ {t("form:button-label-add-jobsite-publication")}</span>
+            <span>+ {t("form:button-label-add-jobsite")}</span>
           </LinkButton>
         </div>
       </Card>

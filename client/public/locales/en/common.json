@@ -274,7 +274,7 @@
   "text-available-balance": "Available Balance",
   "text-invoice": "Invoice",
   "error-author-name-required": "Author name is required",
-  "error-manufacturer-name-required": "Manufacturer name is required",
+  "error-jobsite-name-required": "JobSite name is required",
   "error-invalid-coupon": "This coupon code is not valid",
   "text-price": "Price",
   "text-not-found": "Sorry, No Product Found :("

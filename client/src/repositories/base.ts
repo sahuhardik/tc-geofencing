@@ -1,4 +1,4 @@
-import http from "@utils/api/http";
+import http from '@utils/api/http';
 
 export default class Base<C, U> {
   http = async <T>(
@@ -10,22 +10,22 @@ export default class Base<C, U> {
     return (http as any)[type](url, variables, options);
   };
   all = async (url: string) => {
-    return this.http(url, "get");
+    return this.http(url, 'get');
   };
 
   find = async (url: string) => {
-    return this.http(url, "get");
+    return this.http(url, 'get');
   };
 
   create = async (url: string, variables: C) => {
-    return this.http<C>(url, "post", variables);
+    return this.http<C>(url, 'post', variables);
   };
 
   update = async (url: string, variables: U) => {
-    return this.http<U>(url, "put", variables);
+    return this.http<U>(url, 'patch', variables);
   };
 
   delete = async (url: string) => {
-    return this.http(url, "delete");
+    return this.http(url, 'delete');
   };
 }

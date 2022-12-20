@@ -1,22 +1,40 @@
-import { Type } from 'class-transformer';
 import { Entity, Column } from 'typeorm';
 import { CoreEntity } from '../../common/entities/core.entity';
 
-@Entity({ name: 'jobsite' })
+/// ColumnNumericTransformer
+export class ColumnNumericTransformer {
+  to(data: number): number {
+    return data;
+  }
+  from(data: string): number {
+    return parseFloat(data);
+  }
+}
+
+@Entity({ name: 'jobsites' })
 export class JobSite extends CoreEntity {
   @Column({ length: 500 })
   identifier: string;
 
-  @Column({ type: 'decimal', default: 0 })
-  @Type(() => Number)
+  @Column('numeric', {
+    precision: 7,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   radius: number;
 
-  @Column({ type: 'decimal', default: 0 })
-  @Type(() => Number)
+  @Column('numeric', {
+    precision: 7,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   latitude: number;
 
-  @Column({ type: 'decimal', default: 0 })
-  @Type(() => Number)
+  @Column('numeric', {
+    precision: 7,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   longitude: number;
 
   @Column({ type: 'boolean', default: false })

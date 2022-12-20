@@ -1,10 +1,12 @@
 import Input from "@components/ui/input";
 import { useForm } from "react-hook-form";
 import Button from "@components/ui/button";
-import TextArea from "@components/ui/text-area";
+import SwitchInput from "@components/ui/switch-input";
+import Label from "@components/ui/label";
 import { getErrorMessage } from "@utils/form-error";
 import Description from "@components/ui/description";
 import Card from "@components/common/card";
+import MapWidget from "@components/widgets/map-widget";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +15,7 @@ import { useCreateJobSiteMutation } from "@data/jobsite/use-jobsite-create.mutat
 import { useUpdateJobSiteMutation } from "@data/jobsite/use-jobsite-update.mutation";
 import { JobSite } from "@ts-types/generated";
 
-type FormValues = {
+export type JobSiteFormValues = {
   identifier: string;
   radius: number;
   latitude: number;
@@ -27,6 +29,7 @@ type FormValues = {
 type IProps = {
   initialValues?: JobSite | null;
 };
+
 export default function CreateOrUpdateJobSiteForm({
   initialValues,
 }: IProps) {
@@ -36,11 +39,12 @@ export default function CreateOrUpdateJobSiteForm({
   const {
     register,
     handleSubmit,
-    control,
     setError,
-
+    setValue,
+    getValues,
+    control,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<JobSiteFormValues>({
     shouldUnregister: true,
     resolver: yupResolver(jobsiteValidationSchema),
     ...(Boolean(initialValues) && {
@@ -55,60 +59,43 @@ export default function CreateOrUpdateJobSiteForm({
   const { mutate: updateJobSite, isLoading: updating } =
     useUpdateJobSiteMutation();
 
-  const onSubmit = async (values: FormValues) => {
-    // const {
-    //   identifier,
-    //   radius,
-    //   latitude,
-    //   longitude,
-    //   notifyOnEntry,
-    //   notifyOnExit,
-    //   taskId,
-    //   createdBy,
-    // } = values;
-    // const input = {
-    //   name,
-    //   description,
-    //   is_approved,
-    //   website,
-    //   socials: socials
-    //     ? socials?.map((social: any) => ({
-    //       icon: social?.icon?.value,
-    //       url: social?.url,
-    //     }))
-    //     : [],
-    //   image: {
-    //     thumbnail: image?.thumbnail,
-    //     original: image?.original,
-    //     id: image?.id,
-    //   },
-    //   cover_image: {
-    //     thumbnail: cover_image?.thumbnail,
-    //     original: cover_image?.original,
-    //     id: cover_image?.id,
-    //   },
-    //   type_id: type?.id!,
-    // };
+  const onSubmit = async (values: JobSiteFormValues) => {
+    const {
+      identifier,
+      radius,
+      latitude,
+      longitude,
+      notifyOnEntry,
+      notifyOnExit,
+      taskId,
+    } = values;
+    const input = {
+      identifier,
+      radius,
+      latitude,
+      longitude,
+      notifyOnEntry,
+      notifyOnExit,
+      taskId: taskId || null,
+    };
     try {
       if (initialValues) {
-        // updateJobSite({
-        //   variables: {
-        //     input: {
-        //       ...input,
-        //       id: initialValues.id!,
-        //       shop_id: shopId,
-        //     },
-        //   },
-        // });
+        updateJobSite({
+          variables: {
+            input: {
+              ...input,
+              id: initialValues.id!,
+            },
+          },
+        });
       } else {
-        // createJobSite({
-        //   variables: {
-        //     input: {
-        //       ...input,
-        //       shop_id: shopId,
-        //     },
-        //   },
-        // });
+        createJobSite({
+          variables: {
+            input: {
+              ...input,
+            },
+          },
+        });
       }
     } catch (error) {
       const serverErrors = getErrorMessage(error);
@@ -123,28 +110,13 @@ export default function CreateOrUpdateJobSiteForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-wrap pb-8 border-b border-dashed border-border-base my-5 sm:my-8">
-        <Description
-          title={t("form:input-label-logo")}
-          details={t("form:manufacturer-image-helper-text")}
-          className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8"
-        />
-      </div>
-      <div className="flex flex-wrap pb-8 border-b border-dashed border-border-base my-5 sm:my-8">
-        <Description
-          title={t("form:input-label-cover-image")}
-          details={t("form:manufacturer-cover-image-helper-text")}
-          className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8"
-        />
-      </div>
-
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
           title={t("form:input-label-description")}
           details={`${initialValues
             ? t("form:item-description-edit")
             : t("form:item-description-add")
-            } ${t("form:manufacturer-form-description-details")}`}
+            } ${t("form:jobsite-form-description-details")}`}
           className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8 "
         />
 
@@ -157,37 +129,69 @@ export default function CreateOrUpdateJobSiteForm({
             className="mb-5"
           />
 
-          <Input
-            label={t("form:input-label-website")}
-            {...register("radius")}
-            error={t(errors.radius?.message!)}
-            variant="outline"
-            className="mb-5"
-          />
+          <div className="mb-5">
+            <Label>{t("form:input-label-notifyOnEntry")}</Label>
+            <SwitchInput name="notifyOnEntry" control={control} />
+          </div>
+
+          <div className="mb-5">
+            <Label>{t("form:input-label-notifyOnExit")}</Label>
+            <SwitchInput name="notifyOnExit" control={control} />
+          </div>
 
           <Input
-            label={t("form:input-label-website")}
-            {...register("longitude")}
-            error={t(errors.longitude?.message!)}
-            variant="outline"
-            className="mb-5"
-          />
-
-          <Input
-            label={t("form:input-label-website")}
-            {...register("latitude")}
-            error={t(errors.latitude?.message!)}
-            variant="outline"
-            className="mb-5"
-          />
-
-          <TextArea
-            label={t("form:input-label-description")}
-            {...register("latitude")}
+            label={t("form:input-label-taskId")}
+            {...register("taskId")}
+            error={t(errors.taskId?.message!)}
             variant="outline"
             className="mb-5"
           />
         </Card>
+      </div>
+
+      <div className="flex flex-wrap pt-8 border-t border-dashed border-border-base my-5 sm:my-8">
+        <Description
+          title={t("form:input-label-jobsite-location")}
+          details={t("form:jobsite-location-helper-text")}
+          className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8"
+        />
+        <Card className="w-full sm:w-8/12 md:w-2/3">
+
+          <div className="mb-5">
+            <Label>{t("form:input-label-map")}</Label>
+            <MapWidget control={control} setValue={setValue} />
+          </div>
+
+          <Input
+            label={t("form:input-label-radius")}
+            {...register("radius")}
+            error={t(errors.radius?.message!)}
+            variant="outline"
+            className="mb-5"
+            type="number"
+          />
+
+          <Input
+            label={t("form:input-label-longitude")}
+            {...register("longitude")}
+            error={t(errors.longitude?.message!)}
+            variant="outline"
+            className="mb-5"
+            type="number"
+            step="any"
+          />
+
+          <Input
+            label={t("form:input-label-latitude")}
+            {...register("latitude")}
+            error={t(errors.latitude?.message!)}
+            variant="outline"
+            className="mb-5"
+            type="number"
+            step="any"
+          />
+        </Card>
+
       </div>
 
       <div className="mb-4 text-end">
@@ -204,8 +208,8 @@ export default function CreateOrUpdateJobSiteForm({
 
         <Button loading={updating || creating}>
           {initialValues
-            ? t("form:button-label-update-manufacturer-publication")
-            : t("form:button-label-add-jobsite-publication")}
+            ? t("form:button-label-update-jobsite")
+            : t("form:button-label-add-jobsite")}
         </Button>
       </div>
     </form>

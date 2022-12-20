@@ -8,5 +8,6 @@ import { jobSiteProviders } from './jobsites.providers';
   controllers: [JobSitesController],
   imports: [DatabaseModule],
   providers: [...jobSiteProviders, JobSitesService],
+  exports: [JobSitesService],
 })
 export class JobSitesModule {}

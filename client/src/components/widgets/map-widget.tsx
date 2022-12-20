@@ -1,80 +1,222 @@
-import { Line } from "rc-progress";
+import React, { useState, useEffect, useRef } from "react";
+import { UseFormSetValue, Control, useWatch } from "react-hook-form";
+import { createCustomEqual } from "fast-equals";
 
-const MapWidget = ({ data, totalText }: any) => {
-  const numberWithCommas = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
+import { isLatLngLiteral } from "@googlemaps/typescript-guards";
+import { JobSiteFormValues } from "@components/jobsite/jobsite-form";
 
-  const numberToPercent = (num: number, total: number) => {
-    return (num * 100) / total;
-  };
-
-  return (
-    <div className="bg-light shadow-sm rounded w-full h-full">
-      <div className="flex w-full my-auto mx-0 py-12 px-9">
-        <div className="w-5/12 flex flex-col items-center justify-center py-12 pe-8">
-          <span className="text-xs text-body mb-1 whitespace-nowrap">
-            {totalText}
-          </span>
-
-          <span className="text-xl text-heading font-semibold">
-            {numberWithCommas(
-              data.reduce((a: any, { value }: any) => a + value, 0)
-            )}
-          </span>
-        </div>
-
-        <div className="w-7/12 flex flex-col">
-          {data.map((item: any, index: number) => (
-            <div
-              className="w-full flex flex-col mb-4 pe-12 last:mb-0"
-              key={index}
-            >
-              <div className="w-full flex items-baseline mb-3">
-                <span className="text-sm text-heading font-semibold">
-                  {item.name}
-                </span>
-                <span className="text-xs font-semibold  text-heading ms-2">
-                  ({numberWithCommas(item.value)})
-                </span>
-              </div>
-              <Line
-                percent={numberToPercent(
-                  item.value,
-                  data.reduce((a: any, { value }: any) => a + value, 0)
-                )}
-                strokeWidth={2}
-                strokeColor={item.color}
-                trailWidth={2}
-                trailColor="#F2F2F2"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="w-full flex border border-border-100">
-        <div className="w-full flex flex-wrap  flex-shrink-0 py-5 px-5 md:px-4 justify-around">
-          {data.map((item: any, index: number) => (
-            <div
-              className="w-1/2 md:w-1/4 flex flex-col justify-between py-4 px-4 md:px-3"
-              key={index}
-            >
-              <span className="text-xs text-body mb-1 whitespace-nowrap truncate">
-                <span
-                  className="w-2 h-2 inline-block rounded-full me-1"
-                  style={{ backgroundColor: item.color }}
-                />
-                {item.name}
-              </span>
-              <span className="text-xl text-heading font-semibold">
-                {numberWithCommas(item.value)}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+interface IMaps {
+    control: Control<any>;
+    setValue: UseFormSetValue<JobSiteFormValues>;
 };
+
+const render = (status: Status) => {
+    return <h1>{status}</h1>;
+};
+
+const MapWidget: React.FC<IMaps> = ({ control, setValue }) => {
+    const [radius, longitude, latitude] = useWatch({
+        control,
+        name: ["radius", 'longitude', 'latitude'],
+    });
+
+    const [click, setClick] = useState<google.maps.LatLng>();
+    const [zoom, setZoom] = useState(3);
+    const [center, setCenter] = useState<google.maps.LatLngLiteral>({
+        lat: 0,
+        lng: 0,
+    });
+
+    useEffect(() => {
+        if (longitude && latitude) {
+            setCenter({
+                lng: Number(longitude),
+                lat: Number(latitude),
+            });
+            // setClick(new google.maps.LatLng(latitude, longitude));
+        }
+    }, []);
+
+    const onClick = (e: google.maps.MapMouseEvent) => {
+        // avoid directly mutating state
+        setClick(e.latLng!);
+        setValue('longitude', e.latLng?.lat() || 0);
+        setValue('latitude', e.latLng?.lng() || 0);
+    };
+
+    const onIdle = (m: google.maps.Map) => {
+        setZoom(m.getZoom()!);
+        setCenter(m.getCenter()!.toJSON());
+    };
+
+    return <div style={{ display: "flex", height: "500px" }}>
+        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} render={render}>
+            <Map
+                center={center}
+                onClick={onClick}
+                onIdle={onIdle}
+                zoom={zoom}
+                style={{ flexGrow: "1", height: "100%" }}
+            >
+                {click ? <Marker position={click} /> : null}
+                {click && radius ? <Circle center={click} radius={Number(radius)} /> : null}
+            </Map>
+        </Wrapper>
+    </div>;
+};
+
+interface MapProps extends google.maps.MapOptions {
+    style: { [key: string]: string };
+    onClick?: (e: google.maps.MapMouseEvent) => void;
+    onIdle?: (map: google.maps.Map) => void;
+    children?: React.ReactNode;
+}
+
+const Map: React.FC<MapProps> = ({
+    onClick,
+    onIdle,
+    children,
+    style,
+    ...options
+}) => {
+    const ref = React.useRef<HTMLDivElement>(null);
+    const [map, setMap] = useState<google.maps.Map>();
+
+    useEffect(() => {
+        if (ref.current && !map) {
+            setMap(new window.google.maps.Map(ref.current, {}));
+        }
+    }, [ref, map]);
+
+    // because React does not do deep comparisons, a custom hook is used
+    // see discussion in https://github.com/googlemaps/js-samples/issues/946
+    useDeepCompareEffectForMaps(() => {
+        if (map) {
+            map.setOptions(options);
+        }
+    }, [map, options]);
+
+    useEffect(() => {
+        if (map) {
+            ["click", "idle"].forEach((eventName) =>
+                google.maps.event.clearListeners(map, eventName)
+            );
+
+            if (onClick) {
+                map.addListener("click", onClick);
+            }
+
+            if (onIdle) {
+                map.addListener("idle", () => onIdle(map));
+            }
+        }
+    }, [map, onClick, onIdle]);
+
+    return (
+        <>
+            <div ref={ref} style={style} />
+            {React.Children.map(children, (child) => {
+                if (React.isValidElement(child)) {
+                    // set the map prop on the child component
+                    // @ts-ignore
+                    return React.cloneElement(child, { map });
+                }
+            })}
+        </>
+    );
+};
+
+const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
+    const [marker, setMarker] = useState<google.maps.Marker>();
+
+    useEffect(() => {
+        if (!marker) {
+            setMarker(new google.maps.Marker());
+        }
+
+        // remove marker from map on unmount
+        return () => {
+            if (marker) {
+                marker.setMap(null);
+            }
+        };
+    }, [marker]);
+
+    useEffect(() => {
+        if (marker) {
+            marker.setOptions(options);
+        }
+    }, [marker, options]);
+
+    return null;
+};
+
+const Circle: React.FC<google.maps.CircleOptions> = (options) => {
+    const [circle, setCircle] = useState<google.maps.Circle>();
+
+    useEffect(() => {
+        if (!circle) {
+            setCircle(new google.maps.Circle());
+        }
+
+        // remove marker from map on unmount
+        return () => {
+            if (circle) {
+                circle.setMap(null);
+            }
+        };
+    }, [circle]);
+
+    useEffect(() => {
+        if (circle) {
+            circle.setOptions({
+                ...options,
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+            });
+        }
+    }, [circle, options]);
+
+    return null;
+};
+
+const deepCompareEqualsForMaps = createCustomEqual(
+    (deepEqual) => (a: any, b: any) => {
+        if (
+            isLatLngLiteral(a) ||
+            a instanceof google.maps.LatLng ||
+            isLatLngLiteral(b) ||
+            b instanceof google.maps.LatLng
+        ) {
+            return new google.maps.LatLng(a).equals(new google.maps.LatLng(b));
+        }
+
+        // TODO extend to other types
+
+        // use fast-equals for other objects
+        return deepEqual(a, b);
+    }
+);
+
+function useDeepCompareMemoize(value: any) {
+    const ref = useRef();
+
+    if (!deepCompareEqualsForMaps(value, ref.current)) {
+        ref.current = value;
+    }
+
+    return ref.current;
+}
+
+function useDeepCompareEffectForMaps(
+    callback: React.EffectCallback,
+    dependencies: any[]
+) {
+    useEffect(callback, dependencies.map(useDeepCompareMemoize));
+}
 
 export default MapWidget;

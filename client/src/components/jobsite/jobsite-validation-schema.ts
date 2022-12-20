@@ -1,5 +1,10 @@
 import * as yup from 'yup';
 export const jobsiteValidationSchema = yup.object().shape({
-  name: yup.string().required('form:error-manufacturer-name-required'),
-  type: yup.object().nullable().required('form:error-type-required'),
+  identifier: yup.string().required('form:error-manufacturer-name-required'),
+  radius: yup.number(),
+  latitude: yup.number(),
+  longitude: yup.number(),
+  notifyOnEntry: yup.boolean(),
+  notifyOnExit: yup.boolean(),
+  taskId: yup.string().nullable(),
 });

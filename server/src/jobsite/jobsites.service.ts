@@ -60,6 +60,7 @@ export class JobSitesService {
     if (!jobSite) {
       throw new NotFoundException('JobSite not found.');
     }
+    console.log(jobSite);
     return jobSite;
   }
 
