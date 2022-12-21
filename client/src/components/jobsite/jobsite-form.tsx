@@ -14,7 +14,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { jobsiteValidationSchema } from "./jobsite-validation-schema";
 import { useCreateJobSiteMutation } from "@data/jobsite/use-jobsite-create.mutation";
 import { useUpdateJobSiteMutation } from "@data/jobsite/use-jobsite-update.mutation";
-import { JobSite } from "@ts-types/generated";
+import { JobSite, TimeCampTask } from "@ts-types/generated";
+import { useTimeCampTaskQuery } from "@data/timecamp/use-timecamp-tasks.query";
+import { useTimeCampUserQuery } from "@data/timecamp/use-timecamp-users.query";
 
 export type JobSiteFormValues = {
   identifier: string;
@@ -25,6 +27,7 @@ export type JobSiteFormValues = {
   notifyOnExit: boolean;
   taskId: null | number;
   createdBy: string;
+  task?: TimeCampTask;
 };
 
 type IProps = {
@@ -36,6 +39,14 @@ export default function CreateOrUpdateJobSiteForm({
 }: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
+
+  const {
+    data: timecampTasks,
+  } = useTimeCampTaskQuery();
+
+  const {
+    data: timecampUsers,
+  } = useTimeCampUserQuery();
 
   const {
     register,
@@ -67,7 +78,7 @@ export default function CreateOrUpdateJobSiteForm({
       longitude,
       notifyOnEntry,
       notifyOnExit,
-      taskId,
+      task,
     } = values;
     const input = {
       identifier,
@@ -76,7 +87,7 @@ export default function CreateOrUpdateJobSiteForm({
       longitude,
       notifyOnEntry,
       notifyOnExit,
-      taskId: taskId || null,
+      taskId: task?.task_id || null,
     };
     try {
       if (initialValues) {
@@ -141,12 +152,20 @@ export default function CreateOrUpdateJobSiteForm({
 
           <div className="mb-5">
             <Label>{t("form:input-label-taskId")}</Label>
-            <AutoComplete name="task" control={control} />
+            <AutoComplete name="taskId" control={control} data={timecampTasks || []}
+              renderSuggestion={(val: any) => <span className="inline-block">{val?.name}<br />{val?.projectName}</span>}
+              getSuggestionValue={(val: any) => val?.name}
+              searchField={['name', 'projectName']}
+            />
           </div>
 
           <div className="mb-5">
             <Label>{t("form:input-label-user-assign")}</Label>
-            <AutoComplete name="userAssign" control={control} />
+            <AutoComplete name="userAssign" control={control} data={timecampUsers || []}
+              renderSuggestion={(val: any) => <span className="inline-block	">{val?.display_name}<br />{val?.email}</span>}
+              getSuggestionValue={(val: any) => val?.display_name}
+              searchField={['display_name', 'email']}
+            />
           </div>
 
         </Card>

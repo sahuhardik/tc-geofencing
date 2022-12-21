@@ -1,3 +1,4 @@
+import { JobSite } from 'src/jobsite/entities/jobsite.entity';
 import { Entity, Column } from 'typeorm';
 import { CoreEntity } from '../../common/entities/core.entity';
 
@@ -8,4 +9,6 @@ export class JobSiteUser extends CoreEntity {
 
   @Column('numeric', { nullable: false })
   userId: number;
+
+  jobSite: JobSite;
 }

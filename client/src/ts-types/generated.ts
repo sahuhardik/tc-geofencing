@@ -105,3 +105,21 @@ export declare type JobSitePaginator = {
 
   paginatorInfo: PaginatorInfo;
 };
+
+export declare type TimeCampTask = {
+  __typename?: 'TimeCampTask';
+  task_id: Scalars['Mixed'];
+  name: Scalars['String'];
+  color: Scalars['String'];
+  parentName: Scalars['String'];
+  parent_id: Scalars['Mixed'];
+};
+
+export declare type TimeCampUser = {
+  __typename?: 'TimeCampUser';
+  user_id: Scalars['String'];
+  email: Scalars['String'];
+  display_name: Scalars['String'];
+  time_zone?: Scalars['String'];
+  token?: Scalars['String'];
+};

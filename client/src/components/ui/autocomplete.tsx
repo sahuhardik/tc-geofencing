@@ -10,13 +10,22 @@ interface Props {
   errors?: FieldErrors;
   label?: string;
   name: string;
+  renderSuggestion: (val: any) => React.ReactNode;
+  getSuggestionValue: (val: any) => string;
+  data: any[];
+  searchField: string[];
   [key: string]: unknown;
 }
 
-const AutoComplete = ({ control, label, name, errors, ...rest }: Props) => {
+const AutoComplete = ({ control, label, name, errors, data, searchField, renderSuggestion, getSuggestionValue, ...rest }: Props) => {
   const { t } = useTranslation();
 
   const [query, setQuery] = useState('');
+
+  const filteredData =
+    query === ''
+      ? data
+      : data.filter((val) => searchField.some(field => val[field].toLowerCase().includes(query.toLowerCase())))
 
   return (
     <div>
@@ -31,7 +40,7 @@ const AutoComplete = ({ control, label, name, errors, ...rest }: Props) => {
               <div className="relative w-full cursor-default">
                 <Combobox.Input
                   className="px-4 h-12 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0 border border-border-base focus:border-accent"
-                  displayValue={(val: any) => val.name}
+                  displayValue={(val: any) => getSuggestionValue(val)}
                   onChange={(event) => setQuery(event.target.value)}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -49,12 +58,12 @@ const AutoComplete = ({ control, label, name, errors, ...rest }: Props) => {
                 afterLeave={() => setQuery('')}
               >
                 <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm border border-border-accent">
-                  {[].length === 0 && query !== '' ? (
+                  {filteredData.length === 0 && query !== '' ? (
                     <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                       Nothing found.
                     </div>
                   ) : (
-                    [].map((val: any) => (
+                    filteredData.map((val: any) => (
                       <Combobox.Option
                         key={val.id}
                         className={({ active }) =>
@@ -69,7 +78,7 @@ const AutoComplete = ({ control, label, name, errors, ...rest }: Props) => {
                               className={`block truncate ${selected ? "font-medium" : "font-normal"
                                 }`}
                             >
-                              {val.name}
+                              {renderSuggestion(val)}
                             </span>
                             {selected ? (
                               <span

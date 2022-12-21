@@ -6,5 +6,4 @@ export const jobsiteValidationSchema = yup.object().shape({
   longitude: yup.number(),
   notifyOnEntry: yup.boolean(),
   notifyOnExit: yup.boolean(),
-  taskId: yup.string().nullable(),
 });
