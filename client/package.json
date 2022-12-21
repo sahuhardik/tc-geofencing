@@ -12,6 +12,7 @@
     "@googlemaps/react-wrapper": "^1.1.35",
     "@googlemaps/typescript-guards": "^2.0.3",
     "@headlessui/react": "^1.4.2",
+    "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "^2.8.4",
     "@reach/portal": "^0.16.2",
     "@react-google-maps/api": "^2.7.0",

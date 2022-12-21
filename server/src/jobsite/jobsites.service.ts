@@ -8,7 +8,7 @@ import { paginate } from '../common/pagination/paginate';
 import { CreateJobSiteDto } from './dto/create-jobsite.dto';
 import { UpdateJobSiteDto } from './dto/update-jobsite.dto';
 import { GEOFENCE_REPOSITORIES } from 'src/common/constants';
-import { IUser } from 'src/users/user.interface';
+import { IUser } from 'src/timecamp/types/user.interface';
 
 @Injectable()
 export class JobSitesService {

@@ -10,7 +10,7 @@ import {
 import { CreateJobSiteUserDto } from './dto/create-jobsite-user.dto';
 import { GEOFENCE_REPOSITORIES } from 'src/common/constants';
 import { JobSitesService } from 'src/jobsite/jobsites.service';
-import { IUser } from 'src/users/user.interface';
+import { IUser } from 'src/timecamp/types/user.interface';
 
 @Injectable()
 export class JobSiteUsersService {

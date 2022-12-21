@@ -2,6 +2,7 @@ import Input from "@components/ui/input";
 import { useForm } from "react-hook-form";
 import Button from "@components/ui/button";
 import SwitchInput from "@components/ui/switch-input";
+import AutoComplete from "@components/ui/autocomplete";
 import Label from "@components/ui/label";
 import { getErrorMessage } from "@utils/form-error";
 import Description from "@components/ui/description";
@@ -41,7 +42,6 @@ export default function CreateOrUpdateJobSiteForm({
     handleSubmit,
     setError,
     setValue,
-    getValues,
     control,
     formState: { errors },
   } = useForm<JobSiteFormValues>({
@@ -139,13 +139,16 @@ export default function CreateOrUpdateJobSiteForm({
             <SwitchInput name="notifyOnExit" control={control} />
           </div>
 
-          <Input
-            label={t("form:input-label-taskId")}
-            {...register("taskId")}
-            error={t(errors.taskId?.message!)}
-            variant="outline"
-            className="mb-5"
-          />
+          <div className="mb-5">
+            <Label>{t("form:input-label-taskId")}</Label>
+            <AutoComplete name="task" control={control} />
+          </div>
+
+          <div className="mb-5">
+            <Label>{t("form:input-label-user-assign")}</Label>
+            <AutoComplete name="userAssign" control={control} />
+          </div>
+
         </Card>
       </div>
 
