@@ -1,4 +1,5 @@
-import { Entity, Column } from 'typeorm';
+import { JobSiteUser } from 'src/jobsite-user/entities/jobsite-user.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { CoreEntity } from '../../common/entities/core.entity';
 
 /// ColumnNumericTransformer
@@ -48,4 +49,7 @@ export class JobSite extends CoreEntity {
 
   @Column({ default: '' })
   createdBy: string;
+
+  @OneToMany(() => JobSiteUser, (jobSiteUser) => jobSiteUser.jobSite)
+  jobSiteUsers: JobSiteUser[];
 }

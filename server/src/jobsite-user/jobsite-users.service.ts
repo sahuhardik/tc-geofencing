@@ -1,7 +1,7 @@
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { Injectable, Inject } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { JobSiteUser } from './entities/jobsite-user.entity';
 import { JobSiteUserPaginator } from './dto/get-jobsite-users.dto';
 import { CreateJobSiteUserDto } from './dto/create-jobsite-user.dto';
@@ -27,13 +27,12 @@ export class JobSiteUsersService {
   }
 
   async getJobSiteUsers(): Promise<JobSiteUserPaginator> {
-    const results = await this.jobSiteRepository
-      .createQueryBuilder('jobsite_users')
-      .leftJoinAndSelect('jobsite_users.jobsiteId', 'jobsites')
-      .where(`jobsite_users.userId = :userId`, {
-        userId: Number((this.request.user as IUser).user_id),
-      })
-      .getMany();
+    const options: FindManyOptions<JobSiteUser> = {
+      where: { userId: Number((this.request.user as IUser).user_id) },
+      relations: { jobSite: true },
+    };
+
+    const results = await this.jobSiteRepository.find(options);
 
     return { data: results };
   }
