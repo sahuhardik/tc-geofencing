@@ -2,7 +2,7 @@ import {
   QueryParamsType,
   JobsitesQueryOptionsType,
 } from '@ts-types/custom.types';
-import { mapPaginatorData, stringifySearchQuery } from '@utils/data-mappers';
+import { mapPaginatorData } from '@utils/data-mappers';
 import { useQuery } from 'react-query';
 import JobSite from '@repositories/jobsite';
 import { API_ENDPOINTS } from '@utils/api/endpoints';
@@ -16,18 +16,12 @@ const fetchJobsites = async ({
   const {
     page,
     text,
-    is_approved,
-    type,
     limit = 15,
     orderBy = 'updated_at',
     sortedBy = 'DESC',
   } = params as JobsitesQueryOptionsType;
 
-  const searchString = stringifySearchQuery({
-    name: text,
-    is_approved,
-    type,
-  });
+  const searchString = text;
   // @ts-ignore
   const queryParams = new URLSearchParams({
     searchJoin: 'and',

@@ -24,16 +24,16 @@ export class JobSite extends CoreEntity {
   })
   radius: number;
 
-  @Column('numeric', {
-    precision: 7,
-    scale: 2,
+  @Column('double', {
+    precision: 30,
+    scale: 20,
     transformer: new ColumnNumericTransformer(),
   })
   latitude: number;
 
-  @Column('numeric', {
-    precision: 7,
-    scale: 2,
+  @Column('double', {
+    precision: 30,
+    scale: 20,
     transformer: new ColumnNumericTransformer(),
   })
   longitude: number;

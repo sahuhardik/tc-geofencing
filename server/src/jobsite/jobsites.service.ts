@@ -40,10 +40,16 @@ export class JobSitesService {
     const options: FindManyOptions<JobSite> = {
       take: limit,
       skip,
+      where: {
+        createdBy: (this.request.user as IUser).user_id,
+      },
     };
 
     if (search) {
-      options.where = { identifier: Like('%' + search + '%') };
+      options.where = {
+        ...options.where,
+        identifier: Like('%' + search + '%'),
+      };
     }
 
     const [results, total] = await this.jobSiteRepository.findAndCount(options);
@@ -56,7 +62,10 @@ export class JobSitesService {
   }
 
   async get(id: string) {
-    const jobSite = await this.jobSiteRepository.findOneBy({ id });
+    const jobSite = await this.jobSiteRepository.findOneBy({
+      id,
+      createdBy: (this.request.user as IUser).user_id,
+    });
     if (!jobSite) {
       throw new NotFoundException('JobSite not found.');
     }
@@ -64,7 +73,10 @@ export class JobSitesService {
   }
 
   async update(id: string, updateJobSiteDto: UpdateJobSiteDto) {
-    const jobSite = await this.jobSiteRepository.findOneBy({ id });
+    const jobSite = await this.jobSiteRepository.findOneBy({
+      id,
+      createdBy: (this.request.user as IUser).user_id,
+    });
     if (!jobSite) {
       throw new NotFoundException('JobSite not found.');
     }
@@ -74,6 +86,14 @@ export class JobSitesService {
   }
 
   async remove(id: string) {
+    const jobSite = await this.jobSiteRepository.findOneBy({
+      id,
+      createdBy: (this.request.user as IUser).user_id,
+    });
+    if (!jobSite) {
+      throw new NotFoundException('JobSite not found.');
+    }
+
     await this.jobSiteRepository.delete(id);
     return;
   }

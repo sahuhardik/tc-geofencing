@@ -4,6 +4,7 @@ import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import ValidationError from "./form-validation-error";
+import { TimeCampUser } from "@ts-types/generated";
 
 interface Props {
   control: Control<any>;
@@ -14,16 +15,17 @@ interface Props {
   getSuggestionValue: (val: any) => string;
   data: any[];
   searchField: string[];
+  id: string;
   [key: string]: unknown;
 }
 
-const AutoComplete = ({ control, label, name, errors, data, searchField, renderSuggestion, getSuggestionValue, ...rest }: Props) => {
+const AutoComplete = ({ control, label, id, name, errors, data, searchField, renderSuggestion, getSuggestionValue, ...rest }: Props) => {
   const { t } = useTranslation();
 
   const [query, setQuery] = useState('');
 
   const filteredData =
-    query === ''
+    query === '' || rest.multiple
       ? data
       : data.filter((val) => searchField.some(field => val[field].toLowerCase().includes(query.toLowerCase())))
 
@@ -35,7 +37,7 @@ const AutoComplete = ({ control, label, name, errors, data, searchField, renderS
         control={control}
         {...rest}
         render={({ field: { onChange, value } }) => (
-          <Combobox value={value} onChange={(data) => onChange(data)}>
+          <Combobox value={value} onChange={(data) => onChange(data)} {...rest}>
             <div className="relative mt-1">
               <div className="relative w-full cursor-default">
                 <Combobox.Input
@@ -65,12 +67,13 @@ const AutoComplete = ({ control, label, name, errors, data, searchField, renderS
                   ) : (
                     filteredData.map((val: any) => (
                       <Combobox.Option
-                        key={val.id}
+                        key={val?.[id]}
                         className={({ active }) =>
-                          `cursor-default select-none relative py-2 pl-10 pr-4 ${active ? "text-black bg-teal-600" : "text-gray-900"
+                          `cursor-default select-none relative py-2 pl-10 pr-4 ${active ? "text-white bg-teal-600" : "text-gray-900"
                           }`
                         }
                         value={val}
+                        disabled={Array.isArray(value) && value.some((user: any) => user?.[id] === val?.[id])}
                       >
                         {({ selected, active }) => (
                           <>
@@ -82,7 +85,7 @@ const AutoComplete = ({ control, label, name, errors, data, searchField, renderS
                             </span>
                             {selected ? (
                               <span
-                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-black" : "text-teal-600"
+                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-teal-600"
                                   }`}
                               >
                                 <CheckIcon

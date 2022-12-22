@@ -29,12 +29,12 @@ const MapWidget: React.FC<IMaps> = ({ control, setValue }) => {
     });
 
     useEffect(() => {
-        if (longitude && latitude) {
+        if (longitude && latitude && window.google) {
             setCenter({
                 lng: Number(longitude),
                 lat: Number(latitude),
             });
-            // setClick(new google.maps.LatLng(latitude, longitude));
+            setClick(new google.maps.LatLng(latitude, longitude));
         }
     }, []);
 
@@ -185,6 +185,7 @@ const Circle: React.FC<google.maps.CircleOptions> = (options) => {
 };
 
 const deepCompareEqualsForMaps = createCustomEqual(
+    // @ts-expect-error
     (deepEqual) => (a: any, b: any) => {
         if (
             isLatLngLiteral(a) ||
@@ -198,6 +199,7 @@ const deepCompareEqualsForMaps = createCustomEqual(
         // TODO extend to other types
 
         // use fast-equals for other objects
+        // @ts-expect-error
         return deepEqual(a, b);
     }
 );
