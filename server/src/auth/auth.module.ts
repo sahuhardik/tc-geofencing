@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { LocalStrategy } from './passport-strategy/local.strategy';
 import { JwtStrategy } from './passport-strategy/jwt.strategy';
-import { jwtConstants } from 'src/common/constants';
+import { jwtConstants } from '../common/constants';
 
 @Module({
   imports: [

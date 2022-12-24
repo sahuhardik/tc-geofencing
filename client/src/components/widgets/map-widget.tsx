@@ -35,14 +35,15 @@ const MapWidget: React.FC<IMaps> = ({ control, setValue }) => {
                 lat: Number(latitude),
             });
             setClick(new google.maps.LatLng(latitude, longitude));
+            setZoom(10);
         }
-    }, []);
+    }, [longitude, latitude]);
 
     const onClick = (e: google.maps.MapMouseEvent) => {
         // avoid directly mutating state
         setClick(e.latLng!);
-        setValue('longitude', e.latLng?.lat() || 0);
-        setValue('latitude', e.latLng?.lng() || 0);
+        setValue('longitude', e.latLng?.lng() || 0);
+        setValue('latitude', e.latLng?.lat() || 0);
     };
 
     const onIdle = (m: google.maps.Map) => {

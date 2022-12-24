@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { DATA_SOURCE, GEOFENCE_REPOSITORIES } from 'src/common/constants';
+import { DATA_SOURCE, GEOFENCE_REPOSITORIES } from '../common/constants';
 import { JobSite } from './entities/jobsite.entity';
 
 export const jobSiteProviders = [

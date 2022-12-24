@@ -1,4 +1,4 @@
-import { JobSiteUser } from 'src/jobsite-user/entities/jobsite-user.entity';
+import { JobSiteUser } from '../../jobsite-user/entities/jobsite-user.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { CoreEntity } from '../../common/entities/core.entity';
 

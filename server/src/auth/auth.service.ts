@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthResponse } from './dto/create-auth.dto';
-import { IUser } from 'src/timecamp/types/user.interface';
-import { TimeCampService } from 'src/timecamp/timecamp.service';
+import { IUser } from '../timecamp/types/user.interface';
+import { TimeCampService } from '../timecamp/timecamp.service';
 
 @Injectable()
 export class AuthService {

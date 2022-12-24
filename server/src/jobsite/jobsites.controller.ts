@@ -15,7 +15,7 @@ import { JobSite } from './entities/jobsite.entity';
 import { GetJobSitesDto, JobSitePaginator } from './dto/get-jobsites.dto';
 import { CreateJobSiteDto } from './dto/create-jobsite.dto';
 import { UpdateJobSiteDto } from './dto/update-jobsite.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 @ApiTags('JobSites')
 @ApiBearerAuth()

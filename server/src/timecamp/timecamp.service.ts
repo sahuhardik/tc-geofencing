@@ -1,5 +1,6 @@
-import { TIMECAMP_HOST_URL } from 'src/common/constants';
-import { createDataTree } from 'src/utils/create-data-tree';
+import { NotFoundException } from '@nestjs/common/exceptions';
+import { TIMECAMP_HOST_URL } from '../common/constants';
+import { createDataTree } from '../utils/create-data-tree';
 import FetchAPI from '../utils/Fetcher';
 import { GetTimeCampTasksDto, TimeCampTaskPaginator } from './dto/get-task.dto';
 import { GetTimeCampUsersDto, TimeCampUserPaginator } from './dto/get-user.dto';
@@ -23,6 +24,26 @@ export class TimeCampService {
         },
       },
     );
+
+    return data;
+  }
+
+  async getUserById(id: string): Promise<IUser> {
+    const { data } = await this.timeCampAxios.default.get<IUser>(
+      `/third_party/api/user/${id}?format=json`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Accept-Encoding': 'gzip,deflate,compress',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+        },
+      },
+    );
+
+    if (!data) {
+      throw new NotFoundException('User not found.');
+    }
 
     return data;
   }

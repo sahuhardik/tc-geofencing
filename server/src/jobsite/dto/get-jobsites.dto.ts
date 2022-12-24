@@ -1,6 +1,6 @@
-import { SortOrder } from 'src/common/dto/generic-conditions.dto';
-import { PaginationArgs } from 'src/common/dto/pagination-args.dto';
-import { Paginator } from 'src/common/dto/paginator.dto';
+import { SortOrder } from '../../common/dto/generic-conditions.dto';
+import { PaginationArgs } from '../../common/dto/pagination-args.dto';
+import { Paginator } from '../../common/dto/paginator.dto';
 import { JobSite } from '../entities/jobsite.entity';
 
 export class JobSitePaginator extends Paginator<JobSite> {

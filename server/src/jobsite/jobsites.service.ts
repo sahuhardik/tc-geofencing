@@ -1,14 +1,21 @@
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { FindManyOptions, Like, Repository } from 'typeorm';
 import { JobSite } from './entities/jobsite.entity';
 import { GetJobSitesDto, JobSitePaginator } from './dto/get-jobsites.dto';
 import { paginate } from '../common/pagination/paginate';
 import { CreateJobSiteDto } from './dto/create-jobsite.dto';
 import { UpdateJobSiteDto } from './dto/update-jobsite.dto';
-import { GEOFENCE_REPOSITORIES } from 'src/common/constants';
-import { IUser } from 'src/timecamp/types/user.interface';
+import { GEOFENCE_REPOSITORIES } from '../common/constants';
+import { IUser } from '../timecamp/types/user.interface';
+import { JobSiteUsersService } from '../jobsite-user/jobsite-users.service';
+import { CreateJobSiteUserDto } from '../jobsite-user/dto/create-jobsite-user.dto';
 
 @Injectable()
 export class JobSitesService {
@@ -16,6 +23,8 @@ export class JobSitesService {
     @Inject(GEOFENCE_REPOSITORIES.JOBSITE_REPOSITORY)
     private jobSiteRepository: Repository<JobSite>,
     @Inject(REQUEST) private readonly request: Request,
+    @Inject(forwardRef(() => JobSiteUsersService))
+    private readonly jobsiteUsersService: JobSiteUsersService,
   ) {}
 
   async create(createJobSiteDto: CreateJobSiteDto) {
@@ -23,7 +32,23 @@ export class JobSitesService {
 
     newJobSite.createdBy = (this.request.user as IUser).user_id;
 
-    await this.jobSiteRepository.save(newJobSite);
+    const jobSiteUsersPromise: Promise<CreateJobSiteUserDto>[] = [];
+
+    await this.jobSiteRepository.save(newJobSite, { transaction: true });
+
+    createJobSiteDto.jobSiteUsers.forEach((v) => {
+      jobSiteUsersPromise.push(
+        this.jobsiteUsersService.create(
+          {
+            userId: v.userId,
+            jobsiteId: newJobSite.id,
+          },
+          { transaction: true },
+        ),
+      );
+    });
+
+    await Promise.all(jobSiteUsersPromise);
 
     return newJobSite;
   }
@@ -62,9 +87,14 @@ export class JobSitesService {
   }
 
   async get(id: string) {
-    const jobSite = await this.jobSiteRepository.findOneBy({
-      id,
-      createdBy: (this.request.user as IUser).user_id,
+    const jobSite = await this.jobSiteRepository.findOne({
+      where: {
+        id,
+        createdBy: (this.request.user as IUser).user_id,
+      },
+      relations: {
+        jobSiteUsers: true,
+      },
     });
     if (!jobSite) {
       throw new NotFoundException('JobSite not found.');
@@ -80,8 +110,32 @@ export class JobSitesService {
     if (!jobSite) {
       throw new NotFoundException('JobSite not found.');
     }
-    this.jobSiteRepository.merge(jobSite, updateJobSiteDto);
-    const results = await this.jobSiteRepository.save(jobSite);
+    const { jobSiteUsers, ...updateInput } = updateJobSiteDto;
+
+    const jobSiteUsersPromise: Promise<CreateJobSiteUserDto>[] = [];
+
+    jobSiteUsers.forEach((v) => {
+      jobSiteUsersPromise.push(
+        this.jobsiteUsersService.create(
+          {
+            userId: v.userId,
+            jobsiteId: id,
+          },
+          { transaction: true },
+        ),
+      );
+    });
+
+    this.jobSiteRepository.merge(jobSite, updateInput);
+
+    const results = await this.jobSiteRepository.save(jobSite, {
+      transaction: true,
+    });
+
+    await this.jobsiteUsersService.deleteJobSiteUserById(id);
+
+    await Promise.all(jobSiteUsersPromise);
+
     return results;
   }
 

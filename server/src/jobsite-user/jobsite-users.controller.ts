@@ -6,7 +6,7 @@ import {
   JobSiteUserPaginator,
 } from './dto/get-jobsite-users.dto';
 import { CreateJobSiteUserDto } from './dto/create-jobsite-user.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 @ApiTags('JobSite Users')
 @ApiBearerAuth()

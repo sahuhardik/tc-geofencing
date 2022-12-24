@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import Input from "@components/ui/input";
 import { useForm, useWatch } from "react-hook-form";
 import Button from "@components/ui/button";
@@ -8,8 +11,6 @@ import { getErrorMessage } from "@utils/form-error";
 import Description from "@components/ui/description";
 import Card from "@components/common/card";
 import MapWidget from "@components/widgets/map-widget";
-import { useRouter } from "next/router";
-import { useTranslation } from "next-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { jobsiteValidationSchema } from "./jobsite-validation-schema";
 import { useCreateJobSiteMutation } from "@data/jobsite/use-jobsite-create.mutation";
@@ -17,7 +18,6 @@ import { useUpdateJobSiteMutation } from "@data/jobsite/use-jobsite-update.mutat
 import { JobSite, TimeCampTask, TimeCampUser } from "@ts-types/generated";
 import { useTimeCampTaskQuery } from "@data/timecamp/use-timecamp-tasks.query";
 import { useTimeCampUserQuery } from "@data/timecamp/use-timecamp-users.query";
-import { useEffect } from "react";
 
 export type JobSiteFormValues = {
   identifier: string;
@@ -29,7 +29,7 @@ export type JobSiteFormValues = {
   taskId: null | number;
   createdBy: string;
   task?: TimeCampTask;
-  users: TimeCampUser[];
+  jobSiteUsers: { userId: string; userEmail: string; user: TimeCampUser }[];
 };
 
 type IProps = {
@@ -64,14 +64,14 @@ export default function CreateOrUpdateJobSiteForm({
       defaultValues: {
         ...initialValues,
         task: {},
-        users: []
+        users: [],
       } as any,
     }),
   });
 
-  const [taskId, users] = useWatch({
+  const [taskId, jobSiteUsers] = useWatch({
     control,
-    name: ["taskId", "users"],
+    name: ["taskId", "jobSiteUsers"],
   });
 
   useEffect(() => {
@@ -96,6 +96,7 @@ export default function CreateOrUpdateJobSiteForm({
       notifyOnExit,
       taskId,
       task,
+      jobSiteUsers,
     } = values;
     const input = {
       identifier,
@@ -105,6 +106,7 @@ export default function CreateOrUpdateJobSiteForm({
       notifyOnEntry,
       notifyOnExit,
       taskId: task?.task_id || taskId || null,
+      jobSiteUsers,
     };
     try {
       if (initialValues) {
@@ -137,8 +139,8 @@ export default function CreateOrUpdateJobSiteForm({
   };
 
   const handleDeselect = (id: string) => {
-    const selectedPersonsUpdated = users.filter((el) => Number(el.user_id) !== Number(id));
-    setValue('users', selectedPersonsUpdated);
+    const selectedPersonsUpdated = jobSiteUsers.filter((el) => Number(el.userId) !== Number(id));
+    setValue('jobSiteUsers', selectedPersonsUpdated);
   };
 
   return (
@@ -184,17 +186,17 @@ export default function CreateOrUpdateJobSiteForm({
 
           <div className="mb-5">
             <Label>{t("form:input-label-user-assign")}</Label>
-            <AutoComplete name="users" control={control} data={timecampUsers || []}
-              renderSuggestion={(val: any) => <span className="inline-block	">{val?.display_name}{val?.display_name ? <br /> : null}{val?.email}</span>}
-              getSuggestionValue={(val: any) => val?.display_name}
-              searchField={['display_name', 'email']}
-              id="user_id"
+            <AutoComplete name="jobSiteUsers" control={control} data={timecampUsers || []}
+              renderSuggestion={(val: any) => <span className="inline-block	">{val.userEmail}</span>}
+              getSuggestionValue={(val: any) => val.userEmail}
+              searchField={['userEmail']}
+              id="userId"
               multiple
             />
-            {users && users.map((user) => (
-              <span key={user.user_id} id="badge-dismiss-default" className="inline-flex items-center py-1 px-2 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-200 dark:text-blue-800">
-                {user.email}
-                <button type="button" className="inline-flex items-center p-0.5 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-300 dark:hover:text-blue-900" data-dismiss-target="#badge-dismiss-default" aria-label="Remove" onClick={() => handleDeselect(user.user_id)}>
+            {jobSiteUsers && jobSiteUsers.map((user) => (
+              <span key={user.userId} id="badge-dismiss-default" className="inline-flex items-center py-1 px-2 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-200 dark:text-blue-800">
+                {user.userEmail}
+                <button type="button" className="inline-flex items-center p-0.5 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-300 dark:hover:text-blue-900" data-dismiss-target="#badge-dismiss-default" aria-label="Remove" onClick={() => handleDeselect(user.userId)}>
                   <svg aria-hidden="true" className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                   <span className="sr-only">Remove badge</span>
                 </button>
