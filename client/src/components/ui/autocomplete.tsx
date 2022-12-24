@@ -75,27 +75,30 @@ const AutoComplete = ({ control, label, id, name, errors, data, searchField, ren
                         value={val}
                         disabled={Array.isArray(value) && value.some((user: any) => user?.[id] === val?.[id])}
                       >
-                        {({ selected, active }) => (
-                          <>
-                            <span
-                              className={`block truncate ${selected ? "font-medium" : "font-normal"
-                                }`}
-                            >
-                              {renderSuggestion(val)}
-                            </span>
-                            {selected ? (
+                        {({ active }) => {
+                          const selected = rest.multiple ? value.some((_val: any) => _val?.[id] === val?.[id]) : value?.['task_id'] === val?.['task_id'];
+                          return (
+                            <>
                               <span
-                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-teal-600"
+                                className={`block truncate ${selected ? "font-medium" : "font-normal"
                                   }`}
                               >
-                                <CheckIcon
-                                  className="w-5 h-5"
-                                  aria-hidden="true"
-                                />
+                                {renderSuggestion(val)}
                               </span>
-                            ) : null}
-                          </>
-                        )}
+                              {selected ? (
+                                <span
+                                  className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-teal-600"
+                                    }`}
+                                >
+                                  <CheckIcon
+                                    className="w-5 h-5"
+                                    aria-hidden="true"
+                                  />
+                                </span>
+                              ) : null}
+                            </>
+                          )
+                        }}
                       </Combobox.Option>
                     ))
                   )}
