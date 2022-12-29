@@ -37,7 +37,7 @@ const MapWidget: React.FC<IMaps> = ({ control, setValue }) => {
             setClick(new google.maps.LatLng(latitude, longitude));
             setZoom(10);
         }
-    }, [longitude, latitude]);
+    }, [longitude, latitude, window.google]);
 
     const onClick = (e: google.maps.MapMouseEvent) => {
         // avoid directly mutating state

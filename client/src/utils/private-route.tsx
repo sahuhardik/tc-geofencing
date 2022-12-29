@@ -21,7 +21,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <Loader showText={false} />;
+  return <></>;
 };
 
 export default PrivateRoute;
