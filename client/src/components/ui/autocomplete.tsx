@@ -76,7 +76,7 @@ const AutoComplete = ({ control, label, id, name, errors, data, searchField, ren
                         disabled={Array.isArray(value) && value.some((user: any) => user?.[id] === val?.[id])}
                       >
                         {({ active }) => {
-                          const selected = rest.multiple ? value.some((_val: any) => _val?.[id] === val?.[id]) : value?.['task_id'] === val?.['task_id'];
+                          const selected = rest.multiple ? value?.some((_val: any) => _val?.[id] === val?.[id]) : value?.['task_id'] === val?.['task_id'];
                           return (
                             <>
                               <span
