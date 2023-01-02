@@ -1,12 +1,9 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JobSiteUsersService } from './jobsite-users.service';
-import {
-  GetJobSiteUsersDto,
-  JobSiteUserPaginator,
-} from './dto/get-jobsite-users.dto';
 import { CreateJobSiteUserDto } from './dto/create-jobsite-user.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
+import { JobSite } from '../jobsite/entities/jobsite.entity';
 
 @ApiTags('JobSite Users')
 @ApiBearerAuth()
@@ -29,7 +26,7 @@ export class GeofencesController {
   constructor(private readonly jobsiteUsersService: JobSiteUsersService) {}
 
   @Get()
-  async getJobSites(): Promise<JobSiteUserPaginator> {
+  async getJobSites(): Promise<{ data: JobSite[] }> {
     return this.jobsiteUsersService.getJobSiteUsers();
   }
 }

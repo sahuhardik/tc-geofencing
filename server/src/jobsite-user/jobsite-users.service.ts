@@ -8,7 +8,7 @@ import {
   SaveOptions,
 } from 'typeorm';
 import { JobSiteUser } from './entities/jobsite-user.entity';
-import { JobSiteUserPaginator } from './dto/get-jobsite-users.dto';
+import { JobSite } from '../jobsite/entities/jobsite.entity';
 import { CreateJobSiteUserDto } from './dto/create-jobsite-user.dto';
 import { GEOFENCE_REPOSITORIES } from '../common/constants';
 import { JobSitesService } from '../jobsite/jobsites.service';
@@ -69,14 +69,15 @@ export class JobSiteUsersService {
     return;
   }
 
-  async getJobSiteUsers(): Promise<JobSiteUserPaginator> {
+  async getJobSiteUsers(): Promise<{ data: JobSite[] }> {
     const options: FindManyOptions<JobSiteUser> = {
       where: { userId: Number((this.request.user as IUser).user_id) },
       relations: { jobSite: true },
+      select: { id: true },
     };
 
     const results = await this.jobSiteUserRepository.find(options);
 
-    return { data: results };
+    return { data: results.map((res) => ({ ...res.jobSite })) };
   }
 }
