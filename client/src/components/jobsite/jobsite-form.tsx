@@ -264,7 +264,7 @@ export default function CreateOrUpdateJobSiteForm({
           </Button>
         )}
 
-        <Button loading={updating || creating}>
+        <Button loading={updating || creating} disabled={updating || creating}>
           {initialValues
             ? t("form:button-label-update-jobsite")
             : t("form:button-label-add-jobsite")}

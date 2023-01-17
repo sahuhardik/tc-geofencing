@@ -12,20 +12,12 @@ export interface IJobsiteCreateVariables {
 export const useCreateJobSiteMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const {
-    query: { shop },
-  } = router;
-
   return useMutation(
     ({ variables: { input } }: IJobsiteCreateVariables) =>
       JobSite.create(API_ENDPOINTS.JOBSITES, input),
     {
       onSuccess: () => {
-        if (shop) {
-          router.push(`/${shop}${ROUTES.JOBSITES}`);
-        } else {
-          router.push(ROUTES.JOBSITES);
-        }
+        router.push(ROUTES.JOBSITES);
       },
       // Always refetch after error or success:
       onSettled: () => {
