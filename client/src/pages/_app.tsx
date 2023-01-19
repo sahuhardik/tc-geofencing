@@ -21,7 +21,13 @@ const Noop: React.FC<{ children: React.ReactNode }> = ({ children }) => <>{child
 const CustomApp = ({ Component, pageProps }: AppProps) => {
   const queryClientRef = useRef<any>(null);
   if (!queryClientRef.current) {
-    queryClientRef.current = new QueryClient();
+    queryClientRef.current = new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false
+        }
+      }
+    });
   }
   const Layout = (Component as any).Layout || Noop;
   const authProps = (Component as any).authenticate;

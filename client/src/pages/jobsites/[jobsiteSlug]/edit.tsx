@@ -7,7 +7,7 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useJobSiteQuery } from "@data/jobsite/use-jobsite.query";
 
-export default function UpdateManufacturerPage() {
+export default function UpdateJobsitePage() {
   const { query } = useRouter();
   const { t } = useTranslation();
   const {
@@ -28,8 +28,8 @@ export default function UpdateManufacturerPage() {
     </>
   );
 }
-UpdateManufacturerPage.authenticate = {};
-UpdateManufacturerPage.Layout = Layout;
+UpdateJobsitePage.authenticate = {};
+UpdateJobsitePage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {
