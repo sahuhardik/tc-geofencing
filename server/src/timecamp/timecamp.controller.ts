@@ -35,9 +35,10 @@ export class TimeCampController {
     const users = await timeCampService.getTimeCampUsers(query);
 
     return {
-      data: users.data
-        .filter((user) => user.user_id !== (this.request.user as IUser).user_id)
-        .map((user) => ({ userId: user.user_id, userEmail: user.email })),
+      data: users.data.map((user) => ({
+        userId: user.user_id,
+        userEmail: user.email,
+      })),
     };
   }
 }
