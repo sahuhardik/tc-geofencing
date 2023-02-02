@@ -65,7 +65,6 @@ const LoginForm = () => {
   }
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Input
           label={t("form:input-label-token")}
           {...register("token")}
@@ -74,7 +73,7 @@ const LoginForm = () => {
           className="mb-4"
           error={t(errors?.token?.message!)}
         />
-        <Button className="w-full" loading={loading} disabled={loading}>
+        <Button onClick={handleSubmit(onSubmit)} className="w-full" loading={loading} disabled={loading}>
           {t("form:button-label-login")}
         </Button>
 
@@ -87,7 +86,6 @@ const LoginForm = () => {
             onClose={() => setErrorMsg("")}
           />
         ) : null}
-      </form>
     </>
   );
 };
