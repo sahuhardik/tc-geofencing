@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Alert from "@components/ui/alert";
 import Button from "@components/ui/button";
 import Input from "@components/ui/input";
@@ -10,6 +11,7 @@ import { useTranslation } from "next-i18next";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { setAuthCredentials } from "@utils/auth-utils";
+import { getJsonFromUrl } from "@utils/url";
 
 type FormValues = {
   token: string;
@@ -40,6 +42,14 @@ const LoginForm = () => {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    // logging in by passing token in url
+    const { token } = getJsonFromUrl();
+    if (token) {
+      onSubmit({ token });
+    }
+  }, [])
 
   function onSubmit({ token }: FormValues) {
     login(
