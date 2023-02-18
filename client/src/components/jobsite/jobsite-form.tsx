@@ -138,11 +138,6 @@ export default function CreateOrUpdateJobSiteForm({
     }
   };
 
-  const handleDeselect = (id: string) => {
-    const selectedPersonsUpdated = jobSiteUsers.filter((el) => Number(el.userId) !== Number(id));
-    setValue('jobSiteUsers', selectedPersonsUpdated);
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-wrap my-5 sm:my-8">
@@ -177,31 +172,17 @@ export default function CreateOrUpdateJobSiteForm({
           <div className="mb-5">
             <Label>{t("form:input-label-taskId")}</Label>
             <AutoComplete name="task" control={control} data={timecampTasks || []}
-              renderSuggestion={(val: any) => <span className="inline-block">{val?.name}<br />{val?.projectName}</span>}
-              getSuggestionValue={(val: any) => val?.name}
-              searchField={['name', 'projectName']}
-              id="taskId"
+              parseLabel={(item) => `${item?.name}${item?.projectName ? ` - ${item?.projectName}` : ''}` as string}
+              parseValue={(item) => item?.task_id as string}
             />
           </div>
-
           <div className="mb-5">
             <Label>{t("form:input-label-user-assign")}</Label>
             <AutoComplete name="jobSiteUsers" control={control} data={timecampUsers || []}
-              renderSuggestion={(val: any) => <span className="inline-block	">{val.userEmail}</span>}
-              getSuggestionValue={(val: any) => val.userEmail}
-              searchField={['userEmail']}
-              id="userId"
+              parseLabel={(item) => item?.userEmail as string}
+              parseValue={(item) => item?.userEmail as string}
               multiple
             />
-            {jobSiteUsers && jobSiteUsers.map((user) => (
-              <span key={user.userId} id="badge-dismiss-default" className="inline-flex items-center py-1 px-2 mr-2 text-sm font-medium text-blue-800 bg-blue-100 rounded dark:bg-blue-200 dark:text-blue-800">
-                {user.userEmail}
-                <button type="button" className="inline-flex items-center p-0.5 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-blue-200 hover:text-blue-900 dark:hover:bg-blue-300 dark:hover:text-blue-900" data-dismiss-target="#badge-dismiss-default" aria-label="Remove" onClick={() => handleDeselect(user.userId)}>
-                  <svg aria-hidden="true" className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
-                  <span className="sr-only">Remove badge</span>
-                </button>
-              </span>
-            ))}
           </div>
 
         </Card>

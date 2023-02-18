@@ -38,7 +38,7 @@
     "react-hook-form": "^7.20.5",
     "react-laag": "^2.0.3",
     "react-query": "^3.34.0",
-    "react-select": "^5.2.1",
+    "react-select": "^5.7.0",
     "react-toastify": "^8.1.0",
     "react-use": "^17.3.1",
     "swiper": "^7.3.1",
