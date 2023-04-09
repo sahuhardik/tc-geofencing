@@ -8,11 +8,7 @@ export const DressingTable: React.FC<React.SVGAttributes<{}>> = (props) => {
       fill="currentColor"
       {...props}
     >
-      <g
-        id="Dressing_Table"
-        data-name="Dressing Table"
-        transform="translate(-942.634 -346.008)"
-      >
+      <g id="Dressing_Table" data-name="Dressing Table" transform="translate(-942.634 -346.008)">
         <rect
           id="Rectangle_1064"
           data-name="Rectangle 1064"

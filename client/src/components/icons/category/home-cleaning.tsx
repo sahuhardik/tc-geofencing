@@ -9,11 +9,7 @@ export const HomeCleaning: React.FC<React.SVGAttributes<{}>> = (props) => {
       fill="currentColor"
       {...props}
     >
-      <g
-        id="home_cleaner"
-        data-name="home cleaner"
-        transform="translate(-2142.193 -787.635)"
-      >
+      <g id="home_cleaner" data-name="home cleaner" transform="translate(-2142.193 -787.635)">
         <path
           id="Path_17440"
           data-name="Path 17440"

@@ -1,19 +1,9 @@
-import Chart from "@components/ui/chart";
-import cn from "classnames";
-import { ArrowUp } from "@components/icons/arrow-up";
-import { ArrowDown } from "@components/icons/arrow-down";
+import Chart from '@components/ui/chart';
+import cn from 'classnames';
+import { ArrowUp } from '@components/icons/arrow-up';
+import { ArrowDown } from '@components/icons/arrow-down';
 
-const BarChart = ({
-  widgetTitle,
-  series,
-  colors,
-  prefix,
-  totalValue,
-  text,
-  position,
-  percentage,
-  categories,
-}: any) => {
+const BarChart = ({ widgetTitle, series, colors, prefix, totalValue, text, position, percentage, categories }: any) => {
   const options = {
     options: {
       chart: {
@@ -23,8 +13,8 @@ const BarChart = ({
       },
       plotOptions: {
         bar: {
-          columnWidth: "65%",
-          endingShape: "flat",
+          columnWidth: '65%',
+          endingShape: 'flat',
         },
       },
       dataLabels: {
@@ -35,7 +25,7 @@ const BarChart = ({
         width: 2,
       },
       grid: {
-        borderColor: "#F7F7F7",
+        borderColor: '#F7F7F7',
         xaxis: {
           lines: {
             show: false,
@@ -47,8 +37,8 @@ const BarChart = ({
         labels: {
           show: true,
           style: {
-            colors: "#161F6A",
-            fontSize: "14px",
+            colors: '#161F6A',
+            fontSize: '14px',
             fontFamily: "'Lato', sans-serif",
           },
         },
@@ -65,8 +55,8 @@ const BarChart = ({
         labels: {
           show: true,
           style: {
-            color: "#161F6A",
-            fontSize: "14px",
+            color: '#161F6A',
+            fontSize: '14px',
             fontFamily: "'Lato', sans-serif",
           },
         },
@@ -74,7 +64,7 @@ const BarChart = ({
     },
     series: [
       {
-        name: "Sale",
+        name: 'Sale',
         data: series,
       },
     ],
@@ -92,24 +82,18 @@ const BarChart = ({
           </span>
 
           <div className="flex items-center">
-            {position === "up" && (
+            {position === 'up' && (
               <span className="text-green-500">
                 <ArrowUp />
               </span>
             )}
-            {position === "down" && (
+            {position === 'down' && (
               <span className="text-red-400">
                 <ArrowDown />
               </span>
             )}
             <span className="text-sm text-heading ms-1">
-              <span
-                className={cn(
-                  position === "down" ? "text-red-400" : "text-green-500"
-                )}
-              >
-                {percentage}
-              </span>
+              <span className={cn(position === 'down' ? 'text-red-400' : 'text-green-500')}>{percentage}</span>
               &nbsp;
               {text}
             </span>
@@ -117,14 +101,8 @@ const BarChart = ({
         </div>
       </div>
 
-      <div className="flex flex-wrap w-full" style={{ display: "block" }}>
-        <Chart
-          options={options.options}
-          series={options.series}
-          height="350"
-          width="100%"
-          type="bar"
-        />
+      <div className="flex flex-wrap w-full" style={{ display: 'block' }}>
+        <Chart options={options.options} series={options.series} height="350" width="100%" type="bar" />
       </div>
     </div>
   );

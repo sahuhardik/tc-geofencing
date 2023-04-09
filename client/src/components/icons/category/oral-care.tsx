@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 export const OralCare: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
     <svg
@@ -9,11 +9,7 @@ export const OralCare: React.FC<React.SVGAttributes<{}>> = (props) => {
       fill="currentColor"
       {...props}
     >
-      <g
-        id="Oral_Care"
-        data-name="Oral Care"
-        transform="translate(-449.675 -599.675)"
-      >
+      <g id="Oral_Care" data-name="Oral Care" transform="translate(-449.675 -599.675)">
         <path
           id="Path_21772"
           data-name="Path 21772"
@@ -36,11 +32,7 @@ export const OralCare: React.FC<React.SVGAttributes<{}>> = (props) => {
           strokeLinejoin="round"
           strokeWidth="0.65"
         />
-        <g
-          id="Group_12589"
-          data-name="Group 12589"
-          transform="translate(457.632 613.443)"
-        >
+        <g id="Group_12589" data-name="Group 12589" transform="translate(457.632 613.443)">
           <line
             id="Line_1"
             data-name="Line 1"
@@ -143,11 +135,7 @@ export const OralCare: React.FC<React.SVGAttributes<{}>> = (props) => {
           strokeLinejoin="round"
           strokeWidth="0.65"
         />
-        <g
-          id="Group_12590"
-          data-name="Group 12590"
-          transform="translate(464.853 600)"
-        >
+        <g id="Group_12590" data-name="Group 12590" transform="translate(464.853 600)">
           <line
             id="Line_4"
             data-name="Line 4"

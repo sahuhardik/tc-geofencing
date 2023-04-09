@@ -1,8 +1,8 @@
-import { Eye } from "@components/icons/eye-icon";
-import { EyeOff } from "@components/icons/eye-off-icon";
-import cn from "classnames";
-import React, { InputHTMLAttributes, useState } from "react";
-import Link from "./link";
+import { Eye } from '@components/icons/eye-icon';
+import { EyeOff } from '@components/icons/eye-off-icon';
+import cn from 'classnames';
+import React, { InputHTMLAttributes, useState } from 'react';
+import Link from './link';
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -12,17 +12,15 @@ export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   forgotPageLink?: string;
   shadow?: boolean;
-  variant?: "normal" | "solid" | "outline";
+  variant?: 'normal' | 'solid' | 'outline';
   error: string | undefined;
 }
 const classes = {
-  root: "px-4 h-12 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0",
-  normal:
-    "bg-gray-100 border border-border-base focus:shadow focus:bg-light focus:border-accent",
-  solid:
-    "bg-gray-100 border border-border-100 focus:bg-light focus:border-accent",
-  outline: "border border-border-base focus:border-accent",
-  shadow: "focus:shadow",
+  root: 'px-4 h-12 flex items-center w-full rounded appearance-none transition duration-300 ease-in-out text-heading text-sm focus:outline-none focus:ring-0',
+  normal: 'bg-gray-100 border border-border-base focus:shadow focus:bg-light focus:border-accent',
+  solid: 'bg-gray-100 border border-border-100 focus:bg-light focus:border-accent',
+  outline: 'border border-border-base focus:border-accent',
+  shadow: 'focus:shadow',
 };
 const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
   (
@@ -34,10 +32,10 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
       name,
       error,
       children,
-      variant = "normal",
+      variant = 'normal',
       shadow = false,
-      type = "text",
-      forgotPageLink = "",
+      type = 'text',
+      forgotPageLink = '',
       ...rest
     },
     ref
@@ -47,9 +45,9 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
     const rootClassName = cn(
       classes.root,
       {
-        [classes.normal]: variant === "normal",
-        [classes.solid]: variant === "solid",
-        [classes.outline]: variant === "outline",
+        [classes.normal]: variant === 'normal',
+        [classes.solid]: variant === 'solid',
+        [classes.outline]: variant === 'outline',
       },
       shadow == true && classes.shadow,
       inputClassName
@@ -58,10 +56,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
     return (
       <div className={className}>
         <div className="flex items-center justify-between mb-3">
-          <label
-            htmlFor={name}
-            className="text-body-dark font-semibold text-sm leading-none"
-          >
+          <label htmlFor={name} className="text-body-dark font-semibold text-sm leading-none">
             {label}
           </label>
 
@@ -78,7 +73,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
           <input
             id={name}
             name={name}
-            type={show ? "text" : "password"}
+            type={show ? 'text' : 'password'}
             ref={ref}
             className={rootClassName}
             autoComplete="off"
@@ -92,16 +87,10 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Props>(
             className="absolute end-4 top-5 -mt-2 text-body"
             onClick={() => setShow((prev) => !prev)}
           >
-            {show ? (
-              <EyeOff className="w-5 h-5" />
-            ) : (
-              <Eye className="w-5 h-5" />
-            )}
+            {show ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </label>
         </div>
-        {error && (
-          <p className="my-2 text-xs text-start text-red-500">{error}</p>
-        )}
+        {error && <p className="my-2 text-xs text-start text-red-500">{error}</p>}
       </div>
     );
   }

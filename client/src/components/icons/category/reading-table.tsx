@@ -1,18 +1,7 @@
 export const ReadingTable: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="60"
-      height="60"
-      viewBox="0 0 60 60"
-      fill="currentColor"
-      {...props}
-    >
-      <g
-        id="Reading_Table"
-        data-name="Reading Table"
-        transform="translate(-448 -584)"
-      >
+    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="currentColor" {...props}>
+      <g id="Reading_Table" data-name="Reading Table" transform="translate(-448 -584)">
         <path
           id="Path_17417"
           data-name="Path 17417"

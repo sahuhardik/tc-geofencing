@@ -1,25 +1,23 @@
-import { useState } from "react";
-import Alert from "@components/ui/alert";
-import { useForgetPasswordMutation } from "@data/user/use-forget-password.mutation";
-import { useVerifyForgetPasswordTokenMutation } from "@data/user/use-verify-forget-password-token.mutation";
-import { useResetPasswordMutation } from "@data/user/use-reset-password.mutation";
-import dynamic from "next/dynamic";
-import Router from "next/router";
-import { useTranslation } from "next-i18next";
-const EnterEmailView = dynamic(() => import("./enter-email-view"));
-const EnterTokenView = dynamic(() => import("./enter-token-view"));
-const EnterNewPasswordView = dynamic(() => import("./enter-new-password-view"));
+import { useState } from 'react';
+import Alert from '@components/ui/alert';
+import { useForgetPasswordMutation } from '@data/user/use-forget-password.mutation';
+import { useVerifyForgetPasswordTokenMutation } from '@data/user/use-verify-forget-password-token.mutation';
+import { useResetPasswordMutation } from '@data/user/use-reset-password.mutation';
+import dynamic from 'next/dynamic';
+import Router from 'next/router';
+import { useTranslation } from 'next-i18next';
+const EnterEmailView = dynamic(() => import('./enter-email-view'));
+const EnterTokenView = dynamic(() => import('./enter-token-view'));
+const EnterNewPasswordView = dynamic(() => import('./enter-new-password-view'));
 
 const ForgotPassword = () => {
   const { t } = useTranslation();
   const { mutate: forgetPassword, isLoading } = useForgetPasswordMutation();
-  const { mutate: verifyToken, isLoading: verifying } =
-    useVerifyForgetPasswordTokenMutation();
-  const { mutate: resetPassword, isLoading: resetting } =
-    useResetPasswordMutation();
-  const [errorMsg, setErrorMsg] = useState<string | null | undefined>("");
-  const [verifiedEmail, setVerifiedEmail] = useState("");
-  const [verifiedToken, setVerifiedToken] = useState("");
+  const { mutate: verifyToken, isLoading: verifying } = useVerifyForgetPasswordTokenMutation();
+  const { mutate: resetPassword, isLoading: resetting } = useResetPasswordMutation();
+  const [errorMsg, setErrorMsg] = useState<string | null | undefined>('');
+  const [verifiedEmail, setVerifiedEmail] = useState('');
+  const [verifiedToken, setVerifiedToken] = useState('');
 
   function handleEmailSubmit({ email }: { email: string }) {
     forgetPassword(
@@ -76,7 +74,7 @@ const ForgotPassword = () => {
       {
         onSuccess: ({ data }) => {
           if (data?.success) {
-            Router.push("/");
+            Router.push('/');
           } else {
             setErrorMsg(data?.message);
           }
@@ -93,21 +91,12 @@ const ForgotPassword = () => {
           message={t(`common:${errorMsg}`)}
           className="mb-6"
           closeable={true}
-          onClose={() => setErrorMsg("")}
+          onClose={() => setErrorMsg('')}
         />
       )}
-      {!verifiedEmail && (
-        <EnterEmailView loading={isLoading} onSubmit={handleEmailSubmit} />
-      )}
-      {verifiedEmail && !verifiedToken && (
-        <EnterTokenView loading={verifying} onSubmit={handleTokenSubmit} />
-      )}
-      {verifiedEmail && verifiedToken && (
-        <EnterNewPasswordView
-          loading={resetting}
-          onSubmit={handleResetPassword}
-        />
-      )}
+      {!verifiedEmail && <EnterEmailView loading={isLoading} onSubmit={handleEmailSubmit} />}
+      {verifiedEmail && !verifiedToken && <EnterTokenView loading={verifying} onSubmit={handleTokenSubmit} />}
+      {verifiedEmail && verifiedToken && <EnterNewPasswordView loading={resetting} onSubmit={handleResetPassword} />}
     </>
   );
 };

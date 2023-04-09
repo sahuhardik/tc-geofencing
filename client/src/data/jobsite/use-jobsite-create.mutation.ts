@@ -13,8 +13,7 @@ export const useCreateJobSiteMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   return useMutation(
-    ({ variables: { input } }: IJobsiteCreateVariables) =>
-      JobSite.create(API_ENDPOINTS.JOBSITES, input),
+    ({ variables: { input } }: IJobsiteCreateVariables) => JobSite.create(API_ENDPOINTS.JOBSITES, input),
     {
       onSuccess: () => {
         router.push(ROUTES.JOBSITES);

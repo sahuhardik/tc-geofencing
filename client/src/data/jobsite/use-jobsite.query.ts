@@ -9,7 +9,5 @@ export const fetchJobSite = async (id: string) => {
 };
 
 export const useJobSiteQuery = (id: string) => {
-  return useQuery<TJobSite, Error>([API_ENDPOINTS.JOBSITES, id], () =>
-    fetchJobSite(id)
-  );
+  return useQuery<TJobSite, Error>([API_ENDPOINTS.JOBSITES, id], () => fetchJobSite(id));
 };

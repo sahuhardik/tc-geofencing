@@ -8,7 +8,5 @@ export interface ILoginVariables {
 }
 
 export const useLoginMutation = () => {
-  return useMutation(({ variables }: ILoginVariables) =>
-    User.login(API_ENDPOINTS.LOGIN, variables)
-  );
+  return useMutation(({ variables }: ILoginVariables) => User.login(API_ENDPOINTS.LOGIN, variables));
 };

@@ -1,4 +1,4 @@
-import Chart from "@components/ui/chart";
+import Chart from '@components/ui/chart';
 
 const DonutChart = ({ series, icon, labels, prefix, colors }: any) => {
   const options = {
@@ -17,7 +17,7 @@ const DonutChart = ({ series, icon, labels, prefix, colors }: any) => {
       states: {
         hover: {
           filter: {
-            type: "darken",
+            type: 'darken',
             value: 0.8,
           },
         },
@@ -33,7 +33,7 @@ const DonutChart = ({ series, icon, labels, prefix, colors }: any) => {
   };
 
   const numberWithCommas = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
   return (
@@ -43,10 +43,7 @@ const DonutChart = ({ series, icon, labels, prefix, colors }: any) => {
           <span className="w-14 h-14 me-4 flex">{icon[0]}</span>
 
           <div className="flex flex-col">
-            <span
-              className="text-lg text-heading font-semibold"
-              style={{ color: colors[0] }}
-            >
+            <span className="text-lg text-heading font-semibold" style={{ color: colors[0] }}>
               {prefix}
               {numberWithCommas(series[0])}
             </span>
@@ -56,12 +53,7 @@ const DonutChart = ({ series, icon, labels, prefix, colors }: any) => {
       </div>
 
       <div className="w-full">
-        <Chart
-          options={options.options}
-          series={options.series}
-          width="100%"
-          type="donut"
-        />
+        <Chart options={options.options} series={options.series} width="100%" type="donut" />
       </div>
 
       <div className="p-8 flex items-start justify-between">
@@ -69,10 +61,7 @@ const DonutChart = ({ series, icon, labels, prefix, colors }: any) => {
           <span className="w-14 h-14 ms-4 flex">{icon[1]}</span>
 
           <div className="flex flex-col items-end">
-            <span
-              className="text-lg text-heading font-semibold"
-              style={{ color: colors[1] }}
-            >
+            <span className="text-lg text-heading font-semibold" style={{ color: colors[1] }}>
               {prefix}
               {numberWithCommas(series[1])}
             </span>

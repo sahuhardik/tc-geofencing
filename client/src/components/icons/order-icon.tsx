@@ -1,12 +1,7 @@
 import React from 'react';
 export const OrderIcon = ({ width = '11.321', height = '13' }) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      viewBox="0 0 11.321 13"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 11.321 13">
       <g data-name="Group 1087" transform="translate(0)">
         <g data-name="Group 1086">
           <path

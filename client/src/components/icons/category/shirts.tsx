@@ -1,13 +1,7 @@
-import React from "react";
+import React from 'react';
 export const Shirts: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="15.429"
-      height="18"
-      fill="currentColor"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="15.429" height="18" fill="currentColor" {...props}>
       <g data-name="Group 12550">
         <path
           data-name="Path 21722"
@@ -79,11 +73,7 @@ export const Shirts: React.FC<React.SVGAttributes<{}>> = (props) => {
         />
       </g>
       <g data-name="Group 12560">
-        <path
-          data-name="Path 21732"
-          d="M8.679 9a.321.321 0 10-.321.321A.321.321 0 008.679 9z"
-          fill="currentColor"
-        />
+        <path data-name="Path 21732" d="M8.679 9a.321.321 0 10-.321.321A.321.321 0 008.679 9z" fill="currentColor" />
       </g>
       <g data-name="Group 12561">
         <path

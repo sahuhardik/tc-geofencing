@@ -1,5 +1,5 @@
-import cn from "classnames";
-import { useTranslation } from "next-i18next";
+import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 type BadgeProps = {
   className?: string;
@@ -11,18 +11,12 @@ type BadgeProps = {
 
 const Badge: React.FC<BadgeProps> = (props) => {
   const { t } = useTranslation();
-  const {
-    className,
-    color: colorOverride,
-    textColor: textColorOverride,
-    text,
-    textKey,
-  } = props;
+  const { className, color: colorOverride, textColor: textColorOverride, text, textKey } = props;
 
   const classes = {
-    root: "px-3 py-1 rounded-full text-xs whitespace-nowrap",
-    default: "bg-accent",
-    text: "text-light",
+    root: 'px-3 py-1 rounded-full text-xs whitespace-nowrap',
+    default: 'bg-accent',
+    text: 'text-light',
   };
 
   return (

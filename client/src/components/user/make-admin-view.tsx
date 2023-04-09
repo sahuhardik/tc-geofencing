@@ -1,13 +1,9 @@
-import ConfirmationCard from "@components/common/confirmation-card";
-import {
-  useModalAction,
-  useModalState,
-} from "@components/ui/modal/modal.context";
-import { useMakeOrRevokeAdminMutation } from "@data/user/use-make-revoke-admin-mutation";
+import ConfirmationCard from '@components/common/confirmation-card';
+import { useModalAction, useModalState } from '@components/ui/modal/modal.context';
+import { useMakeOrRevokeAdminMutation } from '@data/user/use-make-revoke-admin-mutation';
 
 const CustomerBanView = () => {
-  const { mutate: makeOrRevokeAdmin, isLoading: loading } =
-    useMakeOrRevokeAdminMutation();
+  const { mutate: makeOrRevokeAdmin, isLoading: loading } = useMakeOrRevokeAdminMutation();
   const { data } = useModalState();
 
   const { closeModal } = useModalAction();

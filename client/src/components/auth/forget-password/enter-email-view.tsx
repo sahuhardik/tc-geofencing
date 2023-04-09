@@ -1,18 +1,15 @@
-import Button from "@components/ui/button";
-import Input from "@components/ui/input";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useTranslation } from "next-i18next";
+import Button from '@components/ui/button';
+import Input from '@components/ui/input';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useTranslation } from 'next-i18next';
 interface Props {
   onSubmit: (values: { email: string }) => void;
   loading: boolean;
 }
 const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("form:error-email-format")
-    .required("form:error-email-required"),
+  email: yup.string().email('form:error-email-format').required('form:error-email-required'),
 });
 
 const EnterEmailView = ({ onSubmit, loading }: Props) => {
@@ -27,8 +24,8 @@ const EnterEmailView = ({ onSubmit, loading }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <Input
-        label={t("form:input-label-email")}
-        {...register("email")}
+        label={t('form:input-label-email')}
+        {...register('email')}
         type="email"
         variant="outline"
         className="mb-5"
@@ -36,7 +33,7 @@ const EnterEmailView = ({ onSubmit, loading }: Props) => {
         error={t(errors.email?.message!)}
       />
       <Button className="w-full h-11" loading={loading} disabled={loading}>
-        {t("form:text-submit-email")}
+        {t('form:text-submit-email')}
       </Button>
     </form>
   );

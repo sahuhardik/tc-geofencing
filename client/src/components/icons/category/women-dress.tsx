@@ -1,13 +1,7 @@
-import React from "react";
+import React from 'react';
 export const WomenDress: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12.857"
-      height="18"
-      fill="currentColor"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="12.857" height="18" fill="currentColor" {...props}>
       <g data-name="Women Dress">
         <g data-name="Group 12535">
           <path

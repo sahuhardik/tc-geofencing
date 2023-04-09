@@ -1,18 +1,11 @@
-import Image from "next/image";
-import Link from "@components/ui/link";
-import cn from "classnames";
-import { siteSettings } from "@settings/site.settings";
+import Image from 'next/image';
+import Link from '@components/ui/link';
+import cn from 'classnames';
+import { siteSettings } from '@settings/site.settings';
 
-const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
-  className,
-  ...props
-}) => {
+const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({ className, ...props }) => {
   return (
-    <Link
-      href={siteSettings.logo.href}
-      className={cn("inline-flex", className)}
-      {...props}
-    >
+    <Link href={siteSettings.logo.href} className={cn('inline-flex', className)} {...props}>
       <span
         className="overflow-hidden relative"
         style={{

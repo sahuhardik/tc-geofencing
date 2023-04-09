@@ -10,16 +10,14 @@ const Truncate: React.FC<ReadMoreProps> = ({
   children,
   onClick,
   character = 200,
-  buttonText = "See More",
+  buttonText = 'See More',
   hideButton = false,
 }) => {
   if (!children) return null;
 
   return (
     <>
-      {children && children.length < character
-        ? children
-        : children.substring(0, character) + "..."}
+      {children && children.length < character ? children : children.substring(0, character) + '...'}
       {!hideButton && children.length > character && (
         <>
           ...

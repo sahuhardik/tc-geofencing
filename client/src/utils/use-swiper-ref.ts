@@ -1,9 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from 'react';
 
-const useSwiperRef = <T extends HTMLElement>(): [
-  T | undefined,
-  React.Ref<T>
-] => {
+const useSwiperRef = <T extends HTMLElement>(): [T | undefined, React.Ref<T>] => {
   const [wrapper, setWrapper] = useState<T>();
   const ref = useRef<T>(null);
 

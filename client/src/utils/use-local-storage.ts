@@ -1,1 +1,1 @@
-export { default as useLocalStorage } from "react-use/lib/useLocalStorage";
+export { default as useLocalStorage } from 'react-use/lib/useLocalStorage';

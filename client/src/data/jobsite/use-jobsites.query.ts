@@ -1,25 +1,14 @@
-import {
-  QueryParamsType,
-  JobsitesQueryOptionsType,
-} from '@ts-types/custom.types';
+import { QueryParamsType, JobsitesQueryOptionsType } from '@ts-types/custom.types';
 import { mapPaginatorData } from '@utils/data-mappers';
 import { useQuery } from 'react-query';
 import JobSite from '@repositories/jobsite';
 import { API_ENDPOINTS } from '@utils/api/endpoints';
 import { JobSitePaginator } from '@ts-types/generated';
 
-const fetchJobsites = async ({
-  queryKey,
-}: QueryParamsType): Promise<{ jobsites: JobSitePaginator }> => {
+const fetchJobsites = async ({ queryKey }: QueryParamsType): Promise<{ jobsites: JobSitePaginator }> => {
   const [_key, params] = queryKey;
 
-  const {
-    page,
-    text,
-    limit = 15,
-    orderBy = 'updated_at',
-    sortedBy = 'DESC',
-  } = params as JobsitesQueryOptionsType;
+  const { page, text, limit = 15, orderBy = 'updated_at', sortedBy = 'DESC' } = params as JobsitesQueryOptionsType;
 
   const searchString = text;
   // @ts-ignore
@@ -44,13 +33,9 @@ const fetchJobsites = async ({
 };
 
 const useJobsitesQuery = (options: JobsitesQueryOptionsType) => {
-  return useQuery<{ jobsites: JobSitePaginator }, Error>(
-    [API_ENDPOINTS.JOBSITES, options],
-    fetchJobsites,
-    {
-      keepPreviousData: true,
-    }
-  );
+  return useQuery<{ jobsites: JobSitePaginator }, Error>([API_ENDPOINTS.JOBSITES, options], fetchJobsites, {
+    keepPreviousData: true,
+  });
 };
 
 export { useJobsitesQuery, fetchJobsites };

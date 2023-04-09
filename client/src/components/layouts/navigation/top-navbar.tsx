@@ -1,8 +1,8 @@
-import Logo from "@components/ui/logo";
-import { useUI } from "@contexts/ui.context";
-import AuthorizedMenu from "./authorized-menu";
-import { NavbarIcon } from "@components/icons/navbar-icon";
-import { motion } from "framer-motion";
+import Logo from '@components/ui/logo';
+import { useUI } from '@contexts/ui.context';
+import AuthorizedMenu from './authorized-menu';
+import { NavbarIcon } from '@components/icons/navbar-icon';
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const { toggleSidebar } = useUI();

@@ -1,26 +1,26 @@
-import Input from "@components/ui/input";
-import { useFieldArray, useForm } from "react-hook-form";
-import Button from "@components/ui/button";
-import Description from "@components/ui/description";
-import Card from "@components/common/card";
-import { useRouter } from "next/router";
-import { getIcon } from "@utils/get-icon";
-import Label from "@components/ui/label";
-import * as typeIcons from "@components/icons/type";
-import { AttachmentInput, Type, TypeSettingsInput } from "@ts-types/generated";
-import { useCreateTypeMutation } from "@data/type/use-type-create.mutation";
-import { useUpdateTypeMutation } from "@data/type/use-type-update.mutation";
-import { typeIconList } from "./group-icons";
-import { useTranslation } from "next-i18next";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { typeValidationSchema } from "./group-validation-schema";
-import SelectInput from "@components/ui/select-input";
-import FileInput from "@components/ui/file-input";
-import Title from "@components/ui/title";
-import Alert from "@components/ui/alert";
-import TextArea from "@components/ui/text-area";
-import RadioCard from "@components/ui/radio-card/radio-card";
-import Checkbox from "@components/ui/checkbox/checkbox";
+import Input from '@components/ui/input';
+import { useFieldArray, useForm } from 'react-hook-form';
+import Button from '@components/ui/button';
+import Description from '@components/ui/description';
+import Card from '@components/common/card';
+import { useRouter } from 'next/router';
+import { getIcon } from '@utils/get-icon';
+import Label from '@components/ui/label';
+import * as typeIcons from '@components/icons/type';
+import { AttachmentInput, Type, TypeSettingsInput } from '@ts-types/generated';
+import { useCreateTypeMutation } from '@data/type/use-type-create.mutation';
+import { useUpdateTypeMutation } from '@data/type/use-type-update.mutation';
+import { typeIconList } from './group-icons';
+import { useTranslation } from 'next-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { typeValidationSchema } from './group-validation-schema';
+import SelectInput from '@components/ui/select-input';
+import FileInput from '@components/ui/file-input';
+import Title from '@components/ui/title';
+import Alert from '@components/ui/alert';
+import TextArea from '@components/ui/text-area';
+import RadioCard from '@components/ui/radio-card/radio-card';
+import Checkbox from '@components/ui/checkbox/checkbox';
 
 export const updatedIcons = typeIconList.map((item: any) => {
   item.label = (
@@ -29,7 +29,7 @@ export const updatedIcons = typeIconList.map((item: any) => {
         {getIcon({
           iconList: typeIcons,
           iconName: item.value,
-          className: "max-h-full max-w-full",
+          className: 'max-h-full max-w-full',
         })}
       </span>
       <span>{item.label}</span>
@@ -40,61 +40,61 @@ export const updatedIcons = typeIconList.map((item: any) => {
 
 const layoutTypes = [
   {
-    label: "Classic",
-    value: "classic",
-    img: "/image/layout-classic.png",
+    label: 'Classic',
+    value: 'classic',
+    img: '/image/layout-classic.png',
   },
   {
-    label: "Compact",
-    value: "compact",
-    img: "/image/layout-compact.png",
+    label: 'Compact',
+    value: 'compact',
+    img: '/image/layout-compact.png',
   },
   {
-    label: "Minimal",
-    value: "minimal",
-    img: "/image/layout-minimal.png",
+    label: 'Minimal',
+    value: 'minimal',
+    img: '/image/layout-minimal.png',
   },
   {
-    label: "Modern",
-    value: "modern",
-    img: "/image/layout-modern.png",
+    label: 'Modern',
+    value: 'modern',
+    img: '/image/layout-modern.png',
   },
   {
-    label: "Standard",
-    value: "standard",
-    img: "/image/layout-standard.png",
+    label: 'Standard',
+    value: 'standard',
+    img: '/image/layout-standard.png',
   },
 ];
 const productCards = [
   {
-    label: "Helium",
-    value: "helium",
-    img: "/image/card-helium.png",
+    label: 'Helium',
+    value: 'helium',
+    img: '/image/card-helium.png',
   },
   {
-    label: "Neon",
-    value: "neon",
-    img: "/image/card-neon.png",
+    label: 'Neon',
+    value: 'neon',
+    img: '/image/card-neon.png',
   },
   {
-    label: "Argon",
-    value: "argon",
-    img: "/image/card-argon.png",
+    label: 'Argon',
+    value: 'argon',
+    img: '/image/card-argon.png',
   },
   {
-    label: "Krypton",
-    value: "krypton",
-    img: "/image/card-krypton.png",
+    label: 'Krypton',
+    value: 'krypton',
+    img: '/image/card-krypton.png',
   },
   {
-    label: "Xenon",
-    value: "xenon",
-    img: "/image/card-xenon.png",
+    label: 'Xenon',
+    value: 'xenon',
+    img: '/image/card-xenon.png',
   },
   {
-    label: "Radon",
-    value: "radon",
-    img: "/image/card-radon.png",
+    label: 'Radon',
+    value: 'radon',
+    img: '/image/card-radon.png',
   },
 ];
 
@@ -132,25 +132,19 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
       ...initialValues,
       settings: {
         ...initialValues?.settings,
-        layoutType: initialValues?.settings?.layoutType
-          ? initialValues?.settings?.layoutType
-          : layoutTypes[0].value,
+        layoutType: initialValues?.settings?.layoutType ? initialValues?.settings?.layoutType : layoutTypes[0].value,
         productCard: initialValues?.settings?.productCard
           ? initialValues?.settings?.productCard
           : productCards[0].value,
       },
-      icon: initialValues?.icon
-        ? typeIconList.find(
-            (singleIcon) => singleIcon.value === initialValues?.icon
-          )
-        : "",
+      icon: initialValues?.icon ? typeIconList.find((singleIcon) => singleIcon.value === initialValues?.icon) : '',
     },
   });
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "banners",
+    name: 'banners',
   });
-  const layoutType = watch("settings.layoutType");
+  const layoutType = watch('settings.layoutType');
 
   const { mutate: createType, isLoading: creating } = useCreateTypeMutation();
   const { mutate: updateType, isLoading: updating } = useUpdateTypeMutation();
@@ -163,13 +157,11 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
         productCard: values?.settings?.productCard,
         layoutType: values?.settings?.layoutType,
       },
-      promotional_sliders: values.promotional_sliders?.map(
-        ({ thumbnail, original, id }: any) => ({
-          thumbnail,
-          original,
-          id,
-        })
-      ),
+      promotional_sliders: values.promotional_sliders?.map(({ thumbnail, original, id }: any) => ({
+        thumbnail,
+        original,
+        id,
+      })),
       banners: values?.banners?.map((banner) => ({
         ...banner,
         image: {
@@ -198,58 +190,51 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
-          title={t("form:item-description")}
-          details={`${
-            initialValues
-              ? t("form:item-description-update")
-              : t("form:item-description-add")
-          } ${t("form:type-description-help-text")}`}
+          title={t('form:item-description')}
+          details={`${initialValues ? t('form:item-description-update') : t('form:item-description-add')} ${t(
+            'form:type-description-help-text'
+          )}`}
           className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8"
         />
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <Input
-            label={t("form:input-label-name")}
-            {...register("name")}
+            label={t('form:input-label-name')}
+            {...register('name')}
             error={t(errors.name?.message!)}
             variant="outline"
             className="mb-5"
           />
 
           <div className="mb-5">
-            <Label>{t("form:input-label-select-icon")}</Label>
-            <SelectInput
-              name="icon"
-              control={control}
-              options={updatedIcons}
-              isClearable={true}
-            />
+            <Label>{t('form:input-label-select-icon')}</Label>
+            <SelectInput name="icon" control={control} options={updatedIcons} isClearable={true} />
           </div>
         </Card>
       </div>
 
       <div className="flex flex-wrap pb-8 border-b border-dashed border-border-base my-5 sm:my-8">
         <Description
-          title={t("form:group-settings")}
-          details={t("form:group-settings-help-text")}
+          title={t('form:group-settings')}
+          details={t('form:group-settings-help-text')}
           className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8"
         />
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <Checkbox
-            {...register("settings.isHome")}
+            {...register('settings.isHome')}
             error={t(errors.settings?.isHome?.message!)}
-            label={t("form:input-label-is-home")}
+            label={t('form:input-label-is-home')}
             className="mb-5"
           />
           <div className="mb-10">
-            <Label className="mb-5">{t("form:input-label-layout-type")}</Label>
+            <Label className="mb-5">{t('form:input-label-layout-type')}</Label>
 
             <div className="grid grid-cols-3 gap-5">
               {layoutTypes?.map((layout, index) => {
                 return (
                   <RadioCard
                     key={index}
-                    {...register("settings.layoutType")}
+                    {...register('settings.layoutType')}
                     label={t(layout.label)}
                     value={layout.value}
                     src={layout.img}
@@ -260,16 +245,14 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
             </div>
           </div>
           <div className="mb-5">
-            <Label className="mb-5">
-              {t("form:input-label-product-card-type")}
-            </Label>
+            <Label className="mb-5">{t('form:input-label-product-card-type')}</Label>
 
             <div className="grid grid-cols-3 gap-5">
               {productCards?.map((productCard, index) => {
                 return (
                   <RadioCard
                     key={`product-card-${index}`}
-                    {...register("settings.productCard")}
+                    {...register('settings.productCard')}
                     label={t(productCard.label)}
                     value={productCard.value}
                     src={productCard.img}
@@ -282,11 +265,11 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
         </Card>
       </div>
 
-      {layoutType === "classic" ? (
+      {layoutType === 'classic' ? (
         <div className="flex flex-wrap pb-8 border-b border-dashed border-border-base my-5 sm:my-8">
           <Description
-            title={t("form:promotional-slider")}
-            details={t("form:promotional-slider-help-text")}
+            title={t('form:promotional-slider')}
+            details={t('form:promotional-slider-help-text')}
             className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8"
           />
           <Card className="w-full sm:w-8/12 md:w-2/3">
@@ -297,8 +280,8 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
 
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
-          title={t("common:text-banner")}
-          details={t("form:banner-slider-help-text")}
+          title={t('common:text-banner')}
+          details={t('form:banner-slider-help-text')}
           className="w-full px-0 sm:pe-4 md:pe-5 pb-5 sm:w-4/12 md:w-1/3 sm:py-8"
         />
         <Card className="w-full sm:w-8/12 md:w-2/3">
@@ -310,7 +293,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
               >
                 <div className="flex items-center justify-between mb-5">
                   <Title className="mb-0">
-                    {t("common:text-banner")} {index + 1}
+                    {t('common:text-banner')} {index + 1}
                   </Title>
                   <button
                     onClick={() => {
@@ -319,19 +302,19 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                     type="button"
                     className="text-sm text-red-500 hover:text-red-700 transition-colors duration-200 focus:outline-none sm:mt-4 sm:col-span-1"
                   >
-                    {t("form:button-label-remove")}
+                    {t('form:button-label-remove')}
                   </button>
                 </div>
                 <div className="grid grid-cols-1 gap-5">
                   <Input
-                    label={t("form:input-title")}
+                    label={t('form:input-title')}
                     variant="outline"
                     {...register(`banners.${index}.title` as const)}
                     defaultValue={item?.title!} // make sure to set up defaultValue
                     error={t(errors.banners?.[index]?.title?.message!)}
                   />
                   <TextArea
-                    label={t("form:input-description")}
+                    label={t('form:input-description')}
                     variant="outline"
                     {...register(`banners.${index}.description` as const)}
                     defaultValue={item.description!} // make sure to set up defaultValue
@@ -339,12 +322,8 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
                 </div>
 
                 <div className="w-full mt-5">
-                  <Title>{t("form:input-gallery")}</Title>
-                  <FileInput
-                    name={`banners.${index}.image`}
-                    control={control}
-                    multiple={false}
-                  />
+                  <Title>{t('form:input-gallery')}</Title>
+                  <FileInput name={`banners.${index}.image`} control={control} multiple={false} />
                 </div>
               </div>
             ))}
@@ -352,38 +331,27 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
 
           <Button
             type="button"
-            onClick={() => append({ title: "", description: "", image: {} })}
+            onClick={() => append({ title: '', description: '', image: {} })}
             className="w-full sm:w-auto"
           >
-            {t("form:button-label-add-banner")}
+            {t('form:button-label-add-banner')}
           </Button>
 
           {errors?.banners?.message ? (
-            <Alert
-              message={t(errors?.banners?.message)}
-              variant="error"
-              className="mt-5"
-            />
+            <Alert message={t(errors?.banners?.message)} variant="error" className="mt-5" />
           ) : null}
         </Card>
       </div>
 
       <div className="mb-4 text-end">
         {initialValues && (
-          <Button
-            variant="outline"
-            onClick={router.back}
-            className="me-4"
-            type="button"
-          >
-            {t("form:button-label-back")}
+          <Button variant="outline" onClick={router.back} className="me-4" type="button">
+            {t('form:button-label-back')}
           </Button>
         )}
 
         <Button loading={creating || updating}>
-          {initialValues
-            ? t("form:button-label-update-group")
-            : t("form:button-label-add-group")}
+          {initialValues ? t('form:button-label-update-group') : t('form:button-label-add-group')}
         </Button>
       </div>
     </form>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 export const ShavingNeeds: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
     <svg
@@ -9,11 +9,7 @@ export const ShavingNeeds: React.FC<React.SVGAttributes<{}>> = (props) => {
       fill="currentColor"
       {...props}
     >
-      <g
-        id="Shaving_Needs"
-        data-name="Shaving Needs"
-        transform="translate(-449.7 -599.7)"
-      >
+      <g id="Shaving_Needs" data-name="Shaving Needs" transform="translate(-449.7 -599.7)">
         <path
           id="Path_21792"
           data-name="Path 21792"
@@ -36,11 +32,7 @@ export const ShavingNeeds: React.FC<React.SVGAttributes<{}>> = (props) => {
           strokeLinejoin="round"
           strokeWidth="0.6"
         />
-        <g
-          id="Group_12593"
-          data-name="Group 12593"
-          transform="translate(462.009 610.598)"
-        >
+        <g id="Group_12593" data-name="Group 12593" transform="translate(462.009 610.598)">
           <line
             id="Line_6"
             data-name="Line 6"
@@ -66,11 +58,7 @@ export const ShavingNeeds: React.FC<React.SVGAttributes<{}>> = (props) => {
             strokeWidth="0.6"
           />
         </g>
-        <g
-          id="Group_12594"
-          data-name="Group 12594"
-          transform="translate(460.778 615.068)"
-        >
+        <g id="Group_12594" data-name="Group 12594" transform="translate(460.778 615.068)">
           <line
             id="Line_8"
             data-name="Line 8"
@@ -118,11 +106,7 @@ export const ShavingNeeds: React.FC<React.SVGAttributes<{}>> = (props) => {
           strokeLinejoin="round"
           strokeWidth="0.6"
         />
-        <g
-          id="Group_12595"
-          data-name="Group 12595"
-          transform="translate(453.411 609.155)"
-        >
+        <g id="Group_12595" data-name="Group 12595" transform="translate(453.411 609.155)">
           <line
             id="Line_10"
             data-name="Line 10"

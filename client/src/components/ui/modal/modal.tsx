@@ -1,11 +1,11 @@
-import { CloseIcon } from "@components/icons/close-icon";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useRef } from "react";
-import { useTranslation } from "next-i18next";
+import { CloseIcon } from '@components/icons/close-icon';
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useRef } from 'react';
+import { useTranslation } from 'next-i18next';
 
 export default function Modal({ open, onClose, children }: any) {
   const cancelButtonRef = useRef(null);
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
 
   return (
     <Transition show={open} as={Fragment}>
@@ -31,10 +31,7 @@ export default function Modal({ open, onClose, children }: any) {
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
-          <span
-            className="inline-block h-screen align-middle"
-            aria-hidden="true"
-          >
+          <span className="inline-block h-screen align-middle" aria-hidden="true">
             &#8203;
           </span>
           <Transition.Child
@@ -53,7 +50,7 @@ export default function Modal({ open, onClose, children }: any) {
                 ref={cancelButtonRef}
                 className="inline-block md:hidden outline-none focus:outline-none absolute end-4 top-4 z-[60]"
               >
-                <span className="sr-only">{t("text-close")}</span>
+                <span className="sr-only">{t('text-close')}</span>
                 <CloseIcon className="w-4 h-4" />
               </button>
               {children}

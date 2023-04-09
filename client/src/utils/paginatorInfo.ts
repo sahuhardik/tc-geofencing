@@ -1,12 +1,10 @@
-import { PaginatorInfo } from "@ts-types/generated";
+import { PaginatorInfo } from '@ts-types/generated';
 
 export const getPaginatorInfo = (data: any): PaginatorInfo => {
   if (data?.length) {
     const dataIndex = data.length - 1;
     const isEmpty = data?.[dataIndex]?.length === 0;
-    const fetchedAllData =
-      isEmpty ||
-      (data && data[dataIndex]?.current_page === data[dataIndex]?.last_page);
+    const fetchedAllData = isEmpty || (data && data[dataIndex]?.current_page === data[dataIndex]?.last_page);
 
     const total = data?.[dataIndex]?.total;
     const perPage = data?.[dataIndex]?.per_page;

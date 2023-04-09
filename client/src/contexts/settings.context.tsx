@@ -1,27 +1,24 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 export interface State {
   settings: any;
 }
 
 const initialState = {
-  siteTitle: "TimeCamp",
-  siteSubtitle: "",
-  currency: "USD",
+  siteTitle: 'TimeCamp',
+  siteSubtitle: '',
+  currency: 'USD',
   logo: {
     id: 1,
-    thumbnail: "/logo.svg",
-    original: "/logo.svg",
+    thumbnail: '/logo.svg',
+    original: '/logo.svg',
   },
 };
 
 export const SettingsContext = React.createContext<State | any>(initialState);
 
-SettingsContext.displayName = "SettingsContext";
+SettingsContext.displayName = 'SettingsContext';
 
-export const SettingsProvider: React.FC<{ initialValue: any }> = ({
-  initialValue,
-  ...props
-}) => {
+export const SettingsProvider: React.FC<{ initialValue: any }> = ({ initialValue, ...props }) => {
   const [state, updateSettings] = React.useState(initialValue ?? initialState);
   const value = useMemo(
     () => ({

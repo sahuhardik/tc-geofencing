@@ -10,11 +10,7 @@ export const Snacks: React.FC<React.SVGAttributes<{}>> = (props) => {
       {...props}
     >
       <g id="Snacks" transform="translate(0 -32.001)">
-        <g
-          id="Group_5714"
-          data-name="Group 5714"
-          transform="translate(3.142 40.381)"
-        >
+        <g id="Group_5714" data-name="Group 5714" transform="translate(3.142 40.381)">
           <g id="Group_5713" data-name="Group 5713" transform="translate(0 0)">
             <path
               id="Path_17398"
@@ -25,11 +21,7 @@ export const Snacks: React.FC<React.SVGAttributes<{}>> = (props) => {
             />
           </g>
         </g>
-        <g
-          id="Group_5716"
-          data-name="Group 5716"
-          transform="translate(0 50.857)"
-        >
+        <g id="Group_5716" data-name="Group 5716" transform="translate(0 50.857)">
           <g id="Group_5715" data-name="Group 5715" transform="translate(0 0)">
             <path
               id="Path_17399"
@@ -40,11 +32,7 @@ export const Snacks: React.FC<React.SVGAttributes<{}>> = (props) => {
             />
           </g>
         </g>
-        <g
-          id="Group_5718"
-          data-name="Group 5718"
-          transform="translate(17.438 42.474)"
-        >
+        <g id="Group_5718" data-name="Group 5718" transform="translate(17.438 42.474)">
           <g id="Group_5717" data-name="Group 5717">
             <path
               id="Path_17400"
@@ -55,11 +43,7 @@ export const Snacks: React.FC<React.SVGAttributes<{}>> = (props) => {
             />
           </g>
         </g>
-        <g
-          id="Group_5720"
-          data-name="Group 5720"
-          transform="translate(14.667 32.001)"
-        >
+        <g id="Group_5720" data-name="Group 5720" transform="translate(14.667 32.001)">
           <g id="Group_5719" data-name="Group 5719" transform="translate(0 0)">
             <path
               id="Path_17401"
@@ -70,11 +54,7 @@ export const Snacks: React.FC<React.SVGAttributes<{}>> = (props) => {
             />
           </g>
         </g>
-        <g
-          id="Group_5722"
-          data-name="Group 5722"
-          transform="translate(11.52 32.001)"
-        >
+        <g id="Group_5722" data-name="Group 5722" transform="translate(11.52 32.001)">
           <g id="Group_5721" data-name="Group 5721" transform="translate(0 0)">
             <path
               id="Path_17402"
@@ -85,11 +65,7 @@ export const Snacks: React.FC<React.SVGAttributes<{}>> = (props) => {
             />
           </g>
         </g>
-        <g
-          id="Group_5724"
-          data-name="Group 5724"
-          transform="translate(8.381 32.002)"
-        >
+        <g id="Group_5724" data-name="Group 5724" transform="translate(8.381 32.002)">
           <g id="Group_5723" data-name="Group 5723" transform="translate(0 0)">
             <path
               id="Path_17403"

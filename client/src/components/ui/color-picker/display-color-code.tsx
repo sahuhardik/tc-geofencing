@@ -1,11 +1,11 @@
-import React from "react";
-import { useWatch } from "react-hook-form";
+import React from 'react';
+import { useWatch } from 'react-hook-form';
 
 const DisplayColorCode = ({ control }: any) => {
   const color = useWatch({
     control,
-    name: "color",
-    defaultValue: "#d87b64", // default value before the render
+    name: 'color',
+    defaultValue: '#d87b64', // default value before the render
   });
   return (
     <>

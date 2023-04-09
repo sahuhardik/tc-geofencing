@@ -1,14 +1,7 @@
 import React from 'react';
 export const Restaurant: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="9"
-      height="14"
-      viewBox="0 0 9.919 14"
-      fill="currentColor"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9.919 14" fill="currentColor" {...props}>
       <g id="Food" transform="translate(-760.678 -69.1)">
         <path
           id="Path_2721"

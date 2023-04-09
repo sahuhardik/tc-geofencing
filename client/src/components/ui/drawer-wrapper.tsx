@@ -1,6 +1,6 @@
-import Logo from "@components/ui/logo";
-import { CloseIcon } from "@components/icons/close-icon";
-import Scrollbar from "./scrollbar";
+import Logo from '@components/ui/logo';
+import { CloseIcon } from '@components/icons/close-icon';
+import Scrollbar from './scrollbar';
 
 type DrawerWrapperProps = {
   hideTopBar?: boolean;
@@ -8,11 +8,7 @@ type DrawerWrapperProps = {
   onClose?: () => void;
 };
 
-const DrawerWrapper: React.FunctionComponent<DrawerWrapperProps> = ({
-  hideTopBar = false,
-  children,
-  onClose,
-}) => {
+const DrawerWrapper: React.FunctionComponent<DrawerWrapperProps> = ({ hideTopBar = false, children, onClose }) => {
   return (
     <div className="flex flex-col h-full relative bg-white">
       {!hideTopBar && (

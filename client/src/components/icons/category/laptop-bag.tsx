@@ -1,13 +1,7 @@
-import React from "react";
+import React from 'react';
 export const LaptopBags: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18.1"
-      height="13.626"
-      fill="currentColor"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="18.1" height="13.626" fill="currentColor" {...props}>
       <g data-name="Laptop bags">
         <path
           data-name="Path 21808"

@@ -1,15 +1,7 @@
 export const PercentageIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 16.798 16.8"
-      {...props}
-    >
-      <g
-        id="Group_5811"
-        data-name="Group 5811"
-        transform="translate(-327.598 -372.605)"
-      >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.798 16.8" {...props}>
+      <g id="Group_5811" data-name="Group 5811" transform="translate(-327.598 -372.605)">
         <path
           id="Path_30"
           data-name="Path 30"

@@ -1,6 +1,6 @@
-import cn from "classnames";
-import React, { InputHTMLAttributes } from "react";
-import styles from "./color-picker.module.css";
+import cn from 'classnames';
+import React, { InputHTMLAttributes } from 'react';
+import styles from './color-picker.module.css';
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -11,16 +11,10 @@ export interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const ColorPicker = React.forwardRef<HTMLInputElement, Props>(
-  (
-    { className, label, name, error, inputClassName, children, ...rest },
-    ref
-  ) => {
+  ({ className, label, name, error, inputClassName, children, ...rest }, ref) => {
     return (
       <div className={className}>
-        <label
-          htmlFor={name}
-          className="block text-body-dark font-semibold text-sm leading-none mb-3"
-        >
+        <label htmlFor={name} className="block text-body-dark font-semibold text-sm leading-none mb-3">
           {label}
         </label>
         <div className="flex items-center">
@@ -34,7 +28,7 @@ const ColorPicker = React.forwardRef<HTMLInputElement, Props>(
             autoCorrect="off"
             autoCapitalize="off"
             spellCheck="false"
-            aria-invalid={error ? "true" : "false"}
+            aria-invalid={error ? 'true' : 'false'}
             {...rest}
           />
           {children}

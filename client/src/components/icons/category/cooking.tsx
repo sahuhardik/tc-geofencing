@@ -10,16 +10,8 @@ export const Cooking: React.FC<React.SVGAttributes<{}>> = (props) => {
       {...props}
     >
       <g id="Cooking" transform="translate(-61.55 -195.55)">
-        <g
-          id="Group_12320"
-          data-name="Group 12320"
-          transform="translate(62 196)"
-        >
-          <g
-            id="Group_12319"
-            data-name="Group 12319"
-            transform="translate(11.006 10.518)"
-          >
+        <g id="Group_12320" data-name="Group 12320" transform="translate(62 196)">
+          <g id="Group_12319" data-name="Group 12319" transform="translate(11.006 10.518)">
             <line
               id="Line_10"
               data-name="Line 10"

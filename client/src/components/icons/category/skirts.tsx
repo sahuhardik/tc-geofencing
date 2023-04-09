@@ -1,13 +1,7 @@
-import React from "react";
+import React from 'react';
 export const Skirts: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16.661"
-      height="18"
-      fill="currentColor"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="16.661" height="18" fill="currentColor" {...props}>
       <g data-name="Group 12570">
         <path
           data-name="Path 21742"

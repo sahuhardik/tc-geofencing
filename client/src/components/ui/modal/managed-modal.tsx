@@ -1,14 +1,12 @@
-import Modal from "@components/ui/modal/modal";
-import dynamic from "next/dynamic";
-import { MODAL_VIEWS, useModalAction, useModalState } from "./modal.context";
+import Modal from '@components/ui/modal/modal';
+import dynamic from 'next/dynamic';
+import { MODAL_VIEWS, useModalAction, useModalState } from './modal.context';
 
-const JobSiteDeleteView = dynamic(
-  () => import("@components/jobsite/jobsite-delete-view")
-);
+const JobSiteDeleteView = dynamic(() => import('@components/jobsite/jobsite-delete-view'));
 
 function renderModal(view: MODAL_VIEWS | undefined, data: any) {
   switch (view) {
-    case "DELETE_JOBSITE":
+    case 'DELETE_JOBSITE':
       return <JobSiteDeleteView />;
     default:
       return null;

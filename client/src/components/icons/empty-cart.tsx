@@ -1,28 +1,13 @@
-const EmptyCart: React.FC<React.SVGAttributes<{}>> = ({
-  width = 231.91,
-  height = 292,
-  ...props
-}) => {
+const EmptyCart: React.FC<React.SVGAttributes<{}>> = ({ width = 231.91, height = 292, ...props }) => {
   return (
     <svg width={width} height={height} {...props} viewBox="0 0 231.91 292">
       <defs>
-        <linearGradient
-          id="linear-gradient"
-          x1="1"
-          y1="0.439"
-          x2="0.369"
-          y2="1"
-          gradientUnits="objectBoundingBox"
-        >
+        <linearGradient id="linear-gradient" x1="1" y1="0.439" x2="0.369" y2="1" gradientUnits="objectBoundingBox">
           <stop offset="0" stopColor="#029477" />
           <stop offset="1" stopColor="#009e7f" />
         </linearGradient>
       </defs>
-      <g
-        id="no_cart_in_bag_2"
-        data-name="no cart in bag 2"
-        transform="translate(-1388 -351)"
-      >
+      <g id="no_cart_in_bag_2" data-name="no cart in bag 2" transform="translate(-1388 -351)">
         <ellipse
           id="Ellipse_2873"
           data-name="Ellipse 2873"

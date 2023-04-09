@@ -1,18 +1,7 @@
 export const RelaxChair: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="45"
-      height="60"
-      viewBox="0 0 45 60"
-      fill="currentColor"
-      {...props}
-    >
-      <g
-        id="Relax_chair"
-        data-name="Relax chair"
-        transform="translate(-48 -584)"
-      >
+    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="60" viewBox="0 0 45 60" fill="currentColor" {...props}>
+      <g id="Relax_chair" data-name="Relax chair" transform="translate(-48 -584)">
         <path
           id="Path_17415"
           data-name="Path 17415"

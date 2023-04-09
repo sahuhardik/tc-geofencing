@@ -1,13 +1,7 @@
-import React from "react";
+import React from 'react';
 export const Wallet: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="15.94"
-      height="18.03"
-      fill="currentColor"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="15.94" height="18.03" fill="currentColor" {...props}>
       <g fill="currentColor" stroke="currentColor" strokeWidth=".03">
         <path
           data-name="Path 21810"

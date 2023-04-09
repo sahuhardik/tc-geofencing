@@ -10,11 +10,7 @@ export const MedicineIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
       {...props}
     >
       <g id="Medicine" transform="translate(-332.9 -1656.038)">
-        <g
-          id="Group_12311"
-          data-name="Group 12311"
-          transform="translate(333 1656.138)"
-        >
+        <g id="Group_12311" data-name="Group 12311" transform="translate(333 1656.138)">
           <path
             id="Path_17420"
             data-name="Path 17420"
@@ -25,11 +21,7 @@ export const MedicineIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
             strokeWidth="0.2"
           />
         </g>
-        <g
-          id="Group_12312"
-          data-name="Group 12312"
-          transform="translate(340.524 1663.662)"
-        >
+        <g id="Group_12312" data-name="Group 12312" transform="translate(340.524 1663.662)">
           <line
             id="Line_3"
             data-name="Line 3"
@@ -50,11 +42,7 @@ export const MedicineIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
             strokeWidth="0.2"
           />
         </g>
-        <g
-          id="Group_12313"
-          data-name="Group 12313"
-          transform="translate(334.856 1659.668)"
-        >
+        <g id="Group_12313" data-name="Group 12313" transform="translate(334.856 1659.668)">
           <path
             id="Path_17423"
             data-name="Path 17423"

@@ -1,6 +1,6 @@
-import React, { InputHTMLAttributes } from "react";
-import { useTranslation } from "next-i18next";
-import styles from "./radio-card.module.css";
+import React, { InputHTMLAttributes } from 'react';
+import { useTranslation } from 'next-i18next';
+import styles from './radio-card.module.css';
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -13,30 +13,17 @@ export interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const RadioCard = React.forwardRef<HTMLInputElement, Props>(
-  (
-    { className, label, labelKey, name, id, src, error, errorKey, ...rest },
-    ref
-  ) => {
+  ({ className, label, labelKey, name, id, src, error, errorKey, ...rest }, ref) => {
     const { t } = useTranslation();
     return (
       <div className={className}>
         <div className="flex w-full h-full">
-          <input
-            id={id}
-            name={name}
-            type="radio"
-            ref={ref}
-            className={styles.radio_input}
-            {...rest}
-          />
+          <input id={id} name={name} type="radio" ref={ref} className={styles.radio_input} {...rest} />
 
-          <label
-            htmlFor={id}
-            className="w-full flex flex-col rounded cursor-pointer border border-gray-200"
-          >
+          <label htmlFor={id} className="w-full flex flex-col rounded cursor-pointer border border-gray-200">
             <div className="p-3 pb-0 w-full max-h-72 flex items-center justify-center overflow-hidden">
               <img
-                src={src ?? "/product-placeholder-borderless.svg"}
+                src={src ?? '/product-placeholder-borderless.svg'}
                 alt={t(labelKey ? labelKey : label!)}
                 className="w-auto h-full object-contain"
               />
@@ -48,9 +35,7 @@ const RadioCard = React.forwardRef<HTMLInputElement, Props>(
           </label>
         </div>
 
-        {errorKey && (
-          <p className="my-2 text-xs text-start text-red-500">{t(errorKey)}</p>
-        )}
+        {errorKey && <p className="my-2 text-xs text-start text-red-500">{t(errorKey)}</p>}
       </div>
     );
   }

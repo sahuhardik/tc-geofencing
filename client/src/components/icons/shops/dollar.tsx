@@ -1,10 +1,6 @@
 export const DollarIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 12.115 21.773"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12.115 21.773" {...props}>
       <g data-name="Group 31">
         <g data-name="Group 30">
           <path

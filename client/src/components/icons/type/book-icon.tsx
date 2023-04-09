@@ -10,16 +10,8 @@ export const BookIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
       {...props}
     >
       <g id="Books" transform="translate(-24.7 -30.187)">
-        <g
-          id="Group_12308"
-          data-name="Group 12308"
-          transform="translate(25 32.504)"
-        >
-          <g
-            id="Group_12306"
-            data-name="Group 12306"
-            transform="translate(0 0)"
-          >
+        <g id="Group_12308" data-name="Group 12308" transform="translate(25 32.504)">
+          <g id="Group_12306" data-name="Group 12306" transform="translate(0 0)">
             <path
               id="Path_17416"
               data-name="Path 17416"
@@ -30,11 +22,7 @@ export const BookIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
               strokeWidth="0.6"
             />
           </g>
-          <g
-            id="Group_12307"
-            data-name="Group 12307"
-            transform="translate(14.922 0)"
-          >
+          <g id="Group_12307" data-name="Group 12307" transform="translate(14.922 0)">
             <path
               id="Path_17417"
               data-name="Path 17417"
@@ -46,11 +34,7 @@ export const BookIcon: React.FC<React.SVGAttributes<{}>> = (props) => {
             />
           </g>
         </g>
-        <g
-          id="Group_12309"
-          data-name="Group 12309"
-          transform="translate(26.919 30.542)"
-        >
+        <g id="Group_12309" data-name="Group 12309" transform="translate(26.919 30.542)">
           <path
             id="Path_17418"
             data-name="Path 17418"

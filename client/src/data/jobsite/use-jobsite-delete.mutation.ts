@@ -5,13 +5,10 @@ import { API_ENDPOINTS } from '@utils/api/endpoints';
 export const useDeleteJobSiteMutation = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    (id: string) => JobSite.delete(`${API_ENDPOINTS.JOBSITES}/${id}`),
-    {
-      // Always refetch after error or success:
-      onSettled: () => {
-        queryClient.invalidateQueries(API_ENDPOINTS.JOBSITES);
-      },
-    }
-  );
+  return useMutation((id: string) => JobSite.delete(`${API_ENDPOINTS.JOBSITES}/${id}`), {
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.JOBSITES);
+    },
+  });
 };

@@ -1,19 +1,19 @@
-import { useSettings } from "@contexts/settings.context";
-import { DefaultSeo as NextDefaultSeo } from "next-seo";
+import { useSettings } from '@contexts/settings.context';
+import { DefaultSeo as NextDefaultSeo } from 'next-seo';
 
 const DefaultSeo = () => {
   const settings = useSettings();
   return (
     <NextDefaultSeo
-      title={settings.siteTitle ?? "TimeCamp"}
-      titleTemplate={`%s | ${settings?.seo?.metaTitle ?? "TimeCamp"}`}
+      title={settings.siteTitle ?? 'TimeCamp'}
+      titleTemplate={`%s | ${settings?.seo?.metaTitle ?? 'TimeCamp'}`}
       description={settings?.seo?.metaDescription || settings?.siteSubtitle}
       canonical={settings?.seo?.canonicalUrl}
       openGraph={{
         title: settings?.seo?.ogTitle,
         description: settings?.seo?.ogDescription,
-        type: "website",
-        locale: "en_US",
+        type: 'website',
+        locale: 'en_US',
         site_name: settings?.siteTitle,
         images: [
           {
@@ -31,26 +31,26 @@ const DefaultSeo = () => {
       }}
       additionalMetaTags={[
         {
-          name: "viewport",
-          content: "width=device-width, initial-scale=1 maximum-scale=1",
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1 maximum-scale=1',
         },
         {
-          name: "apple-mobile-web-app-capable",
-          content: "yes",
+          name: 'apple-mobile-web-app-capable',
+          content: 'yes',
         },
         {
-          name: "theme-color",
-          content: "#ffffff",
+          name: 'theme-color',
+          content: '#ffffff',
         },
       ]}
       additionalLinkTags={[
         {
-          rel: "apple-touch-icon",
-          href: "icons/apple-icon-180.png",
+          rel: 'apple-touch-icon',
+          href: 'icons/apple-icon-180.png',
         },
         {
-          rel: "manifest",
-          href: "/manifest.json",
+          rel: 'manifest',
+          href: '/manifest.json',
         },
       ]}
     />

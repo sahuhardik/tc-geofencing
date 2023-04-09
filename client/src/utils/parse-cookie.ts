@@ -16,7 +16,7 @@ export function parseContextCookie(str: string, options?: any) {
 
   for (var i = 0; i < pairs.length; i++) {
     var pair = pairs[i];
-    var eq_idx = pair.indexOf("=");
+    var eq_idx = pair.indexOf('=');
 
     // skip things that don't look like key=value
     if (eq_idx < 0) {

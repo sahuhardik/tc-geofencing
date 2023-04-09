@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useTranslation } from "next-i18next";
+import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 type ReadMoreProps = {
   more?: string;
@@ -8,12 +8,7 @@ type ReadMoreProps = {
   children: string;
 };
 
-const ReadMore: React.FC<ReadMoreProps> = ({
-  children,
-  more,
-  less,
-  character = 150,
-}) => {
+const ReadMore: React.FC<ReadMoreProps> = ({ children, more, less, character = 150 }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
@@ -26,19 +21,13 @@ const ReadMore: React.FC<ReadMoreProps> = ({
 
   return (
     <>
-      {(children && children.length < character) || expanded
-        ? children
-        : children.substring(0, character) + "..."}
+      {(children && children.length < character) || expanded ? children : children.substring(0, character) + '...'}
       {children && children.length > character && !expanded && (
         <>
           <br />
           <span className="mt-2 inline-block">
-            <a
-              href="#"
-              onClick={toggleLines}
-              style={{ color: "#009e7f", fontWeight: 700 }}
-            >
-              {more ? more : t("common:text-read-more")}
+            <a href="#" onClick={toggleLines} style={{ color: '#009e7f', fontWeight: 700 }}>
+              {more ? more : t('common:text-read-more')}
             </a>
           </span>
         </>
@@ -47,12 +36,8 @@ const ReadMore: React.FC<ReadMoreProps> = ({
         <>
           <br />
           <span className="mt-2 inline-block">
-            <a
-              href="#"
-              onClick={toggleLines}
-              style={{ color: "#009e7f", fontWeight: 700 }}
-            >
-              {less ? less : t("common:text-less")}
+            <a href="#" onClick={toggleLines} style={{ color: '#009e7f', fontWeight: 700 }}>
+              {less ? less : t('common:text-less')}
             </a>
           </span>
         </>

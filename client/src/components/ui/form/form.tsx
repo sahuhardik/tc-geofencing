@@ -1,5 +1,5 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, UseFormReturn, SubmitHandler } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, UseFormReturn, SubmitHandler } from 'react-hook-form';
 
 type FormProps<TFormValues> = {
   onSubmit: SubmitHandler<TFormValues>;
@@ -7,9 +7,7 @@ type FormProps<TFormValues> = {
   validationSchema?: any;
 };
 
-export const Form = <
-  TFormValues extends Record<string, any> = Record<string, any>
->({
+export const Form = <TFormValues extends Record<string, any> = Record<string, any>>({
   onSubmit,
   children,
   validationSchema,
@@ -17,7 +15,5 @@ export const Form = <
   const methods = useForm<TFormValues>({
     ...(!!validationSchema && { resolver: yupResolver(validationSchema) }),
   });
-  return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>{children(methods)}</form>
-  );
+  return <form onSubmit={methods.handleSubmit(onSubmit)}>{children(methods)}</form>;
 };

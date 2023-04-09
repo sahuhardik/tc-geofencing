@@ -4,9 +4,7 @@
  * @returns array of arrays - check the sample out put below
  */
 export const cartesian = (...a: any) =>
-  a.reduce((a: any, b: any) =>
-    a.flatMap((d: any) => b.map((e: any) => [d, e].flat()))
-  );
+  a.reduce((a: any, b: any) => a.flatMap((d: any) => b.map((e: any) => [d, e].flat())));
 
 // Cartesian Example
 // ==========================================

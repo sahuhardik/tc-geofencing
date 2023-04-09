@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 export const Deodorant: React.FC<React.SVGAttributes<{}>> = (props) => {
   return (
     <svg

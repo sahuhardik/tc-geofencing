@@ -9,11 +9,7 @@ export const MeatFish: React.FC<React.SVGAttributes<{}>> = (props) => {
       fill="currentColor"
       {...props}
     >
-      <g
-        id="Meat_Fish"
-        data-name="Meat &amp; Fish"
-        transform="translate(-100.274 -126.786)"
-      >
+      <g id="Meat_Fish" data-name="Meat &amp; Fish" transform="translate(-100.274 -126.786)">
         <path
           id="Path_17433"
           data-name="Path 17433"

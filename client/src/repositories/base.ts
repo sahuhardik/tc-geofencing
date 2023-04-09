@@ -1,12 +1,7 @@
 import http from '@utils/api/http';
 
 export default class Base<C, U> {
-  http = async <T>(
-    url: string,
-    type: string,
-    variables: T | null = null,
-    options?: any
-  ) => {
+  http = async <T>(url: string, type: string, variables: T | null = null, options?: any) => {
     return (http as any)[type](url, variables, options);
   };
   all = async (url: string) => {

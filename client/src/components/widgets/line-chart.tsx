@@ -1,16 +1,10 @@
-import Chart from "@components/ui/chart";
+import Chart from '@components/ui/chart';
 
-const LineChart = ({
-  widgetTitle,
-  series,
-  color,
-  categories,
-  seriesName = "",
-}: any) => {
+const LineChart = ({ widgetTitle, series, color, categories, seriesName = '' }: any) => {
   const options = {
     options: {
       chart: {
-        type: "line",
+        type: 'line',
         dropShadow: {
           enabled: true,
           color: color,
@@ -25,7 +19,7 @@ const LineChart = ({
       },
       stroke: {
         width: 7,
-        curve: "smooth",
+        curve: 'smooth',
       },
       xaxis: {
         categories: categories,
@@ -42,16 +36,16 @@ const LineChart = ({
           show: true,
           width: 5,
           tickWidth: 0,
-          position: "back",
+          position: 'back',
           opacity: 1,
           stroke: {
-            color: "#b6b6b6",
+            color: '#b6b6b6',
             width: 0,
             dashArray: 0,
           },
           fill: {
-            type: "solid",
-            color: "#F2F3FC",
+            type: 'solid',
+            color: '#F2F3FC',
           },
         },
         tooltip: {
@@ -63,21 +57,21 @@ const LineChart = ({
         labels: {
           show: true,
           style: {
-            color: "#161F6A",
-            fontSize: "14px",
+            color: '#161F6A',
+            fontSize: '14px',
             fontFamily: "'Lato', sans-serif",
           },
         },
       },
       grid: {
-        borderColor: "#F7F7F7",
+        borderColor: '#F7F7F7',
       },
       colors: color,
       markers: {
         size: 0,
         opacity: 1,
         colors: color,
-        strokeColor: "#fff",
+        strokeColor: '#fff',
         strokeWidth: 4,
         hover: {
           size: 8,
@@ -99,12 +93,7 @@ const LineChart = ({
       </div>
 
       <div className="w-full">
-        <Chart
-          options={options.options}
-          series={options.series}
-          height="350"
-          width="97%"
-        />
+        <Chart options={options.options} series={options.series} height="350" width="97%" />
       </div>
     </div>
   );

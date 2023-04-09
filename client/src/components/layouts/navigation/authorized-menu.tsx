@@ -1,27 +1,21 @@
-import cn from "classnames";
-import { Fragment } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import Avatar from "@components/common/avatar";
-import Link from "@components/ui/link";
-import { siteSettings } from "@settings/site.settings";
-import { useTranslation } from "next-i18next";
-import { useMeQuery } from "@data/user/use-me.query";
+import cn from 'classnames';
+import { Fragment } from 'react';
+import { Menu, Transition } from '@headlessui/react';
+import Avatar from '@components/common/avatar';
+import Link from '@components/ui/link';
+import { siteSettings } from '@settings/site.settings';
+import { useTranslation } from 'next-i18next';
+import { useMeQuery } from '@data/user/use-me.query';
 
 export default function AuthorizedMenu() {
   const { data } = useMeQuery();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
 
   // Again, we're using framer-motion for the transition effect
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button className="flex items-center focus:outline-none">
-        <Avatar
-          src={
-            data?.profile?.avatar?.thumbnail ??
-            siteSettings?.avatar?.placeholder
-          }
-          alt="avatar"
-        />
+        <Avatar src={data?.profile?.avatar?.thumbnail ?? siteSettings?.avatar?.placeholder} alt="avatar" />
       </Menu.Button>
 
       <Transition
@@ -54,8 +48,8 @@ export default function AuthorizedMenu() {
                   <Link
                     href={href}
                     className={cn(
-                      "block px-4 py-3 text-sm capitalize font-semibold transition duration-200 hover:text-accent",
-                      active ? "text-accent" : "text-heading"
+                      'block px-4 py-3 text-sm capitalize font-semibold transition duration-200 hover:text-accent',
+                      active ? 'text-accent' : 'text-heading'
                     )}
                   >
                     {t(labelTransKey)}

@@ -9,7 +9,5 @@ export const getTimeCampUsers = async () => {
 };
 
 export const useTimeCampUserQuery = () => {
-  return useQuery<TimeCampUser[], Error>([API_ENDPOINTS.TIMECAMP_USERS], () =>
-    getTimeCampUsers()
-  );
+  return useQuery<TimeCampUser[], Error>([API_ENDPOINTS.TIMECAMP_USERS], () => getTimeCampUsers());
 };

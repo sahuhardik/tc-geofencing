@@ -37,8 +37,7 @@ http.interceptors.response.use(
     if (
       (error.response && error.response.status === 401) ||
       (error.response && error.response.status === 403) ||
-      (error.response &&
-        error.response.data.message === 'TIMECAMP_ERROR.NOT_AUTHORIZED')
+      (error.response && error.response.data.message === 'TIMECAMP_ERROR.NOT_AUTHORIZED')
     ) {
       Cookies.remove('AUTH_CRED');
       Router.push(ROUTES.LOGIN);

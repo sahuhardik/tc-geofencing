@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useLayer } from "react-laag";
-import { motion, AnimatePresence } from "framer-motion";
-import { Bell } from "@components/icons/bell";
-import { Dot } from "@components/icons/dot";
-import NotificationCard from "@components/ui/notification-card";
+import { useState } from 'react';
+import { useLayer } from 'react-laag';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Bell } from '@components/icons/bell';
+import { Dot } from '@components/icons/dot';
+import NotificationCard from '@components/ui/notification-card';
 
 type ItemType = {
   source?: string;
@@ -28,7 +28,7 @@ const NotificationMenu: React.FC<MenuType> = ({ data }) => {
     onDisappear: close, // close the menu when the menu gets scrolled out of sight
     overflowContainer: false, // keep the menu positioned inside the container
     // auto: true, // automatically find the best placement
-    placement: "bottom-end", // we prefer to place the menu "top-end"
+    placement: 'bottom-end', // we prefer to place the menu "top-end"
     triggerOffset: 12, // keep some distance to the trigger
     // containerOffset: 16, // give the menu some room to breath relative to the container
     // arrowOffset: 16, // let the arrow have some room to breath also
@@ -59,16 +59,14 @@ const NotificationMenu: React.FC<MenuType> = ({ data }) => {
               animate={{ opacity: 1, scale: 1 }} // animate to
               exit={{ opacity: 0, scale: 0.85 }} // animate exit
               transition={{
-                type: "spring",
+                type: 'spring',
                 stiffness: 800,
                 damping: 35,
               }}
               className="w-80 bg-light rounded shadow-base z-20 overflow-hidden"
             >
               <div className="flex items-center justify-between px-4 py-3 border-b border-border-200">
-                <span className="text-lg text-heading font-semibold">
-                  Notification
-                </span>
+                <span className="text-lg text-heading font-semibold">Notification</span>
 
                 <button className="text-red-500 text-sm font-semibold transition duration-200 hover:text-red-600 focus:outline-none focus:ring-1">
                   Clear all
@@ -76,18 +74,11 @@ const NotificationMenu: React.FC<MenuType> = ({ data }) => {
               </div>
               {!!data.length ? (
                 data?.map((item: ItemType, index) => (
-                  <NotificationCard
-                    key={index}
-                    src={item.source}
-                    text={item.text}
-                    time={item.time}
-                  />
+                  <NotificationCard key={index} src={item.source} text={item.text} time={item.time} />
                 ))
               ) : (
                 <div className="bg-light flex items-center justify-center border-b border-border-200">
-                  <p className="text-sm text-body py-5">
-                    You don't have any notifications.
-                  </p>
+                  <p className="text-sm text-body py-5">You don't have any notifications.</p>
                 </div>
               )}
 

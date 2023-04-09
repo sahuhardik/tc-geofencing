@@ -1,6 +1,6 @@
-import { PaginatorInfo } from "@ts-types/generated";
-import camelcaseKeys from "camelcase-keys";
-import pickBy from "lodash/pickBy";
+import { PaginatorInfo } from '@ts-types/generated';
+import camelcaseKeys from 'camelcase-keys';
+import pickBy from 'lodash/pickBy';
 
 interface PaginatorInfoType {
   [key: string]: unknown;
@@ -18,13 +18,13 @@ export const stringifySearchQuery = (values: any) => {
   const parsedValues = pickBy(values);
   return Object.keys(parsedValues)
     .map((k) => {
-      if (k === "type") {
+      if (k === 'type') {
         return `${k}.slug:${parsedValues[k]};`;
       }
-      if (k === "category") {
+      if (k === 'category') {
         return `categories.slug:${parsedValues[k]};`;
       }
-      if (k === "is_approved") {
+      if (k === 'is_approved') {
         if (parsedValues[k] === true) {
           return `${k}:1;`;
         } else {
@@ -33,6 +33,6 @@ export const stringifySearchQuery = (values: any) => {
       }
       return `${k}:${parsedValues[k]};`;
     })
-    .join("")
+    .join('')
     .slice(0, -1);
 };

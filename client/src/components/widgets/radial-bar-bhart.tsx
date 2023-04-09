@@ -1,12 +1,6 @@
-import Chart from "@components/ui/chart";
+import Chart from '@components/ui/chart';
 
-const RadialBarChart = ({
-  widgetTitle,
-  series,
-  colors,
-  label,
-  helperText,
-}: any) => {
+const RadialBarChart = ({ widgetTitle, series, colors, label, helperText }: any) => {
   const options = {
     options: {
       colors: colors,
@@ -14,14 +8,14 @@ const RadialBarChart = ({
         radialBar: {
           hollow: {
             margin: 0,
-            size: "20%",
-            background: "transparent",
+            size: '20%',
+            background: 'transparent',
           },
 
           track: {
             show: true,
-            background: "#F2F3FC",
-            strokeWidth: "100%",
+            background: '#F2F3FC',
+            strokeWidth: '100%',
             opacity: 1,
             margin: 15,
             dropShadow: {
@@ -41,13 +35,13 @@ const RadialBarChart = ({
       states: {
         hover: {
           filter: {
-            type: "darken",
+            type: 'darken',
             value: 0.8,
           },
         },
       },
       stroke: {
-        lineCap: "round",
+        lineCap: 'round',
       },
       labels: label,
     },
@@ -61,12 +55,7 @@ const RadialBarChart = ({
       </div>
 
       <div className="w-full">
-        <Chart
-          options={options.options}
-          series={options.series}
-          type="radialBar"
-          width="100%"
-        />
+        <Chart options={options.options} series={options.series} type="radialBar" width="100%" />
 
         <div className="w-full flex px-3 pt-4 pb-8">
           {label?.map((_: any, index: number) => (
@@ -76,12 +65,8 @@ const RadialBarChart = ({
                 style={{ backgroundColor: colors[index] }}
               />
               <div className="flex flex-col">
-                <span className="text-xs text-body mb-1">
-                  {helperText[index]}
-                </span>
-                <span className="text-xl font-semibold text-heading">
-                  {label[index]}
-                </span>
+                <span className="text-xs text-body mb-1">{helperText[index]}</span>
+                <span className="text-xl font-semibold text-heading">{label[index]}</span>
               </div>
             </div>
           ))}

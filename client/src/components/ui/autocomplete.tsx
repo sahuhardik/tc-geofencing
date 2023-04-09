@@ -1,6 +1,6 @@
-import { useTranslation } from "next-i18next";
-import { Control, Controller, FieldErrors } from "react-hook-form";
-import ValidationError from "./form-validation-error";
+import { useTranslation } from 'next-i18next';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import ValidationError from './form-validation-error';
 import Select from 'react-select';
 interface Props {
   control: Control<any>;
@@ -25,11 +25,25 @@ const AutoComplete = ({ control, label, name, errors, data, parseValue, parseLab
         {...rest}
         render={({ field: { onChange, value } }) => (
           <Select
-              classNamePrefix="addl-class"
-              options={filteredData.map((item) => ({ label: parseLabel(item), value: parseValue(item)  }))}
-              value={ Boolean(rest.multiple) ? value?.map((_value: any) => ({ label: parseLabel(_value), value: parseValue(_value)  }) ) : (value ? { label: parseLabel(value), value: parseValue(value)  } : undefined)}
-              onChange={val => onChange( Boolean(rest.multiple) ? val?.map((selectedValue: any) =>  filteredData.find(item => parseValue(item)==selectedValue?.value) )  : filteredData.find(item => parseValue(item)==val?.value))}
-              isMulti={Boolean(rest.multiple)}
+            classNamePrefix="addl-class"
+            options={filteredData.map((item) => ({ label: parseLabel(item), value: parseValue(item) }))}
+            value={
+              Boolean(rest.multiple)
+                ? value?.map((_value: any) => ({ label: parseLabel(_value), value: parseValue(_value) }))
+                : value
+                ? { label: parseLabel(value), value: parseValue(value) }
+                : undefined
+            }
+            onChange={(val) =>
+              onChange(
+                Boolean(rest.multiple)
+                  ? val?.map((selectedValue: any) =>
+                      filteredData.find((item) => parseValue(item) == selectedValue?.value)
+                    )
+                  : filteredData.find((item) => parseValue(item) == val?.value)
+              )
+            }
+            isMulti={Boolean(rest.multiple)}
           />
         )}
       />

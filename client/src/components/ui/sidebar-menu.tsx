@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/router";
-import cn from "classnames";
-import { ExpandLessIcon } from "@components/icons/expand-less-icon";
-import { ExpandMoreIcon } from "@components/icons/expand-more-icon";
-import { getIcon } from "@utils/get-icon";
-import * as sidebarIcons from "@components/icons/sidebar";
-import { useUI } from "@contexts/ui.context";
-import { useTranslation } from "next-i18next";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/router';
+import cn from 'classnames';
+import { ExpandLessIcon } from '@components/icons/expand-less-icon';
+import { ExpandMoreIcon } from '@components/icons/expand-more-icon';
+import { getIcon } from '@utils/get-icon';
+import * as sidebarIcons from '@components/icons/sidebar';
+import { useUI } from '@contexts/ui.context';
+import { useTranslation } from 'next-i18next';
 
 function SidebarMenuItem({ className, item, depth = 0 }: any) {
   const router = useRouter();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation('common');
   const [isOpen, setOpen] = useState(() => router.pathname === item.href);
   const { href, labelTransKey, items, icon } = item;
   const { displaySidebar, closeSidebar } = useUI();
@@ -36,23 +36,18 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
 
   return (
     <>
-      <motion.li
-        initial={false}
-        animate={{ backgroundColor: "#ffffff" }}
-        onClick={onClick}
-        className="py-3 rounded-md"
-      >
+      <motion.li initial={false} animate={{ backgroundColor: '#ffffff' }} onClick={onClick} className="py-3 rounded-md">
         <button
           className={cn(
-            "flex w-full items-center text-base text-start outline-none border-0 focus:outline-none focus:ring-0 focus:text-accent",
-            router.pathname === href ? "text-accent" : "text-heading",
+            'flex w-full items-center text-base text-start outline-none border-0 focus:outline-none focus:ring-0 focus:text-accent',
+            router.pathname === href ? 'text-accent' : 'text-heading',
             className
           )}
         >
           {getIcon({
             iconList: sidebarIcons,
             iconName: icon,
-            className: "w-5 h-5 me-4",
+            className: 'w-5 h-5 me-4',
           })}
           <p className="flex-1">{t(labelTransKey)}</p>
           <span>{expandIcon}</span>
@@ -67,7 +62,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
               animate="open"
               exit="collapsed"
               variants={{
-                open: { opacity: 1, height: "auto" },
+                open: { opacity: 1, height: 'auto' },
                 collapsed: { opacity: 0, height: 0 },
               }}
               transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
@@ -80,7 +75,7 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
                     key={`${currentItem.href}${currentItem.label}`}
                     item={currentItem}
                     depth={childDepth}
-                    className={cn("text-sm text-body")}
+                    className={cn('text-sm text-body')}
                   />
                 );
               })}
@@ -94,12 +89,9 @@ function SidebarMenuItem({ className, item, depth = 0 }: any) {
 
 function SidebarMenu({ items, className }: any) {
   return (
-    <ul className={cn("text-xs", className)}>
+    <ul className={cn('text-xs', className)}>
       {items?.map((item: any) => (
-        <SidebarMenuItem
-          key={`${item.href}${item.labelTransKey}`}
-          item={item}
-        />
+        <SidebarMenuItem key={`${item.href}${item.labelTransKey}`} item={item} />
       ))}
     </ul>
   );

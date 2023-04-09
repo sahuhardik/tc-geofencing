@@ -1,11 +1,5 @@
 export const AdminIcon: React.FC<React.SVGAttributes<{}>> = (props) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="21.308"
-    height="21.3"
-    viewBox="0 0 21.308 21.3"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="21.308" height="21.3" viewBox="0 0 21.308 21.3" {...props}>
     <g data-name="Group 6">
       <g data-name="Group 1">
         <path

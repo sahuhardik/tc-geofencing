@@ -9,7 +9,5 @@ export const getTimeCampTasks = async () => {
 };
 
 export const useTimeCampTaskQuery = () => {
-  return useQuery<TimeCampTask[], Error>([API_ENDPOINTS.TIMECAMP_TASKS], () =>
-    getTimeCampTasks()
-  );
+  return useQuery<TimeCampTask[], Error>([API_ENDPOINTS.TIMECAMP_TASKS], () => getTimeCampTasks());
 };
