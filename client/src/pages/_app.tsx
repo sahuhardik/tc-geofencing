@@ -4,6 +4,7 @@ import "@fontsource/open-sans/600.css";
 import "@fontsource/open-sans/700.css";
 import "react-toastify/dist/ReactToastify.css";
 import "@assets/main.css";
+import "@assets/jobsite-map.css";
 import { UIProvider } from "@contexts/ui.context";
 import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "react-query";

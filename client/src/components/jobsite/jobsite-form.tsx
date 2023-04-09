@@ -10,7 +10,7 @@ import Label from "@components/ui/label";
 import { getErrorMessage } from "@utils/form-error";
 import Description from "@components/ui/description";
 import Card from "@components/common/card";
-import MapWidget from "@components/widgets/map-widget";
+import LocationPicker from "@components/widgets/location-picker-map";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { jobsiteValidationSchema } from "./jobsite-validation-schema";
 import { useCreateJobSiteMutation } from "@data/jobsite/use-jobsite-create.mutation";
@@ -69,7 +69,7 @@ export default function CreateOrUpdateJobSiteForm({
     }),
   });
 
-  const [taskId, jobSiteUsers] = useWatch({
+  const [taskId] = useWatch({
     control,
     name: ["taskId", "jobSiteUsers"],
   });
@@ -198,7 +198,7 @@ export default function CreateOrUpdateJobSiteForm({
 
           <div className="mb-5">
             <Label>{t("form:input-label-map")}</Label>
-            <MapWidget control={control} setValue={setValue} />
+            <LocationPicker control={control} setValue={setValue} />
           </div>
 
           <Input

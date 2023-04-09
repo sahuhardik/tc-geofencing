@@ -1,80 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { UseFormSetValue, Control, useWatch } from "react-hook-form";
 import { createCustomEqual } from "fast-equals";
-
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import { isLatLngLiteral } from "@googlemaps/typescript-guards";
-import { JobSiteFormValues } from "@components/jobsite/jobsite-form";
 
-interface IMaps {
-    control: Control<any>;
-    setValue: UseFormSetValue<JobSiteFormValues>;
-};
+export interface ILatLng {
+    lat: number;
+    lng: number;
+}
 
-const render = (status: Status) => {
-    return <h1>{status}</h1>;
-};
-
-const MapWidget: React.FC<IMaps> = ({ control, setValue }) => {
-    const [radius, longitude, latitude] = useWatch({
-        control,
-        name: ["radius", 'longitude', 'latitude'],
-    });
-
-    const [click, setClick] = useState<google.maps.LatLng>();
-    const [zoom, setZoom] = useState(3);
-    const [center, setCenter] = useState<google.maps.LatLngLiteral>({
-        lat: 0,
-        lng: 0,
-    });
-
-    useEffect(() => {
-        if (longitude && latitude && window.google) {
-            setCenter({
-                lng: Number(longitude),
-                lat: Number(latitude),
-            });
-            setClick(new google.maps.LatLng(latitude, longitude));
-            setZoom(10);
-        }
-    }, [longitude, latitude, window.google]);
-
-    const onClick = (e: google.maps.MapMouseEvent) => {
-        // avoid directly mutating state
-        setClick(e.latLng!);
-        setValue('longitude', e.latLng?.lng() || 0);
-        setValue('latitude', e.latLng?.lat() || 0);
-    };
-
-    const onIdle = (m: google.maps.Map) => {
-        setZoom(m.getZoom()!);
-        setCenter(m.getCenter()!.toJSON());
-    };
-
-    return <div style={{ display: "flex", height: "500px" }}>
-        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} render={render}>
-            <Map
-                center={center}
-                onClick={onClick}
-                onIdle={onIdle}
-                zoom={zoom}
-                style={{ flexGrow: "1", height: "100%" }}
-            >
-                {click ? <Marker position={click} /> : null}
-                {click && radius ? <Circle center={click} radius={Number(radius)} /> : null}
-            </Map>
-        </Wrapper>
-    </div>;
-};
-
-interface MapProps extends google.maps.MapOptions {
+export interface MapProps extends google.maps.MapOptions {
     style: { [key: string]: string };
     onClick?: (e: google.maps.MapMouseEvent) => void;
     onIdle?: (map: google.maps.Map) => void;
     children?: React.ReactNode;
 }
 
-const Map: React.FC<MapProps> = ({
+export const Map: React.FC<MapProps> = ({
     onClick,
     onIdle,
     children,
@@ -86,7 +26,7 @@ const Map: React.FC<MapProps> = ({
 
     useEffect(() => {
         if (ref.current && !map) {
-            setMap(new window.google.maps.Map(ref.current, {}));
+            setMap(new window.google.maps.Map(ref.current, { mapId: options.mapId }));
         }
     }, [ref, map]);
 
@@ -121,14 +61,14 @@ const Map: React.FC<MapProps> = ({
                 if (React.isValidElement(child)) {
                     // set the map prop on the child component
                     // @ts-ignore
-                    return React.cloneElement(child, { map });
+                    return React.cloneElement(child, { map, mapRef: ref });
                 }
             })}
         </>
     );
 };
 
-const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
+export const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
     const [marker, setMarker] = useState<google.maps.Marker>();
 
     useEffect(() => {
@@ -153,7 +93,7 @@ const Marker: React.FC<google.maps.MarkerOptions> = (options) => {
     return null;
 };
 
-const Circle: React.FC<google.maps.CircleOptions> = (options) => {
+export const Circle: React.FC<google.maps.CircleOptions> = (options) => {
     const [circle, setCircle] = useState<google.maps.Circle>();
 
     useEffect(() => {
@@ -172,12 +112,12 @@ const Circle: React.FC<google.maps.CircleOptions> = (options) => {
     useEffect(() => {
         if (circle) {
             circle.setOptions({
-                ...options,
                 strokeColor: "#FF0000",
                 strokeOpacity: 0.8,
                 strokeWeight: 2,
                 fillColor: "#FF0000",
                 fillOpacity: 0.35,
+                ...options,
             });
         }
     }, [circle, options]);
@@ -185,7 +125,7 @@ const Circle: React.FC<google.maps.CircleOptions> = (options) => {
     return null;
 };
 
-const deepCompareEqualsForMaps = createCustomEqual(
+export const deepCompareEqualsForMaps = createCustomEqual(
     // @ts-expect-error
     (deepEqual) => (a: any, b: any) => {
         if (
@@ -205,7 +145,7 @@ const deepCompareEqualsForMaps = createCustomEqual(
     }
 );
 
-function useDeepCompareMemoize(value: any) {
+export function useDeepCompareMemoize(value: any) {
     const ref = useRef();
 
     if (!deepCompareEqualsForMaps(value, ref.current)) {
@@ -215,11 +155,11 @@ function useDeepCompareMemoize(value: any) {
     return ref.current;
 }
 
-function useDeepCompareEffectForMaps(
+export function useDeepCompareEffectForMaps(
     callback: React.EffectCallback,
     dependencies: any[]
 ) {
     useEffect(callback, dependencies.map(useDeepCompareMemoize));
 }
 
-export default MapWidget;
+export default Map;
