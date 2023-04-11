@@ -93,6 +93,7 @@ export declare type JobSite = {
   id: Scalars['ID'];
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+  jobSiteUsers?: Maybe<TimeCampUser[]>;
 };
 
 /** A paginated list of JobSite items. */
@@ -122,4 +123,8 @@ export declare type TimeCampUser = {
   display_name: Scalars['String'];
   time_zone?: Scalars['String'];
   token?: Scalars['String'];
+  lastPosition?: {
+    lat: Scalars['Float'];
+    lng: Scalars['Float'];
+  }
 };

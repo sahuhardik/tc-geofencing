@@ -68,6 +68,9 @@ export class JobSitesService {
       where: {
         createdBy: (this.request.user as IUser).user_id,
       },
+      relations: {
+        jobSiteUsers: true,
+      },
     };
 
     if (search) {
@@ -81,7 +84,17 @@ export class JobSitesService {
 
     const url = `/jobsites?search=${search}&limit=${limit}&page=${page + 1}`;
     return {
-      data: results,
+      // TODO: Need to member location with timecamp backend
+      data: results.map((jobsite) => ({
+        ...jobsite,
+        jobSiteUsers: jobsite.jobSiteUsers.map((jobSiteUser, i) => ({
+          ...jobSiteUser,
+          lastPosition: {
+            lat: jobsite.latitude + (0.00001)*(i+1),
+            lng: jobsite.longitude + (0.0001)*(i+1),
+          } 
+        }))
+      })),
       ...paginate(total, page, limit, results.length, url),
     };
   }
