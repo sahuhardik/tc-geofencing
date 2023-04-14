@@ -1,0 +1,139 @@
+.jobsiteMapCardWrapper {
+  z-index: 999;
+  margin-top: -5px;
+  width: 300px;
+}
+
+.jobsiteMapCardHeader {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 30px 6px 4px;
+  gap: 8px;
+
+  /* height: 66px; */
+  border-bottom: 1px solid #E9E9E9;
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+}
+.jobsiteMapHeaderTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 12px;
+  padding: 0px;
+  height: auto;
+  flex: 1;
+}
+
+.jobsiteCardHeading {
+  font-family: 'Poppins';
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #323333;
+}
+
+.jobsiteCardSubHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #8A8A8A;
+}
+
+.jobsiteCardAction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  height: 42px;
+  order: 2;
+  flex-grow: 0;
+}
+
+.cardActionButton {
+  cursor: default !important;
+}
+
+.jobsiteCardBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  padding-top: 15px;
+  padding-left: 6px;
+}
+
+.jobsiteCardBodyRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+}
+
+.jobsiteCardActiveUsers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 16px;
+  padding-left: 4px;
+  gap: 4px;
+}
+.jobsiteCardActiveUsersHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+.jobsiteCardActiveUser {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.jobsiteUsernameText {
+font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 28px;
+  color: #4F4F4F;
+}
+
+.memberCardSmallHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+.memberCardTimeEntry {
+  width: 100%;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #464646;
+}

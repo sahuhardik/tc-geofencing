@@ -24,6 +24,7 @@ export type JobSiteFormValues = {
   radius: number;
   latitude: number;
   longitude: number;
+  address: string;
   notifyOnEntry: boolean;
   notifyOnExit: boolean;
   taskId: null | number;
@@ -79,7 +80,7 @@ export default function CreateOrUpdateJobSiteForm({ initialValues }: IProps) {
   const { mutate: updateJobSite, isLoading: updating } = useUpdateJobSiteMutation();
 
   const onSubmit = async (values: JobSiteFormValues) => {
-    const { identifier, radius, latitude, longitude, notifyOnEntry, notifyOnExit, taskId, task, jobSiteUsers } = values;
+    const { identifier, radius, latitude, longitude, notifyOnEntry, notifyOnExit, taskId, task, jobSiteUsers, address } = values;
     const input = {
       identifier,
       radius,
@@ -89,6 +90,7 @@ export default function CreateOrUpdateJobSiteForm({ initialValues }: IProps) {
       notifyOnExit,
       taskId: task?.task_id || taskId || null,
       jobSiteUsers,
+      address,
     };
     try {
       if (initialValues) {
@@ -186,6 +188,13 @@ export default function CreateOrUpdateJobSiteForm({ initialValues }: IProps) {
             <LocationPicker control={control} setValue={setValue} />
           </div>
 
+          <Input
+            label={t('Address')}
+            {...register('address')}
+            error={t(errors.address?.message!)}
+            variant="outline"
+            className="mb-5"
+          />
           <Input
             label={t('form:input-label-radius')}
             {...register('radius')}

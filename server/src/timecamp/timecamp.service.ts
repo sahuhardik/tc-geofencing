@@ -82,4 +82,30 @@ export class TimeCampService {
 
     return { data };
   }
+
+  async getUserEntries(userId: string): Promise<TimeCampUserPaginator> {
+
+    const today = (new Date()).toISOString().slice(0, 10);
+
+    const params = {
+      from: today,
+      to: today,
+      user_ids: userId,
+      format: 'json',
+    };
+    const { data } = await this.timeCampAxios.default.get<IUser[]>(
+      '/third_party/api/entries',
+      {
+        params,
+        headers: {
+          Accept: 'application/json',
+          'Accept-Encoding': 'gzip,deflate,compress',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+        },
+      },
+    );
+
+    return { data };
+  }
 }

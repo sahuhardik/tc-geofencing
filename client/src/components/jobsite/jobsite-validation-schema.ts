@@ -4,6 +4,7 @@ export const jobsiteValidationSchema = yup.object().shape({
   radius: yup.number(),
   latitude: yup.number(),
   longitude: yup.number(),
+  address: yup.string().required(),
   notifyOnEntry: yup.boolean(),
   notifyOnExit: yup.boolean(),
 });

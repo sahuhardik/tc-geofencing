@@ -5,4 +5,5 @@ export const API_ENDPOINTS = {
   JOBSITES: 'jobsites',
   TIMECAMP_TASKS: 'timecamp/tasks',
   TIMECAMP_USERS: 'timecamp/users',
+  MEMBER_TIMESHEET: 'timecamp/user-entries',
 };

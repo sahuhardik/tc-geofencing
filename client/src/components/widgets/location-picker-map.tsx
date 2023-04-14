@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { UseFormSetValue, Control, useWatch } from 'react-hook-form';
 
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
@@ -15,13 +15,25 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue }) => {
     control,
     name: ['radius', 'longitude', 'latitude'],
   });
-
+  const geocoderRef = useRef<google.maps.Geocoder>();
   const [click, setClick] = useState<google.maps.LatLng>();
   const [zoom, setZoom] = useState(3);
   const [center, setCenter] = useState<google.maps.LatLngLiteral>({
     lat: 0,
     lng: 0,
   });
+
+  async function geocodePosition(pos: google.maps.LatLng): Promise<string> {
+    if (geocoderRef.current){
+      const response = await geocoderRef.current.geocode({
+        location: pos
+      });
+      if (response && response.results?.length > 0) {
+        return (response.results[0].formatted_address);
+      }
+    }
+    return '';
+  }
 
   useEffect(() => {
     if (longitude && latitude && window.google) {
@@ -30,15 +42,26 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue }) => {
         lat: Number(latitude),
       });
       setClick(new google.maps.LatLng(latitude, longitude));
+      
       setZoom(10);
     }
   }, [longitude, latitude, window.google]);
+
+  useEffect(() => {
+    if (window.google) {
+      geocoderRef.current = new google.maps.Geocoder();
+    }
+  }, [ window.google ]);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
     setClick(e.latLng!);
     setValue('longitude', e.latLng?.lng() || 0);
     setValue('latitude', e.latLng?.lat() || 0);
+    setValue('latitude', e.latLng?.lat() || 0);
+    geocodePosition(e.latLng!).then((address) => {
+      setValue('address' ,address);
+    });
   };
 
   const onIdle = (m: google.maps.Map) => {

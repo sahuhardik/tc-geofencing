@@ -41,4 +41,15 @@ export class TimeCampController {
       })),
     };
   }
+
+  @Get('user-entries')
+  async getUserEntries(
+    @Query() query: { userId: string },
+  ): Promise<TimeCampTaskPaginator> {
+    const timeCampService = new TimeCampService(
+      (this.request.user as IUser).token,
+    );
+
+    return timeCampService.getUserEntries(query.userId);
+  }
 }

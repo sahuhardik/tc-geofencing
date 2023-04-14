@@ -86,6 +86,7 @@ export declare type JobSite = {
   radius: Scalars['Float'];
   latitude: Scalars['Float'];
   longitude: Scalars['Float'];
+  address: Scalars['String'];
   notifyOnEntry: Scalars['Boolean'];
   notifyOnExit: Scalars['Boolean'];
   taskId: null | Scalars['Float'];
@@ -93,7 +94,7 @@ export declare type JobSite = {
   id: Scalars['ID'];
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
-  jobSiteUsers?: Maybe<TimeCampUser[]>;
+  jobSiteUsers?: Maybe<JobSiteUser[]>;
 };
 
 /** A paginated list of JobSite items. */
@@ -123,8 +124,27 @@ export declare type TimeCampUser = {
   display_name: Scalars['String'];
   time_zone?: Scalars['String'];
   token?: Scalars['String'];
+};
+
+export declare type JobSiteUser = {
+  __typename?: 'JobSiteUser';
+  userId: Scalars['String'];
+  userEmail: Scalars['String'];
+  user: TimeCampUser;
   lastPosition?: {
     lat: Scalars['Float'];
     lng: Scalars['Float'];
   }
+};
+
+export declare type TimeCampEntry = {
+  __typename?: 'TimeCampEntry';
+  date: Scalars['String'];
+  description: Scalars['String'];
+  duration: Scalars['String'];
+  end_time: Scalars['String'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  start_time: Scalars['String'];
+  task_note: Scalars['String'];
 };

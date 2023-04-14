@@ -38,6 +38,9 @@ export class JobSite extends CoreEntity {
   })
   longitude: number;
 
+  @Column({ length: 500, default: '' })
+  address: string;
+
   @Column({ type: 'boolean', default: false })
   notifyOnEntry: boolean;
 
