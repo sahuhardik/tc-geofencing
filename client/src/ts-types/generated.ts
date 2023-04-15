@@ -135,6 +135,7 @@ export declare type JobSiteUser = {
     lat: Scalars['Float'];
     lng: Scalars['Float'];
   }
+  isActive?: boolean;
 };
 
 export declare type TimeCampEntry = {

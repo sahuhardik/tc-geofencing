@@ -68,7 +68,12 @@ export default function JobSitesDashboard() {
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-  const jobSites = data?.jobsites.data ?? [];
+  const jobSites = (data?.jobsites.data ?? []).map((jobsite) => ({
+    ...jobsite,
+    jobSiteUsers: jobsite.jobSiteUsers?.map((jobsiteUser) => ({
+      ...jobsiteUser,
+    })),
+  }));
   const totalActivePeoples = Object.keys(
     jobSites
       .map((jobsite) => jobsite.jobSiteUsers)

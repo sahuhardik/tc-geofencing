@@ -16,6 +16,8 @@ import { GEOFENCE_REPOSITORIES } from '../common/constants';
 import { IUser } from '../timecamp/types/user.interface';
 import { JobSiteUsersService } from '../jobsite-user/jobsite-users.service';
 import { CreateJobSiteUserDto } from '../jobsite-user/dto/create-jobsite-user.dto';
+import { calculateCoordinateDistance } from '../utils/maps';
+
 
 @Injectable()
 export class JobSitesService {
@@ -84,16 +86,20 @@ export class JobSitesService {
 
     const url = `/jobsites?search=${search}&limit=${limit}&page=${page + 1}`;
     return {
-      // TODO: Need to member location with timecamp backend
       data: results.map((jobsite) => ({
         ...jobsite,
-        jobSiteUsers: jobsite.jobSiteUsers.map((jobSiteUser, i) => ({
-          ...jobSiteUser,
-          lastPosition: {
+        jobSiteUsers: jobsite.jobSiteUsers.map((jobSiteUser, i) => {
+          const lastPosition = {
             lat: jobsite.latitude + (0.00001)*(i+1),
             lng: jobsite.longitude + (0.0001)*(i+1),
-          } 
-        }))
+          }; 
+          // TODO: Need to member location with timecamp backend
+          return ({
+          ...jobSiteUser,
+          lastPosition,
+          isActive: jobsite.radius >= calculateCoordinateDistance(lastPosition?.lat, lastPosition?.lng, jobsite.latitude, jobsite.longitude),
+
+        })})
       })),
       ...paginate(total, page, limit, results.length, url),
     };
