@@ -61,7 +61,7 @@ export class JobSitesService {
     search,
   }: GetJobSitesDto): Promise<JobSitePaginator> {
     if (!page) page = 1;
-    if (!limit) limit = 15;
+    if (!limit) limit = 50;
     const skip = (page - 1) * limit;
 
     const options: FindManyOptions<JobSite> = {

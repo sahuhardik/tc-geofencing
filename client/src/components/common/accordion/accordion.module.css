@@ -1,0 +1,26 @@
+.container  {
+  width: 100%;
+  border-bottom: 1px solid #E9E9E9;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 8px;
+  align-items: center;
+}
+
+.titleContainer {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+}
+
+.content {
+  width: 100%;
+  transition: all 1s ease;
+  overflow: auto;
+  height: 0px;
+}

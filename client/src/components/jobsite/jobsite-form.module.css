@@ -1,0 +1,93 @@
+.roundStep {
+  height: 32px;
+  width: 32px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 150%;
+  color: #A3A3A3;
+  border: 1px solid #A3A3A3;
+  cursor: pointer;
+}
+
+.activeRoundStep {
+  background-color: #4BB063;
+  color: #fff;
+  border-color: #4BB063;
+}
+
+.step {
+ border: 1px solid red;
+}
+
+.stepConnector {
+  flex: 1;
+  height: 0px;
+  border: 1px dashed #DBDBDB;
+}
+
+.jobsiteHeading {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #DBDBDB;
+  margin-bottom: 7px;
+  height: 50px;
+}
+
+.slider {
+  width: 100%;
+}
+
+.radiusBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0px;
+  gap: 12px;
+  width: 91px;
+  height: 36px;
+  background: #FFFFFF;
+  border: 1px solid #DBDBDB;
+  border-radius: 24px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #4F4F4F;
+}
+
+.formDarkHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+  color: #4F4F4F;
+}
+
+
+.formLightText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #4F4F4F;
+}
+
+.lightText {
+  color: #979797; 
+}
+
+.tooltip {
+  width: 238px;
+}

@@ -151,4 +151,6 @@ export function useDeepCompareEffectForMaps(callback: React.EffectCallback, depe
   useEffect(callback, dependencies.map(useDeepCompareMemoize));
 }
 
+export const mapMarkerColors = ['#A12687', '#5B4D99', '#0099cc', '#cc9900', '#9900cc', '#009973', '#99ff66'];
+
 export default Map;

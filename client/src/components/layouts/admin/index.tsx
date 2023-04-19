@@ -30,7 +30,7 @@ const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
           </div>
         </aside>
         <main className="w-full lg:ps-72 xl:ps-76">
-          <div className="p-2 md:p-4 h-full">{children}</div>
+          <div className="p-2 md:p-4 h-full bg-gray-100">{children}</div>
         </main>
       </div>
     </div>

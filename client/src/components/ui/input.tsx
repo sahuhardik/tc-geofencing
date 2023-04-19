@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React, { InputHTMLAttributes } from 'react';
+import styles from './input.module.css';
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
@@ -10,7 +11,7 @@ export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   type?: string;
   shadow?: boolean;
-  variant?: 'normal' | 'solid' | 'outline';
+  variant?: 'normal' | 'solid' | 'outline' | 'none';
   dimension?: 'small' | 'medium' | 'big';
 }
 const classes = {
@@ -59,7 +60,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
 
     return (
       <div className={className}>
-        <label htmlFor={name} className="block text-body-dark font-semibold text-sm leading-none mb-3">
+        <label htmlFor={name} className={styles.inputLabel}>
           {label}
         </label>
         <input
@@ -67,7 +68,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
           name={name}
           type={type}
           ref={ref}
-          className={rootClassName}
+          className={cn([rootClassName, styles.input])}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"

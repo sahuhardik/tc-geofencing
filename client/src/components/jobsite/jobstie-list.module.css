@@ -1,0 +1,82 @@
+.propertyIcon {
+  height: 23px;
+  width: 23px;
+}
+
+.jobHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #323333;
+}
+
+.jobSubheading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #8A8A8A;
+}
+
+.iconSvg {
+  min-height: 10px;
+  min-width: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.jobsiteAccordionBody {
+  padding: 8px 34px;
+  background-color:  #E9E9E9;
+}
+
+.boldCardLabel {
+  width: 100px;
+  font-family: 'Poppins';
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 150%;
+  color: #000000;
+}
+
+.boldCardValue {
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  color: #323333;
+}
+
+.memberItemWrapper {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  align-items: center;
+}
+
+.avatarIcon {
+  height: 24px;
+  width: 24px;
+  border-radius: 12px;
+}
+
+.memberName {
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 28px;
+  color: #4F4F4F;
+}
+
+.modalContainer {
+  width: 80vw;
+  min-height: 693px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}

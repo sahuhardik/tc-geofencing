@@ -1,0 +1,10 @@
+.inputLabel {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 250%;
+  text-transform: uppercase;
+  color: #8A8A8A;
+  margin-bottom: 10px !important;
+}

@@ -47,6 +47,9 @@ export class JobSite extends CoreEntity {
   @Column({ type: 'boolean', default: false })
   notifyOnExit: boolean;
 
+  @Column({ type: 'boolean', default: false })
+  pushNotification: boolean;
+
   @Column({ type: 'integer', nullable: true, default: null })
   taskId: null | number;
 

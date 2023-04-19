@@ -8,9 +8,10 @@ import { Map, Marker, Circle } from './google-map-components';
 interface IMaps {
   control: Control<any>;
   setValue: UseFormSetValue<JobSiteFormValues>;
+  height?: string;
 }
 
-const LocationPickerMap: React.FC<IMaps> = ({ control, setValue }) => {
+const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px' }) => {
   const [radius, longitude, latitude] = useWatch({
     control,
     name: ['radius', 'longitude', 'latitude'],
@@ -70,7 +71,7 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue }) => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '500px' }}>
+    <div style={{ display: 'flex', height }}>
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} version="beta" mapIds={['theuniquemapid']}>
         <Map center={center} onClick={onClick} onIdle={onIdle} zoom={zoom} style={{ flexGrow: '1', height: '100%' }}>
           {click ? <Marker position={click} /> : null}

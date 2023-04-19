@@ -88,6 +88,7 @@ export declare type JobSite = {
   longitude: Scalars['Float'];
   address: Scalars['String'];
   notifyOnEntry: Scalars['Boolean'];
+  pushNotification: Scalars['Boolean'];
   notifyOnExit: Scalars['Boolean'];
   taskId: null | Scalars['Float'];
   createdBy: Scalars['String'];

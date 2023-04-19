@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Wrapper } from '@googlemaps/react-wrapper';
-import { Map, Circle, ILatLng } from './google-map-components';
+import { Map, Circle, ILatLng, mapMarkerColors } from './google-map-components';
 import { JobSite, TimeCampEntry } from '@ts-types/generated';
 import ErrorMessage from '@components/ui/error-message';
 import styles from './jobsite-map.module.css';
@@ -93,19 +93,26 @@ function buildMarker(options: IMarkerBuilderOptions) {
   return content;
 }
 
-export const JobsiteMapWidget = ({
+export const JobsiteMapWidget = React.memo(({
   height,
   zoom = 12,
   jobSites: jobSites,
+  center,
 }: {
   height: string;
   zoom?: number;
   jobSites: JobSite[];
+  center?: ILatLng;
 }) => {
+  const [ mapCenter, setMapCenter ] = useState<ILatLng>();
+console.log('rendering again')
+  useEffect(() => {
+    setMapCenter(center);
+  }, [center]);
+
   if (!jobSites.length) {
     return <ErrorMessage message={'No jobsites'} />;
   }
-  const jobSiteColors = ['#A12687', '#5B4D99', '#0099cc', '#cc9900', '#9900cc', '#009973', '#99ff66'];
 
   const jobsiteMapsData: IJobSiteMap[] = jobSites.map(
     (jobSite, i) =>
@@ -115,7 +122,7 @@ export const JobsiteMapWidget = ({
         radius: jobSite.radius,
         notifyOnEntry: jobSite.notifyOnEntry,
         notifyOnExit: jobSite.notifyOnExit,
-        markerColor: jobSiteColors[i % jobSiteColors.length],
+        markerColor: mapMarkerColors[i % mapMarkerColors.length],
         position: {
           lat: jobSite.latitude,
           lng: jobSite.longitude,
@@ -142,13 +149,14 @@ export const JobsiteMapWidget = ({
     <div style={{ display: 'flex', height }}>
       <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} version="beta" mapIds={['theuniquemapid']}>
         <Map
-          center={firstJobsite.position}
+          center={mapCenter ?? firstJobsite.position}
           zoom={zoom}
           style={{ flexGrow: '1', height: '100%' }}
           mapId={'theuniquemapid'}
         >
           {jobsiteMapsData.map((jobsiteMap) => (
             <JobSiteMap
+              key={jobsiteMap.name}
               markerColor={jobsiteMap.markerColor}
               position={jobsiteMap.position}
               radius={jobsiteMap.radius}
@@ -163,7 +171,7 @@ export const JobsiteMapWidget = ({
       </Wrapper>
     </div>
   );
-};
+});
 
 const buildMemberIcon = (imgSrc?: string, size: number = 16) => {
   if (!imgSrc) {
@@ -323,13 +331,14 @@ const JobSiteMap = (props: IJobSiteMap) => {
         detailCardHtml={buildJobsiteCard(props)}
         title={props.name}
       />
-      {props.members.map((member) => (
+      {props.members.map((member, i) => (
         <MemberMarker
           {...member}
           map={props.map}
           mapRef={props.mapRef}
           jobsiteName={props.name}
           jobsiteAddress={props.address}
+          key={i}
         />
       ))}
       <Circle
