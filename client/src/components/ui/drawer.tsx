@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import Portal from '@reach/portal';
-import { motion, AnimatePresence } from 'framer-motion';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import { AnimatePresence, motion } from 'framer-motion';
+import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import cn from 'classnames';
 import { fadeInRight } from '@utils/motion/fade-in-right';
 import { fadeInLeft } from '@utils/motion/fade-in-left';

@@ -2,7 +2,7 @@ import Router from 'next/router';
 import Cookies from 'js-cookie';
 
 export function getErrorMessage(error: any) {
-  let processedError = {
+  const processedError = {
     message: '',
     validation: [],
   };

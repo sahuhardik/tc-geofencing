@@ -1,9 +1,9 @@
-import JobSitesDashboard from "./jobsites-dashboard";
+import JobSitesDashboard from './jobsites-dashboard';
 
 export default function Dashboard() {
   return (
     <>
-        <JobSitesDashboard />
+      <JobSitesDashboard />
     </>
   );
 }

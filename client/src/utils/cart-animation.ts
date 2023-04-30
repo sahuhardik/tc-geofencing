@@ -7,25 +7,25 @@ export const cartAnimation = (event: any) => {
   };
 
   // start animation block
-  let imgToDrag = getClosest(event.target, '.product-card');
+  const imgToDrag = getClosest(event.target, '.product-card');
 
   if (!imgToDrag) return;
 
-  let viewCart = document.getElementsByClassName('product-cart')[0];
-  let imgToDragImage = imgToDrag.querySelector('.product-image');
+  const viewCart = document.getElementsByClassName('product-cart')[0];
+  const imgToDragImage = imgToDrag.querySelector('.product-image');
 
-  let disLeft = imgToDrag.getBoundingClientRect().left;
-  let disTop = imgToDrag.getBoundingClientRect().top;
-  let cartLeft = viewCart.getBoundingClientRect().left;
-  let cartTop = viewCart.getBoundingClientRect().top;
-  let image = imgToDragImage.cloneNode(true);
+  const disLeft = imgToDrag.getBoundingClientRect().left;
+  const disTop = imgToDrag.getBoundingClientRect().top;
+  const cartLeft = viewCart.getBoundingClientRect().left;
+  const cartTop = viewCart.getBoundingClientRect().top;
+  const image = imgToDragImage.cloneNode(true);
   image.style =
     'z-index: 11111; width: 100px;opacity:1; position:fixed; top:' +
     disTop +
     'px;left:' +
     disLeft +
     'px;transition: left 1s, top 1s, width 1s, opacity 1s cubic-bezier(1, 1, 1, 1);border-radius: 50px; overflow: hidden; box-shadow: 0 21px 36px rgba(0,0,0,0.1)';
-  var reChange = document.body.appendChild(image);
+  const reChange = document.body.appendChild(image);
   setTimeout(function () {
     image.style.left = cartLeft + 'px';
     image.style.top = cartTop + 'px';

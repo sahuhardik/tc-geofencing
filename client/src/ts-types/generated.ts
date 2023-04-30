@@ -135,7 +135,7 @@ export declare type JobSiteUser = {
   lastPosition?: {
     lat: Scalars['Float'];
     lng: Scalars['Float'];
-  }
+  };
   isActive?: boolean;
 };
 
@@ -147,6 +147,7 @@ export declare type TimeCampEntry = {
   end_time: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
+  user_id: Scalars['String'];
   start_time: Scalars['String'];
   task_note: Scalars['String'];
 };

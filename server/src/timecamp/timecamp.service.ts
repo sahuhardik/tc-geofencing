@@ -83,13 +83,16 @@ export class TimeCampService {
     return { data };
   }
 
-  async getUserEntries(userId: string): Promise<TimeCampUserPaginator> {
-
-    const today = (new Date()).toISOString().slice(0, 10);
+  async getUserEntries(
+    userId: string,
+    startDate?: string,
+    endDate?: string,
+  ): Promise<TimeCampUserPaginator> {
+    const today = new Date().toISOString().slice(0, 10);
 
     const params = {
-      from: today,
-      to: today,
+      from: startDate ?? today,
+      to: endDate ?? today,
       user_ids: userId,
       format: 'json',
     };

@@ -5,3 +5,23 @@
   flex-direction: column;
   justify-content: flex-start;
 }
+
+.emptyCardHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 33px;
+  color: #3d3d3d;
+}
+
+.emptyCardSubHeading {
+  width: 507px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  color: #3d3d3d;
+}

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Table } from '@components/ui/table';
 import ActionButtons from '@components/common/action-buttons';
 import { siteSettings } from '@settings/site.settings';
-import { UserPaginator, SortOrder } from '@ts-types/generated';
+import { SortOrder, UserPaginator } from '@ts-types/generated';
 import { useMeQuery } from '@data/user/use-me.query';
 import { useTranslation } from 'next-i18next';
 import { useIsRTL } from '@utils/locals';

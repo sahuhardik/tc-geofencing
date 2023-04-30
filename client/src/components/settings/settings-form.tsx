@@ -130,9 +130,9 @@ export default function SettingsForm({ settings, taxClasses, shippingClasses }: 
       logo: settings?.logo ?? '',
       currency: settings?.currency ? CURRENCY.find((item) => item.code == settings?.currency) : '',
       // @ts-ignore
-      taxClass: !!taxClasses?.length ? taxClasses?.find((tax: Tax) => tax.id == settings?.taxClass) : '',
+      taxClass: taxClasses?.length ? taxClasses?.find((tax: Tax) => tax.id == settings?.taxClass) : '',
       // @ts-ignore
-      shippingClass: !!shippingClasses?.length
+      shippingClass: shippingClasses?.length
         ? shippingClasses?.find((shipping: Shipping) => shipping.id == settings?.shippingClass)
         : '',
     },

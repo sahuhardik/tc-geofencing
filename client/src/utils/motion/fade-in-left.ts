@@ -1,4 +1,4 @@
-export function fadeInLeft(duration: number = 0.3) {
+export function fadeInLeft(duration = 0.3) {
   return {
     from: {
       left: '-100%',

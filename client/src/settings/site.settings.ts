@@ -36,6 +36,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-jobsites',
         icon: 'LocationIcon',
       },
+      {
+        href: ROUTES.REPORT,
+        label: 'sidebar-nav-item-report',
+        icon: 'ReportIcon',
+      },
     ],
   },
   product: {

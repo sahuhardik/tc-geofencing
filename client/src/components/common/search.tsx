@@ -19,7 +19,7 @@ interface ISearchProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: 'normal' | 'solid' | 'outline';
   inputClassName?: string;
   onSearch?: (data: SearchValue) => void;
-};
+}
 
 type SearchValue = {
   searchText: string;
@@ -27,7 +27,7 @@ type SearchValue = {
 
 const Search: React.FC<ISearchProps> = ({
   className,
-  onSearch = () => null ,
+  onSearch = () => null,
   variant = 'outline',
   shadow = false,
   inputClassName,

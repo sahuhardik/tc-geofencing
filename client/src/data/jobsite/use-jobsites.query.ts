@@ -1,4 +1,4 @@
-import { QueryParamsType, JobsitesQueryOptionsType } from '@ts-types/custom.types';
+import { JobsitesQueryOptionsType, QueryParamsType } from '@ts-types/custom.types';
 import { mapPaginatorData } from '@utils/data-mappers';
 import { useQuery } from 'react-query';
 import JobSite from '@repositories/jobsite';
@@ -8,7 +8,7 @@ import { JobSitePaginator } from '@ts-types/generated';
 const fetchJobsites = async ({ queryKey }: QueryParamsType): Promise<{ jobsites: JobSitePaginator }> => {
   const [_key, params] = queryKey;
 
-  const { page, text, limit = 15, orderBy = 'updated_at', sortedBy = 'DESC' } = params as JobsitesQueryOptionsType;
+  const { page, text, limit = 200, orderBy = 'updated_at', sortedBy = 'DESC' } = params as JobsitesQueryOptionsType;
 
   const searchString = text;
   // @ts-ignore

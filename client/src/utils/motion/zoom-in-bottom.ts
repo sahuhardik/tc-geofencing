@@ -1,4 +1,4 @@
-export function zoomInBottom(duration: number = 0.2) {
+export function zoomInBottom(duration = 0.2) {
   return {
     from: {
       y: 8,

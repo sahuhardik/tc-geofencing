@@ -1,0 +1,226 @@
+.groupHeader {
+  background-color: #f8f8f8;
+}
+
+.groupHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #6b6b6b;
+}
+
+.entriesContainer {
+  width: 100%;
+  background: #f8f8f8;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: #bbbebb;
+  border-radius: 5px 5px 5px 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  height: fit-content;
+}
+
+.timeEntryRow {
+  padding: 16px;
+  background-color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  border-color: #bbbebb;
+}
+
+.jobsiteContainer {
+  display: flex;
+  flex-direction: column;
+  min-width: 296px;
+  flex: 3;
+}
+
+.jobsiteTitle {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  color: #323333;
+}
+
+.jobsiteSubTitle {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #8a8a8a;
+}
+
+.avatarIcon {
+  height: 34px;
+  width: 34px;
+  border-radius: 17px;
+}
+
+.memberContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  min-width: 211px;
+  flex: 3;
+}
+
+.memberName {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #303830;
+}
+
+.timeContainer {
+  flex: 1;
+  min-width: 120px;
+}
+
+.normalText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400 !important;
+  font-size: 14px;
+  line-height: 21px;
+  color: #4f4f4f;
+}
+
+.totalTimeText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: bold !important;
+  font-size: 14px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #464646;
+}
+
+.tableHeadContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0px 16px;
+}
+
+.tableHeadingText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+  color: #393939;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-y: scroll;
+  max-height: 55vh;
+}
+
+.headContainer {
+  width: 100%;
+  height: fit-content;
+}
+
+.totalTimeFinal {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #464646;
+}
+
+.totalTimeFinalLabel {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #656565;
+}
+
+.dropdownLabel {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  color: #323333;
+}
+
+.roundedBtnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 7px 24px;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #bebebe;
+  border-radius: 24px;
+}
+
+.btnText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400 !important;
+  font-size: 14px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  color: #323333;
+}
+
+.calendarContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.calendarDateText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: #4f4f4f;
+  cursor: pointer;
+}
+
+.calendarLinkText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  text-decoration-line: underline;
+  color: #286efb;
+  cursor: pointer;
+}

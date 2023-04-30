@@ -18,8 +18,8 @@ module.exports = {
         '3xl': '1900px',
       },
       fontFamily: {
-        body: ['Open Sans', 'system-ui', 'sans-serif'],
-        heading: ['Open Sans', 'system-ui', 'sans-serif'],
+        body: ['Poppins'],
+        heading: ['Poppins'],
       },
       colors: {
         light: withOpacity('--color-light'),

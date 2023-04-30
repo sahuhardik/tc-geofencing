@@ -28,7 +28,7 @@ const AutoComplete = ({ control, label, name, errors, data, parseValue, parseLab
             classNamePrefix="addl-class"
             options={filteredData.map((item) => ({ label: parseLabel(item), value: parseValue(item) }))}
             value={
-              Boolean(rest.multiple)
+              rest.multiple
                 ? value?.map((_value: any) => ({ label: parseLabel(_value), value: parseValue(_value) }))
                 : value
                 ? { label: parseLabel(value), value: parseValue(value) }
@@ -36,7 +36,7 @@ const AutoComplete = ({ control, label, name, errors, data, parseValue, parseLab
             }
             onChange={(val) =>
               onChange(
-                Boolean(rest.multiple)
+                rest.multiple
                   ? val?.map((selectedValue: any) =>
                       filteredData.find((item) => parseValue(item) == selectedValue?.value)
                     )

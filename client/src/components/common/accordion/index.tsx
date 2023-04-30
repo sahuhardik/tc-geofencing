@@ -1,26 +1,36 @@
 import styles from './accordion.module.css';
 import { ReactNode, useRef, useState } from 'react';
+import cn from 'classnames';
 import AnimateHeight from 'react-animate-height';
 
-export default ({ heading, actions = null, children }: { actions?: ReactNode; heading?: ReactNode , children?: ReactNode}) => {
+export default ({
+  heading,
+  actions = null,
+  children,
+  headerClasses = '',
+}: {
+  actions?: ReactNode;
+  heading?: ReactNode;
+  children?: ReactNode;
+  headerClasses?: string;
+}) => {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const toggleContent = () => {
     setIsOpened((_isOpened) => {
       const nextOpenedState = !_isOpened;
-      if(contentRef.current) {
+      if (contentRef.current) {
         contentRef.current.style.height = nextOpenedState ? 'auto' : '0px';
       }
       return nextOpenedState;
-    })
-
-  }
+    });
+  };
 
   return (
     <div className={styles.container}>
-      <div className={styles.headerContainer}>
-        <div className={styles.titleContainer} onClick={toggleContent} >
+      <div className={cn([styles.headerContainer, headerClasses])}>
+        <div className={styles.titleContainer} onClick={toggleContent}>
           {isOpened ? (
             <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -40,11 +50,7 @@ export default ({ heading, actions = null, children }: { actions?: ReactNode; he
         </div>
         <div>{actions}</div>
       </div>
-      <AnimateHeight
-        id="example-panel"
-        duration={500}
-        height={isOpened ? 'auto' : 0}
-      >
+      <AnimateHeight id="example-panel" duration={500} height={isOpened ? 'auto' : 0}>
         {children}
       </AnimateHeight>
     </div>

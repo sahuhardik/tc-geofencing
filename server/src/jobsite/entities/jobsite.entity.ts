@@ -56,6 +56,9 @@ export class JobSite extends CoreEntity {
   @Column({ default: '' })
   createdBy: string;
 
+  @Column({ type: 'datetime', default: null })
+  whenDeleted: Date;
+
   @OneToMany(() => JobSiteUser, (jobSiteUser) => jobSiteUser.jobSite)
   @JoinColumn()
   jobSiteUsers: JobSiteUser[];

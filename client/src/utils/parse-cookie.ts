@@ -7,24 +7,24 @@ function tryDecode(str: string, decode: any) {
 }
 
 export function parseContextCookie(str: string, options?: any) {
-  var pairSplitRegExp = /; */;
-  var decode = decodeURIComponent;
-  var obj: any = {};
-  var opt = options || {};
-  var pairs = str?.split(pairSplitRegExp) ?? [];
-  var dec = opt.decode || decode;
+  const pairSplitRegExp = /; */;
+  const decode = decodeURIComponent;
+  const obj: any = {};
+  const opt = options || {};
+  const pairs = str?.split(pairSplitRegExp) ?? [];
+  const dec = opt.decode || decode;
 
-  for (var i = 0; i < pairs.length; i++) {
-    var pair = pairs[i];
-    var eq_idx = pair.indexOf('=');
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = pairs[i];
+    let eq_idx = pair.indexOf('=');
 
     // skip things that don't look like key=value
     if (eq_idx < 0) {
       continue;
     }
 
-    var key = pair.substr(0, eq_idx).trim();
-    var val = pair.substr(++eq_idx, pair.length).trim();
+    const key = pair.substr(0, eq_idx).trim();
+    let val = pair.substr(++eq_idx, pair.length).trim();
 
     // quoted values
     if ('"' == val[0]) {

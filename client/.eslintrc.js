@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'import'],
+  plugins: ['@typescript-eslint', 'eslint-plugin-import'],
   settings: {
     'import/extensions': ['.ts', '.tsx'],
     'import/parsers': {
@@ -19,9 +19,19 @@ module.exports = {
     },
   },
   rules: {
-    'import/no-unresolved': 'error',
-    // support "deleting" keys via destructuring
-    '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true }],
+    'no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        args: 'none',
+        ignoreRestSiblings: false,
+        caughtErrors: 'none',
+        caughtErrorsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_',
+      },
+    ],
+    'import/no-unused-modules': 'error',
   },
   overrides: [
     {

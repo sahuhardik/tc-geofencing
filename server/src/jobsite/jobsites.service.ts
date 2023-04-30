@@ -6,7 +6,7 @@ import {
   NotFoundException,
   forwardRef,
 } from '@nestjs/common';
-import { FindManyOptions, Like, Repository } from 'typeorm';
+import { FindManyOptions, Like, Repository, IsNull } from 'typeorm';
 import { JobSite } from './entities/jobsite.entity';
 import { GetJobSitesDto, JobSitePaginator } from './dto/get-jobsites.dto';
 import { paginate } from '../common/pagination/paginate';
@@ -17,7 +17,6 @@ import { IUser } from '../timecamp/types/user.interface';
 import { JobSiteUsersService } from '../jobsite-user/jobsite-users.service';
 import { CreateJobSiteUserDto } from '../jobsite-user/dto/create-jobsite-user.dto';
 import { calculateCoordinateDistance } from '../utils/maps';
-
 
 @Injectable()
 export class JobSitesService {
@@ -61,7 +60,7 @@ export class JobSitesService {
     search,
   }: GetJobSitesDto): Promise<JobSitePaginator> {
     if (!page) page = 1;
-    if (!limit) limit = 50;
+    if (!limit) limit = 200;
     const skip = (page - 1) * limit;
 
     const options: FindManyOptions<JobSite> = {
@@ -69,6 +68,7 @@ export class JobSitesService {
       skip,
       where: {
         createdBy: (this.request.user as IUser).user_id,
+        whenDeleted: IsNull(),
       },
       relations: {
         jobSiteUsers: true,
@@ -90,16 +90,23 @@ export class JobSitesService {
         ...jobsite,
         jobSiteUsers: jobsite.jobSiteUsers.map((jobSiteUser, i) => {
           const lastPosition = {
-            lat: jobsite.latitude + (0.00001)*(i+1),
-            lng: jobsite.longitude + (0.0001)*(i+1),
-          }; 
+            lat: jobsite.latitude + 0.00001 * (i + 1),
+            lng: jobsite.longitude + 0.0001 * (i + 1),
+          };
           // TODO: Need to member location with timecamp backend
-          return ({
-          ...jobSiteUser,
-          lastPosition,
-          isActive: jobsite.radius >= calculateCoordinateDistance(lastPosition?.lat, lastPosition?.lng, jobsite.latitude, jobsite.longitude),
-
-        })})
+          return {
+            ...jobSiteUser,
+            lastPosition,
+            isActive:
+              jobsite.radius >=
+              calculateCoordinateDistance(
+                lastPosition?.lat,
+                lastPosition?.lng,
+                jobsite.latitude,
+                jobsite.longitude,
+              ),
+          };
+        }),
       })),
       ...paginate(total, page, limit, results.length, url),
     };
@@ -167,7 +174,14 @@ export class JobSitesService {
       throw new NotFoundException('JobSite not found.');
     }
 
-    await this.jobSiteRepository.delete(id);
+    await this.jobSiteRepository.update(
+      {
+        id,
+      },
+      {
+        whenDeleted: new Date(),
+      },
+    );
     return;
   }
 }

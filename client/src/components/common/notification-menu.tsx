@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLayer } from 'react-laag';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Bell } from '@components/icons/bell';
 import { Dot } from '@components/icons/dot';
 import NotificationCard from '@components/ui/notification-card';
@@ -72,7 +72,7 @@ const NotificationMenu: React.FC<MenuType> = ({ data }) => {
                   Clear all
                 </button>
               </div>
-              {!!data.length ? (
+              {data.length ? (
                 data?.map((item: ItemType, index) => (
                   <NotificationCard key={index} src={item.source} text={item.text} time={item.time} />
                 ))

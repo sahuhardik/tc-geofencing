@@ -22,6 +22,7 @@ import { PlusIcon } from '@components/icons/plus-icon';
 import { DownloadIconOutline } from '@components/icons/download-icon-outline';
 import classNames from 'classnames';
 import styles from './jobsites.module.css';
+import { BigMarker } from '@components/icons/big-marker';
 
 export default function JobSites() {
   const { t } = useTranslation();
@@ -43,12 +44,12 @@ export default function JobSites() {
 
   const [mapCenter, setMapCenter] = useState<ILatLng>();
   const [editJobSite, setEditJobSite] = useState<JobSite>();
-  const [ openJobsiteModal, setOpenJobsiteModal ] = useState<boolean>(false);
+  const [openJobsiteModal, setOpenJobsiteModal] = useState<boolean>(false);
   const onModalClose = () => {
     refetch();
     setOpenJobsiteModal(false);
     setEditJobSite(undefined);
-  }
+  };
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -61,11 +62,21 @@ export default function JobSites() {
     setPage(current);
   }
 
-  function handleJobsiteEdit (jobsite: JobSite) {
+  function handleJobsiteEdit(jobsite: JobSite) {
     setEditJobSite(jobsite);
     setOpenJobsiteModal(true);
-    
   }
+
+  const importJobsiteBtn = (
+    <Button type="button" size="small" variant="outline" className="h-9 rounded-3xl">
+      &nbsp; <DownloadIconOutline height={27} /> &nbsp; Import job sites&nbsp;&nbsp;&nbsp;
+    </Button>
+  );
+  const addJobsiteBtn = (
+    <Button size="small" onClick={() => setOpenJobsiteModal(true)} className="h-9 rounded-3xl">
+      &nbsp; <PlusIcon height={27} /> {t('form:button-label-add-jobsite')} &nbsp;&nbsp;&nbsp;
+    </Button>
+  );
 
   const jobsites = filterTerm
     ? data?.jobsites.data.filter(
@@ -76,44 +87,47 @@ export default function JobSites() {
     : data?.jobsites.data;
   return (
     <>
-      <Card className="flex flex-wrap-reverse flex-row mb-8 md:p-4">
       <Modal open={openJobsiteModal} onClose={onModalClose}>
-        <Card className={classNames(["flex flex-wrap flex-row  py-20 px-24", styles.modalContainer])}>
-            <CreateOrUpdateJobSiteForm initialValues={editJobSite}  onCancel={onModalClose} />
+        <Card className={classNames(['flex flex-wrap flex-row  py-20 px-24', styles.modalContainer])}>
+          <CreateOrUpdateJobSiteForm initialValues={editJobSite} onCancel={onModalClose} />
         </Card>
       </Modal>
-        <div className="xl:w-5/12 w-full xl:mb-0 pr-6">
-          <Search onChange={handleSearch} className="mb-5" />
-          <JobSiteList
-            setMapCenter={(center: ILatLng) => setMapCenter(center)}
-            jobsites={jobsites}
-            onPagination={handlePagination}
-            onOrder={setOrder}
-            onSort={setColumn}
-            onEditJobSite={handleJobsiteEdit}
-          />
-        </div>
-        <div className="xl:w-7/12 w-full mb-4 xl:mb-0 rounded-2xl overflow-hidden">
-          <div className='h-[48px] mb-2 flex items-center gap-5 ' >
-          <Button
-            type="button"
-            size="small"
-            variant="outline"
-            className="h-9 rounded-3xl"
-          >
-            &nbsp; <DownloadIconOutline height={27} />  &nbsp; Import job sites&nbsp;&nbsp;&nbsp;
-          </Button>
-          <Button
-            size="small"
-            onClick={() => setOpenJobsiteModal(true)}
-            className="h-9 rounded-3xl"
-          >
-            &nbsp; <PlusIcon height={27} /> {t('form:button-label-add-jobsite')} &nbsp;&nbsp;&nbsp;
-          </Button>
+      {jobsites?.length === 0 && (
+        <div className="w-full h-[88vh] flex-col flex justify-center items-center">
+          <BigMarker />
+          <span className={`${styles.emptyCardHeading} mt-5`}>No job sites yet</span>
+          <span className={`${styles.emptyCardSubHeading} mt-4`}>
+            Set up job sites for your team that automatically start and stop tracking time as they enter or leave. See
+            where your team is and how long they’ve been on site.
+          </span>
+          <div className="flex-col flex pt-9 gap-4">
+            {addJobsiteBtn}
+            {importJobsiteBtn}
           </div>
-          <JobSiteMapWidget center={mapCenter} jobSites={data?.jobsites.data || []} zoom={18} height={'100%'} />
         </div>
-      </Card>
+      )}
+      {jobsites?.length !== 0 && (
+        <Card className="flex flex-wrap-reverse flex-row mb-8 md:p-4">
+          <div className="xl:w-5/12 w-full xl:mb-0 pr-6">
+            <Search onChange={handleSearch} className="mb-5" />
+            <JobSiteList
+              setMapCenter={(center: ILatLng) => setMapCenter(center)}
+              jobsites={jobsites}
+              onPagination={handlePagination}
+              onOrder={setOrder}
+              onSort={setColumn}
+              onEditJobSite={handleJobsiteEdit}
+            />
+          </div>
+          <div className="xl:w-7/12 w-full mb-4 xl:mb-0 rounded-2xl overflow-hidden">
+            <div className="h-[48px] mb-2 flex items-center gap-5 ">
+              {importJobsiteBtn}
+              {addJobsiteBtn}
+            </div>
+            <JobSiteMapWidget center={mapCenter} jobSites={data?.jobsites.data || []} zoom={18} height={'100%'} />
+          </div>
+        </Card>
+      )}
     </>
   );
 }

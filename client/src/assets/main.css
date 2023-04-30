@@ -200,7 +200,7 @@
 .html-loader {
   border: 8px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 8px solid #25CF60;
+  border-top: 8px solid #25cf60;
   width: 60px;
   height: 60px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
@@ -209,20 +209,28 @@
 
 /* Safari */
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-input[type=range]{
+input[type='range'] {
   -webkit-appearance: none;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
+input[type='range']::-webkit-slider-runnable-track {
   width: 300px;
   height: 5px;
   background: #ddd;
@@ -230,22 +238,26 @@ input[type=range]::-webkit-slider-runnable-track {
   border-radius: 3px;
 }
 
-input[type=range]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: none;
   height: 16px;
   width: 16px;
   border-radius: 50%;
-  background: #4BB063;
+  background: #4bb063;
   margin-top: -4px;
 }
 
-input[type=range]:focus {
+input[type='range']:focus {
   outline: none;
 }
 
-input[type=range]:focus::-webkit-slider-runnable-track {
+input[type='range']:focus::-webkit-slider-runnable-track {
   background: #ccc;
+}
+
+.body {
+  font-family: 'Poppins';
 }
 
 @import './custom-plugins.css';

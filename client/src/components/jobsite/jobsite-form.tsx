@@ -1,9 +1,9 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { useTranslation } from 'next-i18next';
 import Input from '@components/ui/input';
-import { Control, useForm, UseFormRegister, UseFormSetValue, useWatch } from 'react-hook-form';
+import { Control, UseFormRegister, UseFormSetValue, useForm, useWatch } from 'react-hook-form';
 import Button from '@components/ui/button';
 import SwitchInput from '@components/ui/switch-input';
 import AutoComplete from '@components/ui/autocomplete';
@@ -22,7 +22,6 @@ import cn from 'classnames';
 import CrossIcon from '@components/icons/cross-icon';
 import InfoIcon from '@components/icons/info-icon';
 import { ArrowPrev } from '@components/icons/arrow-prev';
-import React from 'react';
 
 export type JobSiteFormValues = {
   identifier: string;
@@ -188,9 +187,7 @@ const FormStepTwo = ({
           parseLabel={(item) => `${item?.name}${item?.projectName ? ` - ${item?.projectName}` : ''}` as string}
           parseValue={(item) => item?.task_id as string}
         />
-        {errors?.task?.message && (
-          <p className="my-2 text-xs text-start text-red-500">{errors?.task.message}</p>
-        )}
+        {errors?.task?.message && <p className="my-2 text-xs text-start text-red-500">{errors?.task.message}</p>}
       </div>
       <div className="mb-5 flex gap-3">
         <SwitchInput name="notifyOnExit" control={control} />

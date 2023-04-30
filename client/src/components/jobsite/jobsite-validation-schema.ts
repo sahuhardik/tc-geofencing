@@ -7,16 +7,15 @@ export const jobsiteStepOneValidationSchema = yup.object().shape({
   address: yup.string().required('form:error-jobsite-address-required'),
 });
 
-
 export const jobsiteStepTwoValidationSchema = jobsiteStepOneValidationSchema.shape({
   notifyOnEntry: yup.boolean(),
   notifyOnExit: yup.boolean(),
   pushNotification: yup.boolean(),
-  jobSiteUsers:   yup.array().test({
+  jobSiteUsers: yup.array().test({
     message: 'Please select atleast one jobsite user',
-    test: arr => {
-      return arr !== undefined && arr?.length  != 0;
+    test: (arr) => {
+      return arr !== undefined && arr?.length != 0;
     },
   }),
-  task: yup.object().required('Please select task')
+  task: yup.object().required('Please select task'),
 });

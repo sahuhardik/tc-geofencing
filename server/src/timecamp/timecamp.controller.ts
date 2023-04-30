@@ -7,13 +7,17 @@ import { GetTimeCampTasksDto, TimeCampTaskPaginator } from './dto/get-task.dto';
 import { GetTimeCampUsersDto } from './dto/get-user.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { IUser } from './types/user.interface';
+import { JobSitesService } from 'src/jobsite/jobsites.service';
 
 @ApiTags('TimeCamp')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('timecamp')
 export class TimeCampController {
-  constructor(@Inject(REQUEST) private readonly request: Request) {}
+  constructor(
+    @Inject(REQUEST) private readonly request: Request,
+    private readonly jobsitesService: JobSitesService,
+  ) {}
 
   @Get('tasks')
   async getTimeCampTasks(
@@ -44,12 +48,16 @@ export class TimeCampController {
 
   @Get('user-entries')
   async getUserEntries(
-    @Query() query: { userId: string },
+    @Query() query: { userId: string; startDate?: string; endDate?: string },
   ): Promise<TimeCampTaskPaginator> {
     const timeCampService = new TimeCampService(
       (this.request.user as IUser).token,
     );
 
-    return timeCampService.getUserEntries(query.userId);
+    return timeCampService.getUserEntries(
+      query.userId,
+      query.startDate,
+      query.endDate,
+    );
   }
 }

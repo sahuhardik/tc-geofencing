@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { UseFormSetValue, Control, useWatch } from 'react-hook-form';
+import React, { useEffect, useRef, useState } from 'react';
+import { Control, UseFormSetValue, useWatch } from 'react-hook-form';
 
-import { Wrapper, Status } from '@googlemaps/react-wrapper';
+import { Status, Wrapper } from '@googlemaps/react-wrapper';
 import { JobSiteFormValues } from '@components/jobsite/jobsite-form';
-import { Map, Marker, Circle } from './google-map-components';
+import { Circle, Map, Marker } from './google-map-components';
 
 interface IMaps {
   control: Control<any>;
@@ -25,12 +25,12 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px
   });
 
   async function geocodePosition(pos: google.maps.LatLng): Promise<string> {
-    if (geocoderRef.current){
+    if (geocoderRef.current) {
       const response = await geocoderRef.current.geocode({
-        location: pos
+        location: pos,
       });
       if (response && response.results?.length > 0) {
-        return (response.results[0].formatted_address);
+        return response.results[0].formatted_address;
       }
     }
     return '';
@@ -43,7 +43,7 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px
         lat: Number(latitude),
       });
       setClick(new google.maps.LatLng(latitude, longitude));
-      
+
       setZoom(10);
     }
   }, [longitude, latitude, window.google]);
@@ -52,7 +52,7 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px
     if (window.google) {
       geocoderRef.current = new google.maps.Geocoder();
     }
-  }, [ window.google ]);
+  }, [window.google]);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
     // avoid directly mutating state
@@ -61,7 +61,7 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px
     setValue('latitude', e.latLng?.lat() || 0);
     setValue('latitude', e.latLng?.lat() || 0);
     geocodePosition(e.latLng!).then((address) => {
-      setValue('address' ,address);
+      setValue('address', address);
     });
   };
 
