@@ -18,6 +18,8 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { useReportEntriesQuery } from '@data/timecamp/use-timecamp-report.query';
 import { useEffect, useState } from 'react';
+import { GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 enum GROUP_BY {
   DAY = 'day',
@@ -398,3 +400,9 @@ export default function Report() {
 Report.authenticate = {};
 
 Report.Layout = Layout;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale!, ['form', 'common', 'table'])),
+  },
+});
