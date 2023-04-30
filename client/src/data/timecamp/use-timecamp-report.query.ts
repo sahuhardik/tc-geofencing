@@ -8,7 +8,8 @@ import { getMemberEntries } from '@data/jobsite/use-jobsite.query';
 
 export const getReportEntries = async (
   startDate: string,
-  endDate: string
+  endDate: string,
+  jobsiteFilter: string,
 ): Promise<{
   entries: TimeCampEntry[];
   jobsites: TJobsite[];
@@ -22,6 +23,7 @@ export const getReportEntries = async (
     };
   } = await JobSite.all(API_ENDPOINTS.JOBSITES);
   let jobsiteUsers = jobsites
+    .filter((jobsite) => jobsiteFilter ? jobsite.id === jobsiteFilter : true )
     .map((jobsite) => jobsite.jobSiteUsers)
     .flat()
     .filter(Boolean) as JobSiteUser[];
@@ -35,7 +37,7 @@ export const getReportEntries = async (
   return { entries: entries, jobsites, jobsiteUsers };
 };
 
-export const useReportEntriesQuery = (startDate: string, endDate: string) => {
+export const useReportEntriesQuery = (startDate: string, endDate: string, jobsiteFilter: string) => {
   return useQuery<
     {
       entries: TimeCampEntry[];
@@ -43,5 +45,5 @@ export const useReportEntriesQuery = (startDate: string, endDate: string) => {
       jobsiteUsers: JobSiteUser[];
     },
     Error
-  >([], () => getReportEntries(startDate, endDate));
+  >([], () => getReportEntries(startDate, endDate, jobsiteFilter));
 };

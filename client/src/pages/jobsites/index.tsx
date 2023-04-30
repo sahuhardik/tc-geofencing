@@ -92,7 +92,7 @@ export default function JobSites() {
           <CreateOrUpdateJobSiteForm initialValues={editJobSite} onCancel={onModalClose} />
         </Card>
       </Modal>
-      {jobsites?.length === 0 && (
+      {jobsites?.length === 0 && filterTerm === '' && (
         <div className="w-full h-[88vh] flex-col flex justify-center items-center">
           <BigMarker />
           <span className={`${styles.emptyCardHeading} mt-5`}>No job sites yet</span>
@@ -106,7 +106,7 @@ export default function JobSites() {
           </div>
         </div>
       )}
-      {jobsites?.length !== 0 && (
+      {(jobsites?.length !== 0 || filterTerm !== '') && (
         <Card className="flex flex-wrap-reverse flex-row mb-8 md:p-4">
           <div className="xl:w-5/12 w-full xl:mb-0 pr-6">
             <Search onChange={handleSearch} className="mb-5" />

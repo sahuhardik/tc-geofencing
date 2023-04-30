@@ -13,6 +13,8 @@ import Modal from '@components/ui/modal/modal';
 import styles from './report.module.css';
 import { CalendarIcon } from '@components/icons/calendar';
 import DropdownMenu from '@components/ui/dropdown-menu';
+import { useTranslation } from 'next-i18next';
+import { EmptyDataTable } from '@components/icons/empty-data-table';
 
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -20,6 +22,8 @@ import { useReportEntriesQuery } from '@data/timecamp/use-timecamp-report.query'
 import { useEffect, useState } from 'react';
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import ErrorMessage from '@components/ui/error-message';
+import Loader from '@components/ui/loader/loader';
 
 enum GROUP_BY {
   DAY = 'day',
@@ -127,27 +131,33 @@ const DateFilter = ({
   );
 };
 
-const JobsiteFilterBtn = () => {
+const JobsiteFilterBtn = ({
+  jobsites,
+  selectJobsite,
+  value,
+}: {
+  jobsites: JobSite[];
+  selectJobsite: Function;
+  value: string;
+}) => {
   return (
     <div className={styles.roundedBtnContainer}>
       <SmallMarker />
-      <span className={styles.btnText}>Job sites</span>
+      <span className={styles.btnText}>
+        {value ? jobsites.find((jobsite) => jobsite.id === value)?.identifier : 'Job sites'}
+      </span>
       <DropdownMenu
         id={'jobFilterBtn'}
         actionButton={<ArrowUpPlain />}
         menuButtons={[
           {
-            label: 'Day fqwhf dfw dwfwefr fwerfwe fwef',
-            onClick: () => {},
+            label: 'All',
+            onClick: () => selectJobsite(null),
           },
-          {
-            label: 'Person',
-            onClick: () => {},
-          },
-          {
-            label: 'Jobsite',
-            onClick: () => {},
-          },
+          ...jobsites.map((jobsite) => ({
+            label: jobsite.identifier,
+            onClick: () => selectJobsite(jobsite.id),
+          })),
         ]}
       />
     </div>
@@ -273,6 +283,7 @@ function TimeEntryGroup({ groupName, timeEntries }: ITimeEntryGroupProps) {
 
 export default function Report() {
   const [groupBy, setGroupBy] = useState<GROUP_BY>(GROUP_BY.DAY);
+  const [jobsiteFilter, setJobsiteFilter] = useState<string>(null!);
   const [dateFilter, setDateFilter] = useState<CalendarDateRange[]>([
     {
       startDate: startOfWeek(new Date()),
@@ -280,6 +291,7 @@ export default function Report() {
       key: 'selection',
     },
   ]);
+  const { t } = useTranslation();
   const {
     data,
     isLoading: loading,
@@ -287,12 +299,16 @@ export default function Report() {
     refetch,
   } = useReportEntriesQuery(
     dateFormat(dateFilter[0].startDate, 'YYY-MM-dd'),
-    dateFormat(dateFilter[0].endDate, 'YYY-MM-dd')
+    dateFormat(dateFilter[0].endDate, 'YYY-MM-dd'),
+    jobsiteFilter
   );
 
   useEffect(() => {
     refetch();
-  }, [dateFilter[0].startDate]);
+  }, [dateFilter[0].startDate, jobsiteFilter]);
+
+  if (loading) return <Loader text={t('common:text-loading')} />;
+  if (error) return <ErrorMessage message={error.message} />;
 
   const timecampUserMap =
     data?.jobsiteUsers.reduce((timecampUserMap, jobsiteUser) => {
@@ -369,7 +385,7 @@ export default function Report() {
         </div>
 
         <div className="w-full flex justify-between p-3">
-          <JobsiteFilterBtn />
+          <JobsiteFilterBtn jobsites={data?.jobsites || []} selectJobsite={setJobsiteFilter} value={jobsiteFilter} />
           <GroupByBtn groupBy={groupBy} handleGroupByChange={setGroupBy} />
         </div>
         <div className={styles.headContainer}>
@@ -377,16 +393,24 @@ export default function Report() {
         </div>
 
         <div className={styles.tableContainer}>
-          <div className={styles.entriesContainer}>
-            {timeEntryGroups?.map((timeEntryGroup, i) => (
-              <TimeEntryGroup
-                key={i}
-                jobsites={data?.jobsites ?? []}
-                timecampUserMap={timecampUserMap ?? {}}
-                {...timeEntryGroup}
-              />
-            ))}
+          {timeEntryGroups?.length ? (
+            <div className={styles.entriesContainer}>
+              {timeEntryGroups?.map((timeEntryGroup, i) => (
+                <TimeEntryGroup
+                  key={i}
+                  jobsites={data?.jobsites ?? []}
+                  timecampUserMap={timecampUserMap ?? {}}
+                  {...timeEntryGroup}
+                />
+              ))}
+            </div>
+          ): 
+          <div className='w-full flex justify-center h-[50vh] flex-col gap-3 items-center' >
+            <EmptyDataTable />
+            <span className={styles.noDataTextHeading} >No data to show</span>
+            <span className={styles.noDataTextSubText} >There is no data recorded for this time period with selected parameters. Try changing filters.</span>
           </div>
+          }
         </div>
         <div className="flex-1 w-full flex justify-end items-end">
           <span className={styles.totalTimeFinalLabel}>Total: </span>

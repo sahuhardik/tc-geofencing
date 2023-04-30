@@ -224,3 +224,22 @@
   color: #286efb;
   cursor: pointer;
 }
+
+.noDataTextHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 18px;
+  line-height: 27px;
+}
+
+.noDataTextSubText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400 !important;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  color: #3D3D3D;
+  width: 502px;
+}
