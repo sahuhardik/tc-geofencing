@@ -102,7 +102,7 @@ export default function JobSites() {
           </span>
           <div className="flex-col flex pt-9 gap-4">
             {addJobsiteBtn}
-            {importJobsiteBtn}
+            {/* {importJobsiteBtn} */}
           </div>
         </div>
       )}
@@ -121,7 +121,7 @@ export default function JobSites() {
           </div>
           <div className="xl:w-7/12 w-full mb-4 xl:mb-0 rounded-2xl overflow-hidden">
             <div className="h-[48px] mb-2 flex items-center gap-5 ">
-              {importJobsiteBtn}
+              {/* {importJobsiteBtn} */}
               {addJobsiteBtn}
             </div>
             <JobSiteMapWidget center={mapCenter} jobSites={data?.jobsites.data || []} zoom={18} height={'100%'} />
