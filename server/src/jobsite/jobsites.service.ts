@@ -85,6 +85,28 @@ export class JobSitesService {
     const [results, total] = await this.jobSiteRepository.findAndCount(options);
 
     const url = `/jobsites?search=${search}&limit=${limit}&page=${page + 1}`;
+
+    // const timeCampService = new TimeCampService(
+    //   (this.request.user as IUser).token,
+    // );
+
+    // const jobsiteUserIds = results
+    //   .map((jobsite) =>
+    //     jobsite.jobSiteUsers.map((jobsiteUser) => jobsiteUser.userId),
+    //   )
+    //   .flat();
+
+    // const locations = await timeCampService.getUsersLocations(jobsiteUserIds);
+
+    await Promise.all(
+      results.map(async (jobsite) => {
+        jobsite.jobSiteUsers =
+          await this.jobsiteUsersService.fillJobsiteUsersWithUsers(
+            jobsite.jobSiteUsers,
+          );
+        return jobsite;
+      }),
+    );
     return {
       data: results.map((jobsite) => ({
         ...jobsite,

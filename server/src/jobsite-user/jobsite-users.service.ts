@@ -1,6 +1,7 @@
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { CacheService } from '../cache/cache.service';
 import {
   FindManyOptions,
   FindOptionsWhere,
@@ -23,6 +24,7 @@ export class JobSiteUsersService {
     @Inject(REQUEST) private readonly request: Request,
     @Inject(forwardRef(() => JobSitesService))
     private readonly jobsitesService: JobSitesService,
+    private readonly cacheService: CacheService,
   ) {}
 
   async create(
@@ -31,19 +33,8 @@ export class JobSiteUsersService {
   ) {
     await this.jobsitesService.get(createJobSiteUserDto.jobsiteId);
 
-    const timeCampService = new TimeCampService(
-      (this.request.user as IUser).token,
-    );
-
-    const user = await timeCampService.getUserById(
-      String(createJobSiteUserDto.userId),
-    );
-
     const newJobSiteUser =
       this.jobSiteUserRepository.create(createJobSiteUserDto);
-
-    newJobSiteUser.user = user;
-    newJobSiteUser.userEmail = user.email;
 
     await this.jobSiteUserRepository.save(newJobSiteUser, options);
     return newJobSiteUser;
@@ -56,7 +47,7 @@ export class JobSiteUsersService {
 
     const results = await this.jobSiteUserRepository.find(options);
 
-    return results;
+    return this.fillJobsiteUsersWithUsers(results);
   }
 
   async deleteJobSiteUserById(jobsiteId: string): Promise<void> {
@@ -76,8 +67,64 @@ export class JobSiteUsersService {
       select: { id: true },
     };
 
-    const results = await this.jobSiteUserRepository.find(options);
+    let jobsiteUsers = await this.jobSiteUserRepository.find(options);
+    jobsiteUsers = await this.fillJobsiteUsersWithUsers(jobsiteUsers);
 
-    return { data: results.map((res) => ({ ...res.jobSite })) };
+    return { data: jobsiteUsers.map((res) => ({ ...res.jobSite })) };
+  }
+
+  async fillJobsiteUsersWithUsers(
+    jobsiteUsers: JobSiteUser[],
+  ): Promise<JobSiteUser[]> {
+    const userIds = jobsiteUsers.map(({ userId }) => userId);
+    const users = await this.getUsers(userIds);
+    const usersSet = users.reduce((usersSet, user) => {
+      usersSet[user.user_id] = user;
+      return usersSet;
+    }, {} as Record<number, IUser>);
+    return jobsiteUsers.map((jobsiteUser) => ({
+      ...jobsiteUser,
+      userEmail: usersSet[jobsiteUser.userId].email,
+      user: usersSet[jobsiteUser.userId],
+    }));
+  }
+
+  async getUsers(userIds: number[]): Promise<IUser[]> {
+    const USER_CACHE_TTL = 6 * 60 * 60; //Cache time 6 hour
+
+    const getUserCacheKey = (userId: number) => `user_${userId}`;
+    const cacheUserKeys = userIds.map(getUserCacheKey);
+    const cachedUsers = (await this.cacheService.mget(cacheUserKeys))
+      .map((userData) => JSON.parse(userData) as IUser)
+      .filter(Boolean);
+    let tcUsers: IUser | IUser[];
+    const userIdsToFetch = userIds.filter(
+      (userId) =>
+        !cachedUsers.find(
+          (cachedUser) => Number(cachedUser.user_id) === Number(userId),
+        ),
+    );
+
+    if (userIdsToFetch.length) {
+      const apiToken = (this.request.user as IUser).token;
+      const timeCampService = new TimeCampService(apiToken);
+      tcUsers = await timeCampService.getTimeCampUsersByIds(
+        userIdsToFetch as unknown as string[],
+      );
+      if (!Array.isArray(tcUsers)) {
+        tcUsers = [tcUsers];
+      }
+      await Promise.all(
+        tcUsers.map((tcUser) =>
+          this.cacheService.set(
+            getUserCacheKey(+tcUser.user_id),
+            JSON.stringify(tcUser),
+            USER_CACHE_TTL,
+          ),
+        ),
+      );
+    }
+
+    return cachedUsers.concat(tcUsers).filter(Boolean);
   }
 }

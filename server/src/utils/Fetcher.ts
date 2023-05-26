@@ -18,7 +18,7 @@ function logErrServer(type: string, message: string): string {
 function createAxios(baseUri: string): AxiosInstance {
   const instanceAxios = axios.create({
     baseURL: baseUri,
-    timeout: 5000,
+    timeout: 10000,
   });
 
   // interceptor request

@@ -83,6 +83,22 @@ export class TimeCampService {
     return { data };
   }
 
+  async getTimeCampUsersByIds(userIds: string[]): Promise<IUser[]> {
+    const { data } = await this.timeCampAxios.default.get<IUser[]>(
+      `/third_party/api/user/${userIds.join()}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Accept-Encoding': 'gzip,deflate,compress',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+        },
+      },
+    );
+
+    return data;
+  }
+
   async getUserEntries(
     userId: string,
     startDate?: string,
