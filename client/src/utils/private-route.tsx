@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { getAuthCredentials } from './auth-utils';
-import Loader from '@components/ui/loader/loader';
 import { ROUTES } from './routes';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {

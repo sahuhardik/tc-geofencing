@@ -4,4 +4,5 @@ export interface IUser {
   display_name: string;
   time_zone?: string;
   token?: string;
+  group_id: string;
 }

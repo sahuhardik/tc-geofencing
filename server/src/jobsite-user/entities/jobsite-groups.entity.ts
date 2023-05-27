@@ -1,22 +1,17 @@
 import { JobSite } from '../../jobsite/entities/jobsite.entity';
-import { IUser } from '../../timecamp/types/user.interface';
 import { Entity, Column, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { CoreEntity } from '../../common/entities/core.entity';
 
-@Entity({ name: 'jobsite_users' })
-@Unique(['jobsiteId', 'userId'])
-export class JobSiteUser extends CoreEntity {
+@Entity({ name: 'jobsite_groups' })
+@Unique(['jobsiteId', 'groupId'])
+export class JobSiteGroup extends CoreEntity {
   @Column({ nullable: false })
   jobsiteId: string;
 
   @Column('numeric', { nullable: false })
-  userId: number;
+  groupId: number;
 
-  userEmail: string;
-
-  user: IUser;
-
-  @ManyToOne(() => JobSite, (jobsite) => jobsite.jobSiteUsers)
+  @ManyToOne(() => JobSite, (jobsite) => jobsite.jobSiteGroups)
   @JoinColumn({ name: 'jobsiteId' })
   jobSite: JobSite;
 }

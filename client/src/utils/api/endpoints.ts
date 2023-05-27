@@ -6,4 +6,5 @@ export const API_ENDPOINTS = {
   TIMECAMP_TASKS: 'timecamp/tasks',
   TIMECAMP_USERS: 'timecamp/users',
   MEMBER_TIMESHEET: 'timecamp/user-entries',
+  TIMECAMP_GROUP_HIERARCHY: 'timecamp/user-groups-hierarchy',
 };

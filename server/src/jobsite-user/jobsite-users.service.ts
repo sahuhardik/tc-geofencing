@@ -7,6 +7,8 @@ import {
   FindOptionsWhere,
   Repository,
   SaveOptions,
+  EntityManager,
+  DeleteResult,
 } from 'typeorm';
 import { JobSiteUser } from './entities/jobsite-user.entity';
 import { JobSite } from '../jobsite/entities/jobsite.entity';
@@ -15,12 +17,16 @@ import { GEOFENCE_REPOSITORIES } from '../common/constants';
 import { JobSitesService } from '../jobsite/jobsites.service';
 import { IUser } from '../timecamp/types/user.interface';
 import { TimeCampService } from '../timecamp/timecamp.service';
+import { CreateJobSiteGroupDto } from './dto/create-jobsite-group.dto';
+import { JobSiteGroup } from './entities/jobsite-groups.entity';
 
 @Injectable()
 export class JobSiteUsersService {
   constructor(
     @Inject(GEOFENCE_REPOSITORIES.JOBSITE_USER_REPOSITORY)
     private jobSiteUserRepository: Repository<JobSiteUser>,
+    @Inject(GEOFENCE_REPOSITORIES.JOBSITE_GROUP_REPOSITORY)
+    private jobSiteGroupRepository: Repository<JobSiteGroup>,
     @Inject(REQUEST) private readonly request: Request,
     @Inject(forwardRef(() => JobSitesService))
     private readonly jobsitesService: JobSitesService,
@@ -31,13 +37,33 @@ export class JobSiteUsersService {
     createJobSiteUserDto: CreateJobSiteUserDto,
     options?: SaveOptions,
   ) {
-    await this.jobsitesService.get(createJobSiteUserDto.jobsiteId);
-
     const newJobSiteUser =
       this.jobSiteUserRepository.create(createJobSiteUserDto);
 
     await this.jobSiteUserRepository.save(newJobSiteUser, options);
     return newJobSiteUser;
+  }
+
+  async saveJobsiteUsers(
+    em: EntityManager,
+    createJobSiteUserDtos: CreateJobSiteUserDto[],
+  ) {
+    const newJobSiteUsers = createJobSiteUserDtos.map((jobSiteUser) =>
+      this.jobSiteUserRepository.create(jobSiteUser),
+    );
+    const savedJobSiteUsers = await em.save(newJobSiteUsers);
+    return savedJobSiteUsers;
+  }
+
+  async saveJobsiteGroups(
+    em: EntityManager,
+    createJobSiteGroupDtos: CreateJobSiteGroupDto[],
+  ) {
+    const newJobSiteGroups = createJobSiteGroupDtos.map((jobSiteGroup) =>
+      this.jobSiteGroupRepository.create(jobSiteGroup),
+    );
+    const savedJobSiteGrooups = await em.save(newJobSiteGroups);
+    return savedJobSiteGrooups;
   }
 
   async getJobSiteUsersById(jobsiteId: string): Promise<JobSiteUser[]> {
@@ -50,14 +76,24 @@ export class JobSiteUsersService {
     return this.fillJobsiteUsersWithUsers(results);
   }
 
-  async deleteJobSiteUserById(jobsiteId: string): Promise<void> {
+  async deleteJobSiteUserByJobsiteId(
+    em: EntityManager,
+    jobsiteId: string,
+  ): Promise<DeleteResult> {
     const options: FindOptionsWhere<JobSiteUser> = {
       jobsiteId,
     };
+    return em.delete(JobSiteUser, options);
+  }
 
-    await this.jobSiteUserRepository.delete(options);
-
-    return;
+  async deleteJobSiteGroupByJobsiteId(
+    em: EntityManager,
+    jobsiteId: string,
+  ): Promise<DeleteResult> {
+    const options: FindOptionsWhere<JobSiteGroup> = {
+      jobsiteId,
+    };
+    return em.delete(JobSiteGroup, options);
   }
 
   async getJobSiteUsers(): Promise<{ data: JobSite[] }> {

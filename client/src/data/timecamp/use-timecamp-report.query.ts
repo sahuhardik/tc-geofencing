@@ -1,15 +1,13 @@
-import TimeCamp from '@repositories/timecamp';
 import { useQuery } from 'react-query';
 import { JobSiteUser, JobSite as TJobsite, TimeCampEntry } from '@ts-types/generated';
 import { API_ENDPOINTS } from '@utils/api/endpoints';
 import JobSite from '@repositories/jobsite';
-import { fetchJobsites } from '@data/jobsite/use-jobsites.query';
 import { getMemberEntries } from '@data/jobsite/use-jobsite.query';
 
 export const getReportEntries = async (
   startDate: string,
   endDate: string,
-  jobsiteFilter: string,
+  jobsiteFilter: string
 ): Promise<{
   entries: TimeCampEntry[];
   jobsites: TJobsite[];
@@ -23,7 +21,7 @@ export const getReportEntries = async (
     };
   } = await JobSite.all(API_ENDPOINTS.JOBSITES);
   let jobsiteUsers = jobsites
-    .filter((jobsite) => jobsiteFilter ? jobsite.id === jobsiteFilter : true )
+    .filter((jobsite) => (jobsiteFilter ? jobsite.id === jobsiteFilter : true))
     .map((jobsite) => jobsite.jobSiteUsers)
     .flat()
     .filter(Boolean) as JobSiteUser[];

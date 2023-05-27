@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Control, UseFormSetValue, useWatch } from 'react-hook-form';
 
-import { Status, Wrapper } from '@googlemaps/react-wrapper';
+import { Wrapper } from '@googlemaps/react-wrapper';
 import { JobSiteFormValues } from '@components/jobsite/jobsite-form';
 import { Circle, Map, Marker } from './google-map-components';
 

@@ -1,21 +1,29 @@
 import styles from './accordion.module.css';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import AnimateHeight from 'react-animate-height';
 
 export default ({
+  isOn = false,
   heading,
   actions = null,
   children,
   headerClasses = '',
+  containerClasses = '',
 }: {
+  isOn?: boolean;
   actions?: ReactNode;
   heading?: ReactNode;
   children?: ReactNode;
   headerClasses?: string;
+  containerClasses?: string;
 }) => {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [isOpened, setIsOpened] = useState<boolean>(isOn);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setIsOpened(isOn);
+  }, [isOn]);
 
   const toggleContent = () => {
     setIsOpened((_isOpened) => {
@@ -28,7 +36,7 @@ export default ({
   };
 
   return (
-    <div className={styles.container}>
+    <div className={cn([styles.container, containerClasses])}>
       <div className={cn([styles.headerContainer, headerClasses])}>
         <div className={styles.titleContainer} onClick={toggleContent}>
           {isOpened ? (
@@ -50,7 +58,7 @@ export default ({
         </div>
         <div>{actions}</div>
       </div>
-      <AnimateHeight id="example-panel" duration={500} height={isOpened ? 'auto' : 0}>
+      <AnimateHeight id="example-panel" duration={200} height={isOpened ? 'auto' : 0}>
         {children}
       </AnimateHeight>
     </div>

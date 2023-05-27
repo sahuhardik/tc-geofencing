@@ -14,14 +14,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { jobsiteStepOneValidationSchema, jobsiteStepTwoValidationSchema } from './jobsite-validation-schema';
 import { useCreateJobSiteMutation } from '@data/jobsite/use-jobsite-create.mutation';
 import { useUpdateJobSiteMutation } from '@data/jobsite/use-jobsite-update.mutation';
-import { JobSite, TimeCampTask, TimeCampUser } from '@ts-types/generated';
+import { JobSite, TimeCampTask, TimeCampUser, TimeCampGroup } from '@ts-types/generated';
 import { useTimeCampTaskQuery } from '@data/timecamp/use-timecamp-tasks.query';
-import { useTimeCampUserQuery } from '@data/timecamp/use-timecamp-users.query';
+import { useTimeCampGroupHierarchyQuery } from '@data/timecamp/use-timecamp-users.query';
 import styles from './jobsite-form.module.css';
 import cn from 'classnames';
 import CrossIcon from '@components/icons/cross-icon';
 import InfoIcon from '@components/icons/info-icon';
 import { ArrowPrev } from '@components/icons/arrow-prev';
+import GroupPicker from '@components/group-picker/index';
 
 export type JobSiteFormValues = {
   identifier: string;
@@ -35,7 +36,8 @@ export type JobSiteFormValues = {
   taskId: null | number;
   createdBy: string;
   task?: TimeCampTask;
-  jobSiteUsers: { userId: string; userEmail: string; user: TimeCampUser }[];
+  jobSiteUsers: { userId: string }[];
+  jobSiteGroups: { groupId: string }[];
 };
 
 type IProps = {
@@ -65,12 +67,18 @@ const FormStepOne = ({
   radius: number;
 }) => {
   const { t } = useTranslation();
+  useEffect(() => {
+    if (!radius) {
+      // setting default value of radius
+      setValue('radius', 100);
+    }
+  }, []);
   return (
     <div className="w-full">
       <Input
         label={t('form:input-label-name')}
         {...register('identifier')}
-        error={t(errors.identifier?.message!)}
+        error={t(errors.identifier?.message)}
         variant="outline"
         className="mb-5 w-full"
         placeholder="Type your job site name...."
@@ -81,7 +89,7 @@ const FormStepOne = ({
       <Input
         label={t('Adress')}
         {...register('address')}
-        error={t(errors.address?.message!)}
+        error={t(errors.address?.message)}
         variant="outline"
         className="mb-5 w-full"
         placeholder="Start typing address..."
@@ -91,7 +99,7 @@ const FormStepOne = ({
           label={t('form:input-label-latitude')}
           {...register('latitude')}
           placeholder="Enter latiitude..."
-          error={t(errors.latitude?.message!)}
+          error={t(errors.latitude?.message)}
           variant="outline"
           className="mb-5 flex-1 w-full l:w-auto"
           type="number"
@@ -101,7 +109,7 @@ const FormStepOne = ({
           label={t('form:input-label-longitude')}
           {...register('longitude')}
           placeholder="Enter longitude..."
-          error={t(errors.longitude?.message!)}
+          error={t(errors.longitude?.message)}
           variant="outline"
           className="mb-5 flex-1 w-full l:w-auto"
           type="number"
@@ -112,18 +120,40 @@ const FormStepOne = ({
         <Input
           label={t('radius')}
           {...register('radius')}
-          error={t(errors.radius?.message!)}
+          error={t(errors.radius?.message)}
           className="mb-5 w-full border-none"
           inputClassName="px-0 py-0"
           value={radius}
           min={'1'}
-          defaultValue={1}
+          defaultValue={100}
           max={'1000'}
           type={'range'}
           variant="none"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setValue('radius', Number(event.target.value))}
         />
-        <div className={styles.radiusBlock}>{radius || 1} m</div>
+        <div className={styles.radiusBlock}>
+          <input
+            type={'number'}
+            className={styles.radiusInput}
+            onChange={(e) => {
+              let _radius = 1;
+              const inputValue = Number(e.target.value);
+              if (inputValue > 1000) {
+                _radius = 1000;
+              } else if (!inputValue) {
+                _radius = 1;
+              } else {
+                _radius = inputValue;
+              }
+              setValue('radius', Number(_radius));
+            }}
+            max={1000}
+            min={100}
+            step={1}
+            value={radius || 100}
+          />
+          m
+        </div>
       </div>
     </div>
   );
@@ -132,31 +162,45 @@ const FormStepOne = ({
 const FormStepTwo = ({
   control,
   timecampTasks,
-  timecampUsers,
-  register,
   errors,
   setValue,
+  initialUsers,
+  initialGroups,
 }: {
   control: Control<JobSiteFormValues, any>;
   register: UseFormRegister<JobSiteFormValues>;
   errors: any;
   setValue: UseFormSetValue<JobSiteFormValues>;
   timecampTasks: TimeCampTask[] | undefined;
-  timecampUsers: TimeCampUser[] | undefined;
+  initialUsers?: string[] | undefined;
+  initialGroups?: string[] | undefined;
 }) => {
   const { t } = useTranslation();
+  const { data: timecampGroups, isFetched: isTcGroupHierarchyLoaded } = useTimeCampGroupHierarchyQuery();
+
+  const handleGroupPickerChange = (selectedGroups: TimeCampGroup[], selectedUsers: TimeCampUser[]) => {
+    setValue(
+      'jobSiteUsers',
+      selectedUsers.map((user) => ({ userId: user.user_id }))
+    );
+    setValue(
+      'jobSiteGroups',
+      selectedGroups.map((group) => ({ groupId: group.group_id }))
+    );
+  };
+
   return (
     <div className="w-full">
       <div className="mb-5">
         <Label>{t('form:input-label-user-assign')}</Label>
-        <AutoComplete
-          name="jobSiteUsers"
-          control={control}
-          data={timecampUsers || []}
-          parseLabel={(item) => item?.userEmail as string}
-          parseValue={(item) => item?.userEmail as string}
-          multiple
-        />
+        {isTcGroupHierarchyLoaded && (
+          <GroupPicker
+            items={timecampGroups ?? []}
+            onChange={handleGroupPickerChange}
+            initialGroupIds={initialGroups}
+            initialUserIds={initialUsers}
+          />
+        )}
         {errors?.jobSiteUsers?.message && (
           <p className="my-2 text-xs text-start text-red-500">{errors?.jobSiteUsers.message}</p>
         )}
@@ -210,8 +254,6 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
 
   const { data: timecampTasks } = useTimeCampTaskQuery();
 
-  const { data: timecampUsers } = useTimeCampUserQuery();
-
   const {
     register,
     handleSubmit,
@@ -262,10 +304,10 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
       taskId,
       task,
       jobSiteUsers,
+      jobSiteGroups,
       address,
     } = values;
 
-    debugger;
     const input = {
       identifier,
       radius,
@@ -275,6 +317,7 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
       notifyOnExit,
       taskId: task?.task_id || taskId || null,
       jobSiteUsers,
+      jobSiteGroups,
       address,
       pushNotification,
     };
@@ -345,7 +388,8 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
           errors={errors}
           setValue={setValue}
           timecampTasks={timecampTasks}
-          timecampUsers={timecampUsers}
+          initialGroups={initialValues?.jobSiteGroups?.map((group) => group.groupId)}
+          initialUsers={initialValues?.jobSiteUsers?.map((jobsiteUser) => jobsiteUser.userId)}
         />
         <div className="mb-4 flex justify-between w-full flex-1 items-end">
           <Button

@@ -4,4 +4,5 @@ export const ROUTES = {
   LOGOUT: '/logout',
   JOBSITES: '/jobsites',
   REPORT: '/report',
+  REALTIME_MAP: '/realtime-map',
 };

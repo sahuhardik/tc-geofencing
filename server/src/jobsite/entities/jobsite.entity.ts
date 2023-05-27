@@ -1,4 +1,5 @@
 import { JobSiteUser } from '../../jobsite-user/entities/jobsite-user.entity';
+import { JobSiteGroup } from '../../jobsite-user/entities/jobsite-groups.entity';
 import { Entity, Column, OneToMany, JoinColumn } from 'typeorm';
 import { CoreEntity } from '../../common/entities/core.entity';
 
@@ -62,4 +63,8 @@ export class JobSite extends CoreEntity {
   @OneToMany(() => JobSiteUser, (jobSiteUser) => jobSiteUser.jobSite)
   @JoinColumn()
   jobSiteUsers: JobSiteUser[];
+
+  @OneToMany(() => JobSiteGroup, (jobSiteGroup) => jobSiteGroup.jobSite)
+  @JoinColumn()
+  jobSiteGroups: JobSiteGroup[];
 }

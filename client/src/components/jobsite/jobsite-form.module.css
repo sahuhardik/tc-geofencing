@@ -51,7 +51,7 @@
   align-items: center;
   justify-content: center;
   padding: 10px 0px;
-  gap: 12px;
+  gap: 10px;
   width: 91px;
   height: 36px;
   background: #ffffff;
@@ -63,6 +63,31 @@
   font-size: 14px;
   line-height: 21px;
   color: #4f4f4f;
+}
+
+.radiusInput {
+  width: 40px;
+  height: 30px;
+  background: #ffffff;
+  text-align: right;
+  border: 0px solid #dbdbdb;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #4f4f4f;
+  right: 0px;
+  -moz-appearance: textfield;
+}
+.radiusInput:focus {
+  outline: none;
+}
+
+.radiusInput::-webkit-outer-spin-button,
+.radiusInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .formDarkHeading {

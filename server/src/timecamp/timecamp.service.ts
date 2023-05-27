@@ -1,10 +1,11 @@
 import { NotFoundException } from '@nestjs/common/exceptions';
-import { TIMECAMP_HOST_URL } from '../common/constants';
+import { TIMECAMP_HOST_URL, LOCATION_SERVICE_URL } from '../common/constants';
 import { createDataTree } from '../utils/create-data-tree';
 import FetchAPI from '../utils/Fetcher';
 import { GetTimeCampTasksDto, TimeCampTaskPaginator } from './dto/get-task.dto';
-import { GetTimeCampUsersDto, TimeCampUserPaginator } from './dto/get-user.dto';
+import { TimeCampUserPaginator } from './dto/get-user.dto';
 import { ITask } from './types/task.interface';
+import { IUserGroup } from './types/types';
 import { IUser } from './types/user.interface';
 
 export class TimeCampService {
@@ -65,9 +66,7 @@ export class TimeCampService {
     return { data: createDataTree<ITask>(Object.values(data)) };
   }
 
-  async getTimeCampUsers({
-    search,
-  }: GetTimeCampUsersDto): Promise<TimeCampUserPaginator> {
+  async getTimeCampUsers(): Promise<TimeCampUserPaginator> {
     const { data } = await this.timeCampAxios.default.get<IUser[]>(
       '/third_party/api/users?format=json',
       {
@@ -126,5 +125,35 @@ export class TimeCampService {
     );
 
     return { data };
+  }
+
+  async getUsersLocations(userIds: number[]): Promise<TimeCampUserPaginator> {
+    const params = {
+      userIds: userIds.join(','),
+    };
+    const { data } = await this.timeCampAxios.default.get<IUser[]>(
+      `${LOCATION_SERVICE_URL}/gps/locations/latest/${this.token}`,
+      {
+        params,
+      },
+    );
+
+    return { data };
+  }
+
+  async getAllGroups(): Promise<IUserGroup[]> {
+    const { data } = await this.timeCampAxios.default.get<IUserGroup[]>(
+      '/third_party/api/group?format=json',
+      {
+        headers: {
+          Accept: 'application/json',
+          'Accept-Encoding': 'gzip,deflate,compress',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+        },
+      },
+    );
+
+    return data;
   }
 }

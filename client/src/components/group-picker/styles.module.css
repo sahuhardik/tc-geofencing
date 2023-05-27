@@ -1,0 +1,88 @@
+.panelContainer {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  z-index: 1;
+  border-radius: 8px;
+  box-shadow: 0 6px 32px hsla(0, 0%, 70%, 0.5) !important;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 400px;
+}
+
+.accordionHeader {
+  padding: 0px !important;
+}
+
+.accordionContainer {
+  border-bottom: 0px;
+}
+
+.userText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+  color: #4f4f4f;
+}
+
+.groupName {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 150%;
+  color: #4f4f4f;
+}
+
+.searchBar {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.groupPicker {
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.group {
+  margin-bottom: 4px;
+}
+
+.subGroup {
+  margin-left: 10px;
+}
+
+.groupTitle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.groupTitle input[type='checkbox'] {
+  margin-right: 8px;
+}
+
+.groupContent {
+  margin-left: 20px;
+}
+
+.user {
+  margin-bottom: 4px;
+}
+
+.user input[type='checkbox'] {
+  margin-right: 8px;
+}
+
+.checkbox {
+  margin-right: 5px;
+}

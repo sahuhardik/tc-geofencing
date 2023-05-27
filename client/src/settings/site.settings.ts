@@ -32,6 +32,11 @@ export const siteSettings = {
         icon: 'DashboardIcon',
       },
       {
+        href: ROUTES.REALTIME_MAP,
+        label: 'sidebar-nav-item-realtimemap',
+        icon: 'RealtimeMapIcon',
+      },
+      {
         href: ROUTES.JOBSITES,
         label: 'sidebar-nav-item-jobsites',
         icon: 'LocationIcon',

@@ -13,6 +13,9 @@ export class CacheService {
   }
 
   async mget(keys: string[]): Promise<string[]> {
+    if (!keys.length) {
+      return [];
+    }
     return this.client.mget(keys);
   }
 

@@ -96,6 +96,7 @@ export declare type JobSite = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   jobSiteUsers?: Maybe<JobSiteUser[]>;
+  jobSiteGroups?: Maybe<JobSiteGroup[]>;
 };
 
 /** A paginated list of JobSite items. */
@@ -125,6 +126,7 @@ export declare type TimeCampUser = {
   display_name: Scalars['String'];
   time_zone?: Scalars['String'];
   token?: Scalars['String'];
+  group_id: Scalars['String'];
 };
 
 export declare type JobSiteUser = {
@@ -139,6 +141,12 @@ export declare type JobSiteUser = {
   isActive?: boolean;
 };
 
+export declare type JobSiteGroup = {
+  __typename?: 'JobSiteGroup';
+  jobsiteId: Scalars['String'];
+  groupId: Scalars['String'];
+};
+
 export declare type TimeCampEntry = {
   __typename?: 'TimeCampEntry';
   date: Scalars['String'];
@@ -150,4 +158,13 @@ export declare type TimeCampEntry = {
   user_id: Scalars['String'];
   start_time: Scalars['String'];
   task_note: Scalars['String'];
+};
+
+export declare type TimeCampGroup = {
+  __typename?: 'TimeCampGroup';
+  group_id: Scalars['String'];
+  name: Scalars['String'];
+  parent_id: Scalars['String'];
+  childrens: TimeCampGroup[];
+  users: TimeCampUser[];
 };

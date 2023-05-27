@@ -404,13 +404,15 @@ export default function Report() {
                 />
               ))}
             </div>
-          ): 
-          <div className='w-full flex justify-center h-[50vh] flex-col gap-3 items-center' >
-            <EmptyDataTable />
-            <span className={styles.noDataTextHeading} >No data to show</span>
-            <span className={styles.noDataTextSubText} >There is no data recorded for this time period with selected parameters. Try changing filters.</span>
-          </div>
-          }
+          ) : (
+            <div className="w-full flex justify-center h-[50vh] flex-col gap-3 items-center">
+              <EmptyDataTable />
+              <span className={styles.noDataTextHeading}>No data to show</span>
+              <span className={styles.noDataTextSubText}>
+                There is no data recorded for this time period with selected parameters. Try changing filters.
+              </span>
+            </div>
+          )}
         </div>
         <div className="flex-1 w-full flex justify-end items-end">
           <span className={styles.totalTimeFinalLabel}>Total: </span>

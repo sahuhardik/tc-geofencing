@@ -7,12 +7,17 @@ import {
   JobSiteUsersController,
 } from './jobsite-users.controller';
 import { jobSiteUserProviders } from './jobsite-users.providers';
+import { jobSiteGroupProviders } from './jobsite-group.providers';
 import { JobSitesModule } from '../jobsite/jobsites.module';
 
 @Module({
   controllers: [JobSiteUsersController, GeofencesController],
   imports: [DatabaseModule, forwardRef(() => JobSitesModule), CacheModule],
-  providers: [...jobSiteUserProviders, JobSiteUsersService],
+  providers: [
+    ...jobSiteUserProviders,
+    ...jobSiteGroupProviders,
+    JobSiteUsersService,
+  ],
   exports: [JobSiteUsersService],
 })
 export class JobSiteUsersModule {}
