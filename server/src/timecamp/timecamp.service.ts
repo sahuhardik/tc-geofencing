@@ -5,7 +5,7 @@ import FetchAPI from '../utils/Fetcher';
 import { GetTimeCampTasksDto, TimeCampTaskPaginator } from './dto/get-task.dto';
 import { TimeCampUserPaginator } from './dto/get-user.dto';
 import { ITask } from './types/task.interface';
-import { IUserGroup } from './types/types';
+import { ITcLocation, IUserGroup } from './types/types';
 import { IUser } from './types/user.interface';
 
 export class TimeCampService {
@@ -127,18 +127,18 @@ export class TimeCampService {
     return { data };
   }
 
-  async getUsersLocations(userIds: number[]): Promise<TimeCampUserPaginator> {
+  async getUsersLocations(userIds: number[]): Promise<ITcLocation[]> {
     const params = {
-      userIds: userIds.join(','),
+      user_ids: userIds.join(','),
     };
-    const { data } = await this.timeCampAxios.default.get<IUser[]>(
+    const { data } = await this.timeCampAxios.default.get<ITcLocation[]>(
       `${LOCATION_SERVICE_URL}/gps/locations/latest/${this.token}`,
       {
         params,
       },
     );
 
-    return { data };
+    return data;
   }
 
   async getAllGroups(): Promise<IUserGroup[]> {

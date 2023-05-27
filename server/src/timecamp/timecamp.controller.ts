@@ -8,7 +8,7 @@ import { GetTimeCampUsersDto } from './dto/get-user.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { IUser } from './types/user.interface';
 import { JobSitesService } from 'src/jobsite/jobsites.service';
-import { IUserGroupNode } from './types/types';
+import { ITcLocation, IUserGroupNode } from './types/types';
 
 @ApiTags('TimeCamp')
 @ApiBearerAuth()
@@ -63,9 +63,7 @@ export class TimeCampController {
   }
 
   @Get('users-locations')
-  async getAccountUsersLocations(
-    @Query() query: { userId: string; startDate?: string; endDate?: string },
-  ): Promise<TimeCampTaskPaginator> {
+  async getAccountUsersLocations(): Promise<ITcLocation[]> {
     const timeCampService = new TimeCampService(
       (this.request.user as IUser).token,
     );
@@ -73,9 +71,9 @@ export class TimeCampController {
 
     const userIds = users.data.map((user) => Number(user.user_id));
 
-    const userLocatioons = timeCampService.getUsersLocations(userIds);
+    const userLocations = timeCampService.getUsersLocations(userIds);
 
-    return userLocatioons;
+    return userLocations;
   }
 
   @Get('user-groups-hierarchy')

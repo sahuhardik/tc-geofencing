@@ -40,7 +40,8 @@ export default function RealtimeMap() {
       ? data?.jobsites.data.filter(
           (jobsite) =>
             jobsite.identifier.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            jobsite.address.toLowerCase().includes(searchQuery.toLowerCase())
+            jobsite.address.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            jobsite.jobSiteUsers?.filter((jobsiteUser) => jobsiteUser.user.display_name.toLowerCase().includes(searchQuery.toLowerCase())).length
         )
       : data?.jobsites.data) ?? [];
 
@@ -58,7 +59,7 @@ export default function RealtimeMap() {
           inputClassName="h-[36px]"
         />
       </div>
-      <JobSiteMapWidget jobSites={jobsites} zoom={13} height={'694px'} />
+      <JobSiteMapWidget key={`${jobsites.length}`}  jobSites={jobsites} zoom={13} height={'694px'} />
     </div>
   );
 }

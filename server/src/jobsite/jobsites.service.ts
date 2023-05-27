@@ -104,7 +104,7 @@ export class JobSitesService {
     if (!page) page = 1;
     if (!limit) limit = 200;
     const skip = (page - 1) * limit;
-
+    const url = `/jobsites?search=${search}&limit=${limit}&page=${page + 1}`;
     const options: FindManyOptions<JobSite> = {
       take: limit,
       skip,
@@ -125,24 +125,11 @@ export class JobSitesService {
       };
     }
 
-    const [results, total] = await this.jobSiteRepository.findAndCount(options);
-
-    const url = `/jobsites?search=${search}&limit=${limit}&page=${page + 1}`;
-
-    // const timeCampService = new TimeCampService(
-    //   (this.request.user as IUser).token,
-    // );
-
-    // const jobsiteUserIds = results
-    //   .map((jobsite) =>
-    //     jobsite.jobSiteUsers.map((jobsiteUser) => jobsiteUser.userId),
-    //   )
-    //   .flat();
-
-    // const locations = await timeCampService.getUsersLocations(jobsiteUserIds);
-
+    // eslint-disable-next-line prefer-const
+    let [jobsites, total] = await this.jobSiteRepository.findAndCount(options);
+    jobsites = await this.populateLocationInJobsiteUsers(jobsites);
     await Promise.all(
-      results.map(async (jobsite) => {
+      jobsites.map(async (jobsite) => {
         jobsite.jobSiteUsers =
           await this.jobsiteUsersService.fillJobsiteUsersWithUsers(
             jobsite.jobSiteUsers,
@@ -151,30 +138,45 @@ export class JobSitesService {
       }),
     );
     return {
-      data: results.map((jobsite) => ({
-        ...jobsite,
-        jobSiteUsers: jobsite.jobSiteUsers.map((jobSiteUser, i) => {
-          const lastPosition = {
-            lat: jobsite.latitude + 0.00001 * (i + 1),
-            lng: jobsite.longitude + 0.0001 * (i + 1),
-          };
-          // TODO: Need to member location with timecamp backend
-          return {
-            ...jobSiteUser,
-            lastPosition,
-            isActive:
-              jobsite.radius >=
-              calculateCoordinateDistance(
-                lastPosition?.lat,
-                lastPosition?.lng,
-                jobsite.latitude,
-                jobsite.longitude,
-              ),
-          };
-        }),
-      })),
-      ...paginate(total, page, limit, results.length, url),
+      data: jobsites,
+      ...paginate(total, page, limit, jobsites.length, url),
     };
+  }
+
+  async populateLocationInJobsiteUsers(
+    jobsites: JobSite[],
+  ): Promise<JobSite[]> {
+    const allJobsiteUsers = jobsites
+      .map((jobsite) => jobsite.jobSiteUsers)
+      .flat();
+
+    const jobsiteUsersLocations =
+      await this.jobsiteUsersService.getJobsiteUserLocations(allJobsiteUsers);
+
+    return jobsites.map((jobsite) => ({
+      ...jobsite,
+      jobSiteUsers: jobsite.jobSiteUsers.map((jobSiteUser) => {
+        const location = jobsiteUsersLocations.find(
+          (location) => String(location.user_id) === String(jobSiteUser.userId),
+        );
+        const lastPosition = {
+          lat: +location.latitude,
+          lng: +location.longitude,
+        };
+        return {
+          ...jobSiteUser,
+          lastPosition,
+          isActive:
+            jobsite.radius >=
+            calculateCoordinateDistance(
+              lastPosition?.lat,
+              lastPosition?.lng,
+              jobsite.latitude,
+              jobsite.longitude,
+            ),
+        };
+      }),
+    }));
   }
 
   async get(id: string) {

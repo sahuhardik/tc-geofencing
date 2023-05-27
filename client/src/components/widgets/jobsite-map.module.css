@@ -112,6 +112,8 @@
   font-size: 14px;
   line-height: 28px;
   color: #4f4f4f;
+  overflow-wrap:break-word;
+  max-width: 250px;
 }
 
 .memberCardSmallHeading {

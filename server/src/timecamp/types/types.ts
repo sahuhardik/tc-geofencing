@@ -13,3 +13,10 @@ export interface IUserGroupNode {
   childrens: IUserGroupNode[];
   users: IUser[];
 }
+
+export interface ITcLocation {
+  user_id: string | number;
+  datetime_utc: string;
+  longitude: string;
+  latitude: string;
+}

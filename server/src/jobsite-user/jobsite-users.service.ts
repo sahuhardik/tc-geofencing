@@ -19,6 +19,7 @@ import { IUser } from '../timecamp/types/user.interface';
 import { TimeCampService } from '../timecamp/timecamp.service';
 import { CreateJobSiteGroupDto } from './dto/create-jobsite-group.dto';
 import { JobSiteGroup } from './entities/jobsite-groups.entity';
+import { ITcLocation } from 'src/timecamp/types/types';
 
 @Injectable()
 export class JobSiteUsersService {
@@ -107,6 +108,18 @@ export class JobSiteUsersService {
     jobsiteUsers = await this.fillJobsiteUsersWithUsers(jobsiteUsers);
 
     return { data: jobsiteUsers.map((res) => ({ ...res.jobSite })) };
+  }
+
+  async getJobsiteUserLocations(
+    jobsiteUsers: JobSiteUser[],
+  ): Promise<ITcLocation[]> {
+    const jobsiteUserIds = jobsiteUsers.map(
+      (jobsiteUser) => jobsiteUser.userId,
+    );
+    const apiToken = (this.request.user as IUser).token;
+    const timeCampService = new TimeCampService(apiToken);
+
+    return timeCampService.getUsersLocations(jobsiteUserIds);
   }
 
   async fillJobsiteUsersWithUsers(

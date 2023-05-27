@@ -124,7 +124,7 @@ export default function JobSites() {
               {/* {importJobsiteBtn} */}
               {addJobsiteBtn}
             </div>
-            <JobSiteMapWidget center={mapCenter} jobSites={data?.jobsites.data || []} zoom={18} height={'100%'} />
+            <JobSiteMapWidget center={mapCenter} jobSites={data?.jobsites.data || []} zoom={18} height={'95%'} />
           </div>
         </Card>
       )}
