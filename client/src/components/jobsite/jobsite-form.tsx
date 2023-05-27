@@ -363,7 +363,7 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
             onClick={onCancel}
             className="rounded-full h-9 rounded-3xl"
           >
-            {t('form:button-label-cancel')}
+            {t('Cancel')}
           </Button>
           <Button
             size="small"

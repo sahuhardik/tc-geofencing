@@ -46,11 +46,89 @@
   margin-bottom: 16px;
 }
 
+.searchBar:focus {
+  outline: none !important;
+  border:1px solid #4bb063;
+}
 .groupPicker {
   max-height: 400px;
   overflow-y: auto;
   border-radius: 4px;
   padding: 16px;
+}
+
+.popoverButton {
+  display: flex;
+  align-items: center;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #4f4f4f;
+  border: 1px solid #d6d6d6;
+  padding: 8px 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 0 #e0e0e0;
+}
+
+.popoverButton:hover, .popoverButton:active {
+  border-color: #4bb063;
+  color: #4bb063;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.popoverButtonActive {
+  border-color: #4bb063;
+  color: #4bb063;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.caret {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  position: absolute;
+    right: 10px;
+    top: 12px;
+    margin-left: 5px;
+
+
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-family: Font Awesome\ 5 Pro;
+    font-weight: 400;
+    border: initial;
+    margin: initial;
+    vertical-align: initial;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    
+    -webkit-transition: -webkit-transform .2s;
+    transition: -webkit-transform .2s;
+    -o-transition: transform .2s;
+    transition: transform .2s;
+    transition: transform .2s,-webkit-transform .2s;
+    font-size: 90% !important;
+}
+
+.caret:before {
+  content: "\f078",
+}
+
+.btnProfileIcon {
+  border-radius: 100%;
+  height: 24px;
+  width: 24px;
+  margin-right: 2px;
 }
 
 .group {
@@ -83,6 +161,31 @@
   margin-right: 8px;
 }
 
+.chevron {
+  margin-left: 5px;
+  transition: all ease-in 0.15s;
+}
+
+.chevronDown {
+  transform: rotate(180deg);
+}
+
+.btnChip {
+  height: 16px;
+  width: 16px;
+  position: relative;
+  top: -10px;
+  left: -14px;
+  border-radius: 8px;
+  color: #fff;
+  background-color: #4bb063;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
 .checkbox {
+  accent-color: seagreen;
   margin-right: 5px;
 }

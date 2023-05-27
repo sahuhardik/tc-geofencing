@@ -31,11 +31,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-dashboard',
         icon: 'DashboardIcon',
       },
-      {
-        href: ROUTES.REALTIME_MAP,
-        label: 'sidebar-nav-item-realtimemap',
-        icon: 'RealtimeMapIcon',
-      },
+      // {
+      //   href: ROUTES.REALTIME_MAP,
+      //   label: 'sidebar-nav-item-realtimemap',
+      //   icon: 'RealtimeMapIcon',
+      // },
       {
         href: ROUTES.JOBSITES,
         label: 'sidebar-nav-item-jobsites',

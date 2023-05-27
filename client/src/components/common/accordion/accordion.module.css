@@ -24,3 +24,11 @@
   overflow: auto;
   height: 0px;
 }
+
+.chevron {
+  transition: all ease-in 0.15s;
+}
+
+.chevronDown {
+  transform: rotate(180deg);
+}

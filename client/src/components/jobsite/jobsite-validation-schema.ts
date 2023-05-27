@@ -1,10 +1,10 @@
 import * as yup from 'yup';
 export const jobsiteStepOneValidationSchema = yup.object().shape({
-  identifier: yup.string().required('form:error-jobsite-name-required'),
+  identifier: yup.string().required('Jobsite name is required'),
   radius: yup.number(),
   latitude: yup.number(),
   longitude: yup.number(),
-  address: yup.string().required('form:error-jobsite-address-required'),
+  address: yup.string().required('Jobsite address is required!'),
 });
 
 export const jobsiteStepTwoValidationSchema = jobsiteStepOneValidationSchema.shape({

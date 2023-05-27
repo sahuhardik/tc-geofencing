@@ -4,6 +4,8 @@ import { Popover, Transition } from '@headlessui/react';
 import { TimeCampGroup as Group, TimeCampUser as User } from '@ts-types/generated';
 import Accordion from '@components/common/accordion';
 import _ from 'lodash';
+import cn from 'classnames';
+import ChevronUp from '@components/icons/chevron-up';
 
 interface GroupPickerProps {
   items: Group[];
@@ -176,12 +178,13 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
               return (
                 <div key={user.user_id} className={styles.user}>
                   <input
+                    id={user.user_id}
                     type="checkbox"
                     className={styles.checkbox}
                     checked={isUserSelected}
                     onChange={() => handleUserSelection(user)}
                   />
-                  <span className={styles.userText}>{user.email}</span>
+                  <label htmlFor={user.user_id} className={styles.userText}>{user.email}</label>
                 </div>
               );
             })}
@@ -243,29 +246,43 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
 
   return (
     <Popover>
-      <Popover.Button className={styles.popoverButton}>Open Group Picker</Popover.Button>
-      <Transition
-        as={React.Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Popover.Panel style={{ position: 'absolute', zIndex: 9999 }}>
-          <div className={styles.panelContainer}>
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchKeyword}
-              onChange={handleSearch}
-              className={styles.searchBar}
+      {({ open }) => (
+        <>
+          <Popover.Button className={cn(styles.popoverButton, open && styles.popoverButtonActive)}>
+            <img
+              className={styles.btnProfileIcon}
+              src="https://www.gravatar.com/avatar/463e3d4aa9ac0f502960a196c1a2d56f?s=120&amp;d=mm"
             />
-            <div className={styles.groupPicker}>{filteredItems.map((group) => renderGroup(group, 0))}</div>
-          </div>
-        </Popover.Panel>
-      </Transition>
+            <span className={styles.btnChip} >{selectedUsers.length}</span>
+            Open Group Picker
+            <span className={cn(styles.chevron, open && styles.chevronDown)}>
+              <ChevronUp />
+            </span>
+          </Popover.Button>
+          <Transition
+            as={React.Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Popover.Panel style={{ position: 'absolute', zIndex: 9999 }}>
+              <div className={styles.panelContainer}>
+                <input
+                  type="text"
+                  placeholder="Search user/group name..."
+                  value={searchKeyword}
+                  onChange={handleSearch}
+                  className={styles.searchBar}
+                />
+                <div className={styles.groupPicker}>{filteredItems.map((group) => renderGroup(group, 0))}</div>
+              </div>
+            </Popover.Panel>
+          </Transition>
+        </>
+      )}
     </Popover>
   );
 };
