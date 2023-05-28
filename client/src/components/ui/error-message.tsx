@@ -11,7 +11,7 @@ export const Error = ({ message }: Props) => {
 const ErrorMessage = ({ message }: Props) => {
   const { t } = useTranslation('common');
   return (
-    <p className="bg-red-400 p-5 mt-16 mx-auto max-w-sm min-w-min text-center text-lg text-light font-semibold rounded">
+    <p className="text-red-600 p-5 mt-16 mx-auto max-w-sm min-w-min text-center text-lg text-light font-semibold rounded">
       {t(message!)}
     </p>
   );

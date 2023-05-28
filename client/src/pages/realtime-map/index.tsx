@@ -10,6 +10,7 @@ import { useJobsitesQuery } from '@data/jobsite/use-jobsites.query';
 import { useTranslation } from 'next-i18next';
 import Search from '@components/common/search';
 import { useEffect, useState } from 'react';
+import { JobSiteUser } from '@ts-types/generated';
 
 export default function RealtimeMap() {
   const { t } = useTranslation();
@@ -35,18 +36,24 @@ export default function RealtimeMap() {
     setSearchQuery(searchText?.trim());
   }
 
-  const jobsites =
-    (searchQuery
-      ? data?.jobsites.data.filter(
-          (jobsite) =>
-            jobsite.identifier.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            jobsite.address.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            jobsite.jobSiteUsers?.filter((jobsiteUser) => jobsiteUser.user.display_name.toLowerCase().includes(searchQuery.toLowerCase())).length
-        )
-      : data?.jobsites.data) ?? [];
-
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
+
+  let mapJobsites = (data?.jobsites.data ?? []).map((jobsite) => ({ ...jobsite, jobSiteUsers: [] }));
+  let jobsiteUsers = (data?.jobsites.data.map((jobsite) => jobsite.jobSiteUsers).flat().filter((jobsiteUser) => jobsiteUser?.lastPosition?.lat) || []) as JobSiteUser[];
+
+  if (searchQuery) {
+    mapJobsites = mapJobsites.filter(
+      (jobsite) =>
+        jobsite.identifier.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        jobsite.address.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    jobsiteUsers = jobsiteUsers.filter(
+      (jobsiteUser) =>
+        jobsiteUser.user.display_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        jobsiteUser.userEmail.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
 
   return (
     <div className="w-full bg-white p-5 rounded-lg">
@@ -55,11 +62,18 @@ export default function RealtimeMap() {
         <Search
           onChange={handleSearch}
           className="mb-5 w-2/5 min-w-[300px]"
-          placeholder="Search address, job site name or a person"
+          placeholder="Search address, job site name/email of a person"
           inputClassName="h-[36px]"
         />
       </div>
-      <JobSiteMapWidget key={`${jobsites.length}`}  jobSites={jobsites} zoom={13} height={'694px'} />
+      <JobSiteMapWidget
+        key={`${mapJobsites.length}-${jobsiteUsers.length}`}
+        jobSites={mapJobsites}
+        jobsiteUsers={jobsiteUsers}
+        zoom={mapJobsites.length || jobsiteUsers.length ? 11 : 7}
+        height={'694px'}
+        bypassErrorMessage
+      />
     </div>
   );
 }
