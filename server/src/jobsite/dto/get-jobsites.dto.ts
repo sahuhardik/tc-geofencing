@@ -11,6 +11,7 @@ export class GetJobSitesDto extends PaginationArgs {
   orderBy?: QueryJobSitesOrderByColumn;
   sortedBy?: SortOrder;
   search?: string;
+  withUsersLocation?: string;
 }
 
 export enum QueryJobSitesOrderByColumn {

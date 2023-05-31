@@ -8,6 +8,7 @@ export type JobsitesQueryOptionsType = {
   page?: number;
   limit?: number;
   orderBy?: string;
+  withUsersLocation?: boolean;
   sortedBy?: SortOrder;
 };
 

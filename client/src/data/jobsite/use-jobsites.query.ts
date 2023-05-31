@@ -8,7 +8,7 @@ import { JobSitePaginator } from '@ts-types/generated';
 const fetchJobsites = async ({ queryKey }: QueryParamsType): Promise<{ jobsites: JobSitePaginator }> => {
   const [_key, params] = queryKey;
 
-  const { page, text, limit = 200, orderBy = 'updated_at', sortedBy = 'DESC' } = params as JobsitesQueryOptionsType;
+  const { page, text, limit = 200, orderBy = 'updated_at', sortedBy = 'DESC', withUsersLocation = true } = params as JobsitesQueryOptionsType;
 
   const searchString = text;
   // @ts-ignore
@@ -16,6 +16,7 @@ const fetchJobsites = async ({ queryKey }: QueryParamsType): Promise<{ jobsites:
     searchJoin: 'and',
     orderBy,
     sortedBy,
+    withUsersLocation,
     limit: limit.toString(),
     ...(page && { page: page.toString() }),
     ...(Boolean(searchString) && { search: searchString }),

@@ -100,6 +100,7 @@ export class JobSitesService {
     limit,
     page,
     search,
+    withUsersLocation,
   }: GetJobSitesDto): Promise<JobSitePaginator> {
     if (!page) page = 1;
     if (!limit) limit = 200;
@@ -127,7 +128,10 @@ export class JobSitesService {
 
     // eslint-disable-next-line prefer-const
     let [jobsites, total] = await this.jobSiteRepository.findAndCount(options);
-    jobsites = await this.populateLocationInJobsiteUsers(jobsites);
+
+    if (withUsersLocation === 'true') {
+      jobsites = await this.populateLocationInJobsiteUsers(jobsites);
+    }
     await Promise.all(
       jobsites.map(async (jobsite) => {
         jobsite.jobSiteUsers =

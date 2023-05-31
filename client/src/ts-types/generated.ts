@@ -156,6 +156,7 @@ export declare type TimeCampEntry = {
   id: Scalars['Int'];
   name: Scalars['String'];
   user_id: Scalars['String'];
+  task_id: Scalars['String'];
   start_time: Scalars['String'];
   task_note: Scalars['String'];
 };

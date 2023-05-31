@@ -340,12 +340,13 @@ export default function Report() {
     };
 
     const timeEntryGroups: ITimeEntryGroups[] = [];
+    const allTasksIds = jobsites.map((jobsite) => String(jobsite.taskId));
     if (groupBy === GROUP_BY.DAY) {
       const groupedTimeEntriesByDate = groupArrayBy<TimeCampEntry>(timeEntries, 'date');
       Object.entries(groupedTimeEntriesByDate).forEach(([date, _timeEntries]) => {
         timeEntryGroups.push({
           groupName: dateFormat(new Date(date), 'EEEE - d MMMM, yyyy'),
-          timeEntries: timeEntriesWithJobsite(_timeEntries),
+          timeEntries: timeEntriesWithJobsite(_timeEntries).filter((_timeEntries) => allTasksIds.includes(_timeEntries.task_id)),
         });
       });
     } else if (groupBy === GROUP_BY.JOB_SITE) {
@@ -360,7 +361,7 @@ export default function Report() {
 
         timeEntryGroups.push({
           groupName: jobsite.identifier,
-          timeEntries: timeEntriesWithJobsite(combinedTimeEntries ?? [], jobsite),
+          timeEntries: timeEntriesWithJobsite(combinedTimeEntries ?? [], jobsite).filter((_timeEntry) => _timeEntry.task_id === String(jobsite.taskId)),
         });
       });
     } else if (groupBy === GROUP_BY.PERSON) {
@@ -368,7 +369,7 @@ export default function Report() {
       jobsiteUsers.forEach((jobsiteUser) => {
         timeEntryGroups.push({
           groupName: jobsiteUser.user.display_name || jobsiteUser.user.email,
-          timeEntries: timeEntriesWithJobsite(groupedTimeEntriesByuser[jobsiteUser.userId] ?? []),
+          timeEntries: timeEntriesWithJobsite(groupedTimeEntriesByuser[jobsiteUser.userId] ?? []).filter((_timeEntries) => allTasksIds.includes(_timeEntries.task_id)),
         });
       });
     }

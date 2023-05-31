@@ -19,7 +19,7 @@ export const getReportEntries = async (
     data: {
       data: TJobsite[];
     };
-  } = await JobSite.all(API_ENDPOINTS.JOBSITES);
+  } = await JobSite.all(`${API_ENDPOINTS.JOBSITES}?withUsersLocation=false`);
   let jobsiteUsers = jobsites
     .filter((jobsite) => (jobsiteFilter ? jobsite.id === jobsiteFilter : true))
     .map((jobsite) => jobsite.jobSiteUsers)
