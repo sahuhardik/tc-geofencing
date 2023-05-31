@@ -29,9 +29,12 @@ export const getReportEntries = async (
     (jobsiteUser, i) => jobsiteUsers.findIndex((_jobsiteUser) => jobsiteUser.userId === _jobsiteUser.userId) === i
   );
   const jobsiteUserIds = jobsiteUsers.map((jobsiteUser) => jobsiteUser?.userId).join(',');
-  const entries = (
+  let entries = (
     jobsiteUserIds ? (await getMemberEntries(jobsiteUserIds, startDate, endDate)).entries : []
   ) as TimeCampEntry[];
+  const allTasksIds = jobsites.map((jobsite) => String(jobsite.taskId));
+
+  entries = entries.filter((_timeEntries) => allTasksIds.includes(_timeEntries.task_id));
   return { entries: entries, jobsites, jobsiteUsers };
 };
 
