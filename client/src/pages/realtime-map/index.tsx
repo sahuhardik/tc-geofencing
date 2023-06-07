@@ -16,7 +16,6 @@ import styles from './realtime.module.css';
 import cn from 'classnames';
 import CrossIcon from '@components/icons/cross-icon';
 import { JobsiteItem } from '@components/jobsite/jobsite-list';
-// import JobSiteList from '@components/jobsite/jobsite-list';
 import { mapMarkerColors } from '@components/widgets/google-map-components';
 
 const RightSidebar = ({ sidebarOpen, children }: { sidebarOpen: boolean; children: React.ReactNode }) => {
