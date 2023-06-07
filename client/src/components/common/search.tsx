@@ -1,7 +1,7 @@
 import { CloseIcon } from '@components/icons/close-icon';
 import { SearchIcon } from '@components/icons/search-icon';
 import cn from 'classnames';
-import { InputHTMLAttributes, useEffect } from 'react';
+import { ChangeEvent, InputHTMLAttributes, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 
@@ -68,6 +68,11 @@ const Search: React.FC<ISearchProps> = ({
   );
 
   function clear() {
+    rest?.onChange?.({
+      currentTarget: {
+        value: ''
+      }
+    } as ChangeEvent<HTMLInputElement>);
     reset();
     onSearch?.({ searchText: '' });
   }

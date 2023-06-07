@@ -1,0 +1,44 @@
+.lightText {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  align-items: center;
+  color: #323333;
+}
+
+.sidebar {
+  width: 0px;
+  height: 100%;
+  position: fixed;
+  right: -10px;
+  top: 0px;
+  border-left: 1px solid #e9e9e9;
+  border-radius: 24px;
+  background-color: #fff;
+  padding: 8px;
+  padding-top: 80px;
+  transition: all ease 0.1s;
+}
+
+.opened {
+  width: 318px;
+  right: 0px;
+}
+
+.sidebarHeading {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 150%;
+  color: #323333;
+  padding: 0px 7px;
+}
+
+.headingContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

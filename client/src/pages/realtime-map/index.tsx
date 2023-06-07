@@ -10,7 +10,75 @@ import { useJobsitesQuery } from '@data/jobsite/use-jobsites.query';
 import { useTranslation } from 'next-i18next';
 import Search from '@components/common/search';
 import { useEffect, useState } from 'react';
-import { JobSiteUser } from '@ts-types/generated';
+import { JobSite, JobSiteUser } from '@ts-types/generated';
+import { Hamburger } from '@components/icons/hamburger';
+import styles from './realtime.module.css';
+import cn from 'classnames';
+import CrossIcon from '@components/icons/cross-icon';
+import { JobsiteItem } from '@components/jobsite/jobsite-list';
+// import JobSiteList from '@components/jobsite/jobsite-list';
+import { mapMarkerColors } from '@components/widgets/google-map-components';
+
+const RightSidebar = ({ sidebarOpen, children }: { sidebarOpen: boolean; children: React.ReactNode }) => {
+  return <div className={cn(styles.sidebar, sidebarOpen && styles.opened)}>{children}</div>;
+};
+
+const JobSiteList = ({ jobsites }: { jobsites: JobSite[] }) => {
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  function handleSearch(e: React.FormEvent<HTMLInputElement>) {
+    const searchText = e.currentTarget.value;
+    setSearchQuery(searchText?.trim()?.toLowerCase());
+  }
+
+  const filterJobsites = () => {
+    const getFilteredUsers = (jobsiteUsers?: JobSiteUser[]) =>
+      jobsiteUsers?.filter(
+        (jobsiteUser) =>
+          jobsiteUser.user.display_name.toLowerCase().includes(searchQuery) ||
+          jobsiteUser.userEmail.toLowerCase().includes(searchQuery)
+      );
+    const isJobsiteSelected = (jobsite: JobSite) =>
+      jobsite.identifier.toLowerCase().includes(searchQuery) || jobsite.address.toLowerCase().includes(searchQuery);
+    return jobsites
+      .map((jobsite) => {
+        const filteredUsers = getFilteredUsers(jobsite.jobSiteUsers || []);
+        if (filteredUsers?.length || isJobsiteSelected(jobsite)) {
+          return {
+            ...jobsite,
+            jobSiteUsers: filteredUsers,
+          };
+        } else {
+          return null;
+        }
+      })
+      .filter(Boolean) as JobSite[];
+  };
+
+  jobsites = filterJobsites();
+
+  return (
+    <>
+      <Search
+        onChange={handleSearch}
+        className="mb-5 w-full min-w-[300px] mt-2"
+        placeholder="Search sites or people"
+        inputClassName="h-[36px]"
+      />
+      <div className="rounded overflow-hidden mb-6 h-[75vh] overflow-y-scroll">
+        {jobsites?.map((jobsite, i) => (
+          <JobsiteItem
+            open={!!searchQuery.length}
+            markerColor={mapMarkerColors[i % mapMarkerColors.length]}
+            {...jobsite}
+            actionCard={<span>{jobsite.jobSiteUsers?.length}</span>}
+            key={jobsite.id}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
 
 export default function RealtimeMap() {
   const { t } = useTranslation();
@@ -23,6 +91,7 @@ export default function RealtimeMap() {
     limit: 1000,
     page: 1,
   });
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     const mapRefreshPoller = setInterval(refetch, 5000);
@@ -30,6 +99,10 @@ export default function RealtimeMap() {
   }, []);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const toggleSidebar = () => {
+    setSidebarOpen((_isOpened) => !_isOpened);
+  };
 
   function handleSearch(e: React.FormEvent<HTMLInputElement>) {
     const searchText = e.currentTarget.value;
@@ -40,7 +113,10 @@ export default function RealtimeMap() {
   if (error) return <ErrorMessage message={error.message} />;
 
   let mapJobsites = (data?.jobsites.data ?? []).map((jobsite) => ({ ...jobsite, jobSiteUsers: [] }));
-  let jobsiteUsers = (data?.jobsites.data.map((jobsite) => jobsite.jobSiteUsers).flat().filter((jobsiteUser) => jobsiteUser?.lastPosition?.lat) || []) as JobSiteUser[];
+  let jobsiteUsers = (data?.jobsites.data
+    .map((jobsite) => jobsite.jobSiteUsers)
+    .flat()
+    .filter((jobsiteUser) => jobsiteUser?.lastPosition?.lat) || []) as JobSiteUser[];
 
   if (searchQuery) {
     mapJobsites = mapJobsites.filter(
@@ -58,13 +134,20 @@ export default function RealtimeMap() {
   return (
     <div className="w-full bg-white p-5 rounded-lg">
       <div className="w-full flex flex-row gap-1 flex-wrap">
-        <div className="w-2/5"></div>
+        <div className="w-2/6"></div>
         <Search
           onChange={handleSearch}
-          className="mb-5 w-2/5 min-w-[300px]"
+          className="mb-5 w-3/6 min-w-[300px]"
           placeholder="Search address, job site name/email of a person"
           inputClassName="h-[36px]"
         />
+        <div
+          className="flex flex-row gap-[10px] flex-1 items-center h-[37px] justify-end cursor-pointer"
+          onClick={toggleSidebar}
+        >
+          <Hamburger />
+          <span className={styles.lightText}>Show List</span>
+        </div>
       </div>
       <JobSiteMapWidget
         key={`${mapJobsites.length}-${jobsiteUsers.length}`}
@@ -74,6 +157,17 @@ export default function RealtimeMap() {
         height={'694px'}
         bypassErrorMessage
       />
+      <RightSidebar sidebarOpen={sidebarOpen}>
+        <div style={{ backgroundColor: '#fff', width: '100%' }}>
+          <div className={styles.headingContainer}>
+            <span className={styles.sidebarHeading}>List of job sites with people</span>
+            <span className="cursor-pointer" onClick={toggleSidebar}>
+              <CrossIcon />
+            </span>
+          </div>
+          <JobSiteList jobsites={data?.jobsites.data ?? []} />
+        </div>
+      </RightSidebar>
     </div>
   );
 }

@@ -16,12 +16,14 @@ type IProps = {
 
 interface IJobsiteItemProps extends JobSite {
   markerColor: string;
-  setMapCenter: (center: ILatLng) => void;
-  onEditJobSite: () => void;
-  handleDelete: () => void;
+  actionCard?: React.ReactNode;
+  open?: boolean;
+}
+interface IJobsiteItemCardHeadingProps extends JobSite {
+  markerColor: string;
 }
 
-const JobsiteItemCardHeading = (jobsite: IJobsiteItemProps) => {
+const JobsiteItemCardHeading = (jobsite: IJobsiteItemCardHeadingProps) => {
   return (
     <>
       <div
@@ -48,7 +50,7 @@ const JobsiteItemCardHeading = (jobsite: IJobsiteItemProps) => {
   );
 };
 
-const JobsiteCardDetail = (jobsite: IJobsiteItemProps) => {
+const JobsiteCardDetail = (jobsite: JobSite) => {
   return (
     <div className={styles.jobsiteAccordionBody}>
       <div className="flex mb-1">
@@ -87,7 +89,14 @@ const JobsiteCardDetail = (jobsite: IJobsiteItemProps) => {
   );
 };
 
-const JobsiteCardAction = (jobsite: IJobsiteItemProps) => {
+interface IJobsiteActioncardProps extends JobSite {
+  setMapCenter: (center: ILatLng) => void;
+  onEditJobSite: () => void;
+  handleDelete: () => void;
+  markerColor: string;
+}
+
+const JobsiteCardAction = (jobsite: IJobsiteActioncardProps) => {
   return (
     <DropdownMenu
       id={jobsite.id}
@@ -166,14 +175,10 @@ const JobsiteCardAction = (jobsite: IJobsiteItemProps) => {
   );
 };
 
-const JobsiteItem = (jobsite: IJobsiteItemProps) => {
+export const JobsiteItem = (jobsiteProps: IJobsiteItemProps) => {
   return (
-    <Accordion
-      key={jobsite.id}
-      heading={<JobsiteItemCardHeading {...jobsite} />}
-      actions={<JobsiteCardAction {...jobsite} />}
-    >
-      <JobsiteCardDetail {...jobsite} />
+    <Accordion isOn={!!jobsiteProps.open} key={jobsiteProps.id} heading={<JobsiteItemCardHeading {...jobsiteProps} />} actions={jobsiteProps.actionCard}>
+      <JobsiteCardDetail {...jobsiteProps} />
     </Accordion>
   );
 };
@@ -189,10 +194,16 @@ const JobSiteList = ({ jobsites, setMapCenter, onEditJobSite }: IProps) => {
         {jobsites?.map((jobsite, i) => (
           <JobsiteItem
             markerColor={mapMarkerColors[i % mapMarkerColors.length]}
-            setMapCenter={setMapCenter}
-            onEditJobSite={() => onEditJobSite(jobsite)}
-            handleDelete={() => handleDelete(jobsite.id)}
             {...jobsite}
+            actionCard={
+              <JobsiteCardAction
+                setMapCenter={setMapCenter}
+                onEditJobSite={() => onEditJobSite(jobsite)}
+                handleDelete={() => handleDelete(jobsite.id)}
+                markerColor={mapMarkerColors[i % mapMarkerColors.length]}
+                {...jobsite}
+              />
+            }
             key={jobsite.id}
           />
         ))}

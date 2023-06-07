@@ -184,7 +184,9 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
                     checked={isUserSelected}
                     onChange={() => handleUserSelection(user)}
                   />
-                  <label htmlFor={user.user_id} className={styles.userText}>{user.email}</label>
+                  <label htmlFor={user.user_id} className={styles.userText}>
+                    {user.email}
+                  </label>
                 </div>
               );
             })}
@@ -253,7 +255,7 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
               className={styles.btnProfileIcon}
               src="https://www.gravatar.com/avatar/463e3d4aa9ac0f502960a196c1a2d56f?s=120&amp;d=mm"
             />
-            <span className={styles.btnChip} >{selectedUsers.length}</span>
+            <span className={styles.btnChip}>{selectedUsers.length}</span>
             Open Group Picker
             <span className={cn(styles.chevron, open && styles.chevronDown)}>
               <ChevronUp />
