@@ -42,6 +42,7 @@ interface IJobSiteMap {
   notifyOnExit: boolean;
   map?: google.maps.Map;
   mapRef?: any;
+  hideMembersMarkers?: boolean;
 }
 
 const jobsiteIconSvg = `
@@ -101,6 +102,7 @@ export const JobsiteMapWidget = React.memo(
     center,
     jobsiteUsers,
     bypassErrorMessage,
+    hideJobsiteMembersMarkers,
   }: {
     height: string;
     zoom?: number;
@@ -108,6 +110,7 @@ export const JobsiteMapWidget = React.memo(
     center?: ILatLng;
     bypassErrorMessage?: boolean;
     jobsiteUsers?: JobSiteUser[];
+    hideJobsiteMembersMarkers?: boolean;
   }) => {
     const [mapCenter, setMapCenter] = useState<ILatLng>();
 
@@ -119,15 +122,15 @@ export const JobsiteMapWidget = React.memo(
           lat: jobSites[0].latitude,
           lng: jobSites[0].longitude,
         };
-      } else if(jobsiteUsers?.length) {
+      } else if (jobsiteUsers?.length) {
         return jobsiteUsers[jobsiteUsers.length - 1].lastPosition as ILatLng;
       } else {
         return {
           lat: 0,
           lng: 0,
-        }
+        };
       }
-    }
+    };
 
     useEffect(() => {
       setMapCenter(center);
@@ -173,12 +176,7 @@ export const JobsiteMapWidget = React.memo(
     return (
       <div style={{ display: 'flex', height }}>
         <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} version="beta" mapIds={['theuniquemapid']}>
-          <Map
-            center={getMapCenter()}
-            zoom={zoom}
-            style={{ flexGrow: '1', height: '100%' }}
-            mapId={'theuniquemapid'}
-          >
+          <Map center={getMapCenter()} zoom={zoom} style={{ flexGrow: '1', height: '100%' }} mapId={'theuniquemapid'}>
             {jobsiteMapsData.map((jobsiteMap) => (
               <JobSiteMap
                 key={jobsiteMap.name}
@@ -190,6 +188,7 @@ export const JobsiteMapWidget = React.memo(
                 address={jobsiteMap.address}
                 notifyOnEntry={jobsiteMap.notifyOnEntry}
                 notifyOnExit={jobsiteMap.notifyOnExit}
+                hideMembersMarkers={hideJobsiteMembersMarkers}
               />
             ))}
             {jobsiteUsers &&
@@ -364,16 +363,17 @@ const JobSiteMap = (props: IJobSiteMap) => {
         detailCardHtml={buildJobsiteCard(props)}
         title={props.name}
       />
-      {props.members.map((member, i) => (
-        <MemberMarker
-          {...member}
-          map={props.map}
-          mapRef={props.mapRef}
-          jobsiteName={props.name}
-          jobsiteAddress={props.address}
-          key={i}
-        />
-      ))}
+      {!props.hideMembersMarkers &&
+        props.members.map((member, i) => (
+          <MemberMarker
+            {...member}
+            map={props.map}
+            mapRef={props.mapRef}
+            jobsiteName={props.name}
+            jobsiteAddress={props.address}
+            key={i}
+          />
+        ))}
       <Circle
         map={props.map}
         center={props.position}

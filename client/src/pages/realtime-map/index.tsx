@@ -111,7 +111,7 @@ export default function RealtimeMap() {
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 
-  let mapJobsites = (data?.jobsites.data ?? []).map((jobsite) => ({ ...jobsite, jobSiteUsers: [] }));
+  let mapJobsites = (data?.jobsites.data ?? []);
   let jobsiteUsers = (data?.jobsites.data
     .map((jobsite) => jobsite.jobSiteUsers)
     .flat()
@@ -155,6 +155,7 @@ export default function RealtimeMap() {
         zoom={mapJobsites.length || jobsiteUsers.length ? 11 : 7}
         height={'694px'}
         bypassErrorMessage
+        hideJobsiteMembersMarkers
       />
       <RightSidebar sidebarOpen={sidebarOpen}>
         <div style={{ backgroundColor: '#fff', width: '100%' }}>
