@@ -27,6 +27,6 @@ export class GeofencesController {
 
   @Get()
   async getJobSites(): Promise<{ data: JobSite[] }> {
-    return this.jobsiteUsersService.getJobSiteUsers();
+    return this.jobsiteUsersService.getJobsitesOfUser();
   }
 }

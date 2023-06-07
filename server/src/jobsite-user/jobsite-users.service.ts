@@ -97,15 +97,13 @@ export class JobSiteUsersService {
     return em.delete(JobSiteGroup, options);
   }
 
-  async getJobSiteUsers(): Promise<{ data: JobSite[] }> {
+  async getJobsitesOfUser(): Promise<{ data: JobSite[] }> {
     const options: FindManyOptions<JobSiteUser> = {
       where: { userId: Number((this.request.user as IUser).user_id) },
       relations: { jobSite: true },
-      select: { id: true },
     };
 
-    let jobsiteUsers = await this.jobSiteUserRepository.find(options);
-    jobsiteUsers = await this.fillJobsiteUsersWithUsers(jobsiteUsers);
+    const jobsiteUsers = await this.jobSiteUserRepository.find(options);
 
     return { data: jobsiteUsers.map((res) => ({ ...res.jobSite })) };
   }
