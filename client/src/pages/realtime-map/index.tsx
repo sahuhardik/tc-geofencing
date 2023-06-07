@@ -90,7 +90,7 @@ export default function RealtimeMap() {
     limit: 1000,
     page: 1,
   });
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const mapRefreshPoller = setInterval(refetch, 5000);
