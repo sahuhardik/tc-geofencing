@@ -129,7 +129,9 @@ export class TimeCampService {
 
   async getUsersLocations(userIds: number[]): Promise<ITcLocation[]> {
     const params = {
-      user_ids: userIds.join(','),
+      user_ids: userIds
+        .filter((userId, i) => userIds.indexOf(userId) == i)
+        .join(','),
     };
     const { data } = await this.timeCampAxios.default.get<ITcLocation[]>(
       `${LOCATION_SERVICE_URL}/gps/locations/latest/${this.token}`,

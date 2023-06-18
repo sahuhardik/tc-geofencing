@@ -316,10 +316,8 @@ export default function Report() {
       return timecampUserMap;
     }, {} as Record<string, TimeCampUser>) ?? {};
 
-  const getUserJobsite = (userId: string): JobSite => {
-    return (data?.jobsites || []).find((jobsite) => {
-      return Boolean(jobsite.jobSiteUsers?.find((jobsiteUser) => jobsiteUser.userId === userId));
-    }) as JobSite;
+  const getJobsiteByTaskId = (taskId: string): JobSite => {
+    return ((data?.jobsites || []).find((jobsite) => String(jobsite.taskId) === taskId) || {}) as JobSite ;
   };
 
   const getTimeEntryGroups = (
@@ -329,7 +327,7 @@ export default function Report() {
   ): ITimeEntryGroups[] => {
     const timeEntriesWithJobsite = (timeEntries: TimeCampEntry[], jobsite?: JobSite): ReportTimeCampEntry[] => {
       return timeEntries.map((timeEntry) => {
-        const entryJobsite = jobsite ?? getUserJobsite(timeEntry?.user_id);
+        const entryJobsite = jobsite ?? getJobsiteByTaskId(timeEntry?.task_id);
         return {
           ...timeEntry,
           jobsiteName: entryJobsite.identifier,

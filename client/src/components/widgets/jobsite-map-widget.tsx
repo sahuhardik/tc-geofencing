@@ -24,6 +24,7 @@ interface IMemberMarker extends IAdvanceMarker {
   email: string;
   userId: string;
   jobsiteName: string;
+  taskIds: string[];
   jobsiteAddress: string;
   isActive: boolean;
 }
@@ -42,6 +43,7 @@ interface IJobSiteMap {
   notifyOnExit: boolean;
   map?: google.maps.Map;
   mapRef?: any;
+  taskIds: string[];
   hideMembersMarkers?: boolean;
 }
 
@@ -156,6 +158,8 @@ export const JobsiteMapWidget = React.memo(
       return <ErrorMessage message={'No jobsites'} />;
     }
 
+    const allTaskIds = jobSites.map((jobsite) => String(jobsite.taskId));
+
     const jobsiteMapsData: IJobSiteMap[] = jobSites.map(
       (jobSite, i) =>
         ({
@@ -164,6 +168,7 @@ export const JobsiteMapWidget = React.memo(
           radius: jobSite.radius,
           notifyOnEntry: jobSite.notifyOnEntry,
           notifyOnExit: jobSite.notifyOnExit,
+          taskIds: allTaskIds,
           markerColor: mapMarkerColors[i % mapMarkerColors.length],
           position: {
             lat: jobSite.latitude,
@@ -185,6 +190,7 @@ export const JobsiteMapWidget = React.memo(
                 radius={jobsiteMap.radius}
                 members={jobsiteMap.members}
                 name={jobsiteMap.name}
+                taskIds={jobsiteMap.taskIds}
                 address={jobsiteMap.address}
                 notifyOnEntry={jobsiteMap.notifyOnEntry}
                 notifyOnExit={jobsiteMap.notifyOnExit}
@@ -193,7 +199,7 @@ export const JobsiteMapWidget = React.memo(
             ))}
             {jobsiteUsers &&
               buildJobsiteUserMarkerData(jobsiteUsers).map((member, i) => (
-                <MemberMarker {...member} jobsiteName={member.email} jobsiteAddress={''} key={i} />
+                <MemberMarker {...member} jobsiteName={member.email} taskIds={allTaskIds} jobsiteAddress={''} key={i} />
               ))}
           </Map>
         </Wrapper>
@@ -218,7 +224,7 @@ export const MemberMarker = (props: IMemberMarker) => {
   const getEntries = async () => {
     if (!entries) {
       const { data } = await getMemberEntries();
-      entries = data?.entries ?? [];
+      entries = (data?.entries ?? []).filter((tcEntry) => props.taskIds.includes(tcEntry.task_id));
     }
     return entries;
   };
@@ -371,6 +377,7 @@ const JobSiteMap = (props: IJobSiteMap) => {
             mapRef={props.mapRef}
             jobsiteName={props.name}
             jobsiteAddress={props.address}
+            taskIds={props.taskIds}
             key={i}
           />
         ))}
