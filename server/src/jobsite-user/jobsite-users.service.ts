@@ -105,7 +105,11 @@ export class JobSiteUsersService {
 
     const jobsiteUsers = await this.jobSiteUserRepository.find(options);
 
-    return { data: jobsiteUsers.map((res) => ({ ...res.jobSite })) };
+    return {
+      data: jobsiteUsers
+        .map((res) => ({ ...res.jobSite }))
+        .filter((jobsite) => !jobsite.whenDeleted),
+    };
   }
 
   async getJobsiteUserLocations(
