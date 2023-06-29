@@ -38,6 +38,7 @@
     "rc-table": "^7.21.0",
     "react": "17.0.2",
     "react-animate-height": "^3.1.1",
+    "react-cool-onclickoutside": "^1.7.0",
     "react-date-range": "^1.4.0",
     "react-datepicker": "^4.5.0",
     "react-dom": "17.0.2",
@@ -50,6 +51,7 @@
     "react-tooltip": "^5.11.1",
     "react-use": "^17.3.1",
     "swiper": "^7.3.1",
+    "use-places-autocomplete": "^4.0.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

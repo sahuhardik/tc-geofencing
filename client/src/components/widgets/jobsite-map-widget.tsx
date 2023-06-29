@@ -180,7 +180,7 @@ export const JobsiteMapWidget = React.memo(
 
     return (
       <div style={{ display: 'flex', height }}>
-        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} version="beta" mapIds={['theuniquemapid']}>
+        <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} libraries={["places"]} version="beta" mapIds={['theuniquemapid']}>
           <Map center={getMapCenter()} zoom={zoom} style={{ flexGrow: '1', height: '100%' }} mapId={'theuniquemapid'}>
             {jobsiteMapsData.map((jobsiteMap) => (
               <JobSiteMap

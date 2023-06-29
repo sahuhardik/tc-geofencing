@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState, useRef } from 'react';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { useTranslation } from 'next-i18next';
@@ -23,6 +23,7 @@ import CrossIcon from '@components/icons/cross-icon';
 import InfoIcon from '@components/icons/info-icon';
 import { ArrowPrev } from '@components/icons/arrow-prev';
 import GroupPicker from '@components/group-picker/index';
+import AddressAutocomplete from '@components/jobsite/GoogleAddressAutocomplete';
 
 export type JobSiteFormValues = {
   identifier: string;
@@ -60,19 +61,32 @@ const FormStepOne = ({
   errors,
   setValue,
   radius,
+  address,
 }: {
   register: UseFormRegister<JobSiteFormValues>;
   errors: any;
   setValue: UseFormSetValue<JobSiteFormValues>;
   radius: number;
+  address: string;
 }) => {
   const { t } = useTranslation();
+  const addressRef = useRef(null);
+  const lastAddrRef = useRef<string>('');
+
   useEffect(() => {
     if (!radius) {
       // setting default value of radius
       setValue('radius', 100);
     }
   }, []);
+
+  useEffect(() => {
+    if(addressRef.current && lastAddrRef.current && lastAddrRef.current !== address) {
+      addressRef.current?.setValue(address);
+    }
+    lastAddrRef.current = address;
+  }, [address]);
+
   return (
     <div className="w-full">
       <Input
@@ -86,13 +100,29 @@ const FormStepOne = ({
       <span className="color-gray text-xs text-gray-500 leading-7">
         Can also pick location by dragging location in map.
       </span>
-      <Input
-        label={t('Adress')}
-        {...register('address')}
-        error={t(errors.address?.message)}
-        variant="outline"
-        className="mb-5 w-full"
-        placeholder="Start typing address..."
+      <AddressAutocomplete
+        ref={addressRef}
+        setAddress={(_address, isSelected, latLng)=>{
+          if(isSelected) {
+            lastAddrRef.current = _address;
+            if (latLng?.lat) {
+              setValue('latitude', latLng.lat);
+              setValue('longitude', latLng.lng);
+            }
+          }
+          setValue('address', _address);
+        }}
+        renderInput={(props) => (
+          <Input
+            label={t('Adress')}
+            {...register('address')}
+            error={t(errors.address?.message)}
+            variant="outline"
+            className="mb-5 w-full"
+            placeholder="Start typing address..."
+            {...props}
+          />
+        )}
       />
       <div className="w-full flex gap-4 flex-wrap">
         <Input
@@ -273,9 +303,9 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
     }),
   });
 
-  const [taskId, radius] = useWatch({
+  const [taskId, radius, address] = useWatch({
     control,
-    name: ['taskId', 'radius'],
+    name: ['taskId', 'radius', 'address'],
   });
 
   useEffect(() => {
@@ -354,7 +384,7 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
   const renderStepOne = ({ show }: { show: boolean }) => {
     return (
       <div className={`w-full h-full flex-col flex-1 ${show ? 'flex' : 'hidden'}`}>
-        <FormStepOne register={register} errors={errors} setValue={setValue} radius={radius} />
+        <FormStepOne register={register} errors={errors} setValue={setValue} radius={radius} address={address} />
         <div className="mb-4 flex justify-between w-full flex-1 items-end">
           <Button
             type="button"
