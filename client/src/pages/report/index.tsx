@@ -200,6 +200,9 @@ function TableHead() {
         <span className={styles.tableHeadingText}>PERSON</span>
       </div>
       <div className={styles.timeContainer}>
+        <span className={styles.tableHeadingText}>Date</span>
+      </div>
+      <div className={styles.timeContainer}>
         <span className={styles.tableHeadingText}>ENTRY</span>
       </div>
       <div className={styles.timeContainer}>
@@ -218,6 +221,7 @@ interface ITimeEntryRowProps {
   entryTime: string;
   exitTime: string;
   trackedTime: string;
+  date: string;
 }
 
 function TimeEntryRow({
@@ -228,6 +232,7 @@ function TimeEntryRow({
   exitTime,
   jobsiteName,
   jobsiteAddress,
+  date,
 }: ITimeEntryRowProps) {
   const formatTime = (timeString: string) => {
     return dateFormat(new Date(`1970-01-01 ${timeString}`), 'h:mm aaa');
@@ -241,6 +246,9 @@ function TimeEntryRow({
       <div className={styles.memberContainer}>
         <img src={userAvatar} className={styles.avatarIcon} />
         <span className={styles.memberName}>{userName}</span>
+      </div>
+      <div className={styles.timeContainer}>
+        <span className={styles.normalText}>{date} </span>
       </div>
       <div className={styles.timeContainer}>
         <span className={styles.normalText}>{formatTime(entryTime)} </span>
@@ -273,6 +281,7 @@ function TimeEntryGroup({ groupName, timeEntries }: ITimeEntryGroupProps) {
           userName={timeEntry.userName} //{timecampUserMap[timeEntry?.user_id].display_name || timecampUserMap[timeEntry?.user_id].email}
           entryTime={timeEntry.start_time}
           exitTime={timeEntry.end_time}
+          date={timeEntry.date}
           userAvatar={'https://cdn.iconscout.com/icon/free/png-256/free-avatar-370-456322.png?f=webp&w=256'}
           trackedTime={getTimeText(Number(timeEntry.duration))}
         />

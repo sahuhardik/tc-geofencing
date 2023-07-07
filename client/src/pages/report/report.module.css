@@ -70,8 +70,8 @@
   flex-direction: row;
   align-items: center;
   gap: 6px;
-  min-width: 211px;
-  flex: 3;
+  min-width: 201px;
+  flex: 2;
 }
 
 .memberName {

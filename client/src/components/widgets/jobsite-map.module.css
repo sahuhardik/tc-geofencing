@@ -84,6 +84,8 @@
   padding-top: 16px;
   padding-left: 4px;
   gap: 4px;
+  max-height: 300px;
+  overflow-y: scroll;
 }
 .jobsiteCardActiveUsersHeading {
   font-family: 'Poppins';
@@ -100,17 +102,17 @@
   flex-direction: row;
   align-items: center;
   padding: 0px;
-  gap: 8px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  gap: 4px;
+  margin-top: 1px;
+  margin-bottom: 1px;
 }
 
 .jobsiteUsernameText {
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 28px;
+  font-size: 10px;
+  line-height: 12px;
   color: #4f4f4f;
   overflow-wrap:break-word;
   max-width: 250px;

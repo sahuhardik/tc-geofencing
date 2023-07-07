@@ -7,6 +7,7 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { FindManyOptions, Like, Repository, IsNull, DataSource } from 'typeorm';
+import _ from 'lodash';
 import { DATA_SOURCE } from '../common/constants';
 import { JobSite } from './entities/jobsite.entity';
 import { GetJobSitesDto, JobSitePaginator } from './dto/get-jobsites.dto';
@@ -75,21 +76,21 @@ export class JobSitesService {
       await Promise.all([
         this.jobsiteUsersService.saveJobsiteUsers(
           em,
-          jobSiteUsers.map((jobsiteUser) => ({
+          _.uniqBy(jobSiteUsers, 'userId').map((jobsiteUser) => ({
             ...jobsiteUser,
             jobsiteId: jobSite.id,
           })),
         ),
         await this.jobsiteUsersService.saveJobsiteGroups(
           em,
-          jobSiteGroups.map((jobsiteGroup) => ({
+          _.uniqBy(jobSiteGroups, 'groupId').map((jobsiteGroup) => ({
             ...jobsiteGroup,
             jobsiteId: jobSite.id,
           })),
         ),
       ]);
 
-      this.jobSiteRepository.merge(jobSite, updateInput);
+      await this.jobSiteRepository.merge(jobSite, updateInput);
       return em.save(jobSite);
     });
 

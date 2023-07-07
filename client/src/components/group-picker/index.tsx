@@ -18,7 +18,10 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
   const [searchKeyword, setSearchKeyword] = useState('');
   const [selectedGroups, setSelectedGroups] = useState<Group[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-
+  const distinctUsers = (users: User[]) => _.uniqBy(users, 'user_id');
+  const distinctGroups = (groups: Group[]): Group[] => {
+    return _.uniqBy(groups, (group) => group.group_id);
+  };
   useEffect(() => {
     if (initialGroupIds && initialGroupIds.length) {
       const allGroupsList = items.map((group) => [group, ...getAllSubgroups(group)]).flat();
@@ -32,7 +35,7 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
       const initialUsers = initialUserIds
         .map((userId) => allUsersList.find((user) => user.user_id === userId))
         .filter(Boolean) as User[];
-      setSelectedUsers(initialUsers); // initialing group picker with initial groups
+      setSelectedUsers(distinctUsers(initialUsers)); // initialing group picker with initial groups
     }
   }, []);
 
@@ -108,20 +111,20 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
         prevSelectedGroups.filter((selectedGroup) => !deselectedGroupIds.includes(selectedGroup.group_id))
       );
       setSelectedUsers((prevSelectedUsers) =>
-        prevSelectedUsers.filter(
-          (selectedUser) =>
-            !deselectedGroupIds.includes(selectedUser.group_id) && selectedUser.group_id !== group.group_id
+        distinctUsers(
+          prevSelectedUsers.filter(
+            (selectedUser) =>
+              !deselectedGroupIds.includes(selectedUser.group_id) && selectedUser.group_id !== group.group_id
+          )
         )
       );
     } else {
       // Select group and its subgroups/users
       const selectedGroups = [group, ...getAllSubgroups(group)];
       setSelectedGroups((prevSelectedGroups) => distinctGroups([...prevSelectedGroups, ...selectedGroups]));
-      setSelectedUsers((prevSelectedUsers) => [
-        ...prevSelectedUsers,
-        ...group.users,
-        ...getAllSubgroupUsers(group.childrens),
-      ]);
+      setSelectedUsers((prevSelectedUsers) =>
+        distinctUsers([...prevSelectedUsers, ...group.users, ...getAllSubgroupUsers(group.childrens)])
+      );
     }
   };
 
@@ -130,15 +133,11 @@ const GroupPicker: React.FC<GroupPickerProps> = ({ items, onChange, initialGroup
 
     if (isSelected) {
       setSelectedUsers((prevSelectedUsers) =>
-        prevSelectedUsers.filter((selectedUser) => selectedUser.user_id !== user.user_id)
+        distinctUsers(prevSelectedUsers.filter((selectedUser) => selectedUser.user_id !== user.user_id))
       );
     } else {
-      setSelectedUsers((prevSelectedUsers) => [...prevSelectedUsers, user]);
+      setSelectedUsers((prevSelectedUsers) => distinctUsers([...prevSelectedUsers, user]));
     }
-  };
-
-  const distinctGroups = (groups: Group[]): Group[] => {
-    return _.uniqBy(groups, (group) => group.group_id);
   };
 
   const renderGroup = (group: Group, nestingLevel: number) => {
