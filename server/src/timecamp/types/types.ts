@@ -20,3 +20,5 @@ export interface ITcLocation {
   longitude: string;
   latitude: string;
 }
+
+export type TGroupSet = Record<string, IUserGroupNode>;

@@ -18,6 +18,8 @@ import { GEOFENCE_REPOSITORIES } from '../common/constants';
 import { IUser } from '../timecamp/types/user.interface';
 import { JobSiteUsersService } from '../jobsite-user/jobsite-users.service';
 import { calculateCoordinateDistance } from '../utils/maps';
+import { TimeCampService } from 'src/timecamp/timecamp.service';
+import { IUserGroupNode } from 'src/timecamp/types/types';
 
 @Injectable()
 export class JobSitesService {
@@ -35,6 +37,7 @@ export class JobSitesService {
     const saveResult = await this.dataSource.transaction(async (em) => {
       const newJobSite = this.jobSiteRepository.create(createJobSiteDto);
       newJobSite.createdBy = (this.request.user as IUser).user_id;
+      newJobSite.rootGroupId = (this.request.user as IUser).root_group_id;
       await em.save(newJobSite);
       await this.jobsiteUsersService.saveJobsiteUsers(
         em,
@@ -57,9 +60,32 @@ export class JobSitesService {
   }
 
   async update(id: string, updateJobSiteDto: UpdateJobSiteDto) {
+    const {
+      token: apiToken,
+      adminInGroups,
+      user_id: userId,
+    } = this.request.user as IUser;
+    const timeCampService = new TimeCampService(apiToken);
+    const userGroups = await timeCampService.getUserGroupsHierarchy(
+      adminInGroups,
+    );
+
+    const groupUsersIds: string[] = [];
+    const groupIds: string[] = [];
+
+    const collectUserIds = (group: IUserGroupNode) => {
+      groupIds.push(group.group_id);
+      group.users.forEach(({ user_id }) => {
+        groupUsersIds.push(user_id);
+      });
+      group.childrens.forEach((subGroup) => collectUserIds(subGroup));
+    };
+
+    Object.values(userGroups).map((userGroup) => collectUserIds(userGroup));
+
     const jobSite = await this.jobSiteRepository.findOneBy({
       id,
-      createdBy: (this.request.user as IUser).user_id,
+      rootGroupId: (this.request.user as IUser).root_group_id,
     });
     if (!jobSite) {
       throw new NotFoundException('JobSite not found.');
@@ -68,9 +94,17 @@ export class JobSitesService {
 
     const updateResult = await this.dataSource.transaction(async (em) => {
       await Promise.all([
-        this.jobsiteUsersService.deleteJobSiteGroupByJobsiteId(em, jobSite.id),
+        this.jobsiteUsersService.deleteJobSiteGroupByJobsiteId(
+          em,
+          jobSite.id,
+          groupIds,
+        ),
 
-        this.jobsiteUsersService.deleteJobSiteUserByJobsiteId(em, jobSite.id),
+        this.jobsiteUsersService.deleteJobSiteUserByJobsiteId(
+          em,
+          jobSite.id,
+          groupUsersIds,
+        ),
       ]);
 
       await Promise.all([
@@ -90,7 +124,9 @@ export class JobSitesService {
         ),
       ]);
 
-      await this.jobSiteRepository.merge(jobSite, updateInput);
+      if (jobSite.createdBy === userId) {
+        await this.jobSiteRepository.merge(jobSite, updateInput);
+      }
       return em.save(jobSite);
     });
 
@@ -111,7 +147,7 @@ export class JobSitesService {
       take: limit,
       skip,
       where: {
-        createdBy: (this.request.user as IUser).user_id,
+        rootGroupId: (this.request.user as IUser).root_group_id,
         whenDeleted: IsNull(),
       },
       relations: {

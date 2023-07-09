@@ -1,9 +1,11 @@
+import { useRouter } from 'next/router';
 import { JobSite } from '@ts-types/generated';
 import Accordion from '@components/common/accordion';
 import styles from './jobstie-list.module.css';
 import { ILatLng, mapMarkerColors } from '@components/widgets/google-map-components';
 import DropdownMenu from '@components/ui/dropdown-menu';
 import { useModalAction } from '@components/ui/modal/modal.context';
+import { ROUTES } from '@utils/routes';
 
 type IProps = {
   jobsites?: Array<JobSite>;
@@ -92,6 +94,7 @@ interface IJobsiteActioncardProps extends JobSite {
 }
 
 const JobsiteCardAction = (jobsite: IJobsiteActioncardProps) => {
+  const router = useRouter();
   return (
     <DropdownMenu
       id={jobsite.id}
@@ -126,10 +129,7 @@ const JobsiteCardAction = (jobsite: IJobsiteActioncardProps) => {
         {
           label: 'Open site report',
           onClick: () => {
-            jobsite.setMapCenter({
-              lat: jobsite.latitude,
-              lng: jobsite.longitude,
-            });
+            router.push(`${ROUTES.REPORT}?jobsiteId=${jobsite.id}`);
           },
           icon: (
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

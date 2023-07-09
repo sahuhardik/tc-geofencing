@@ -14,7 +14,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { jobsiteStepOneValidationSchema, jobsiteStepTwoValidationSchema } from './jobsite-validation-schema';
 import { useCreateJobSiteMutation } from '@data/jobsite/use-jobsite-create.mutation';
 import { useUpdateJobSiteMutation } from '@data/jobsite/use-jobsite-update.mutation';
-import { JobSite, TimeCampTask, TimeCampUser, TimeCampGroup } from '@ts-types/generated';
+import { JobSite, TimeCampTask, TimeCampUser, TimeCampGroup, User as TUser } from '@ts-types/generated';
 import { useTimeCampTaskQuery } from '@data/timecamp/use-timecamp-tasks.query';
 import { useTimeCampGroupHierarchyQuery } from '@data/timecamp/use-timecamp-users.query';
 import styles from './jobsite-form.module.css';
@@ -42,6 +42,7 @@ export type JobSiteFormValues = {
 };
 
 type IProps = {
+  userId: TUser['user_id']
   initialValues?: JobSite | null;
   onCancel: () => void;
 };
@@ -62,12 +63,14 @@ const FormStepOne = ({
   setValue,
   radius,
   address,
+  canEdit,
 }: {
   register: UseFormRegister<JobSiteFormValues>;
   errors: any;
   setValue: UseFormSetValue<JobSiteFormValues>;
   radius: number;
   address: string;
+  canEdit: boolean;
 }) => {
   const { t } = useTranslation();
   const addressRef = useRef(null);
@@ -96,6 +99,7 @@ const FormStepOne = ({
         variant="outline"
         className="mb-5 w-full"
         placeholder="Type your job site name...."
+        disabled={!canEdit}
       />
       <span className="color-gray text-xs text-gray-500 leading-7">
         Can also pick location by dragging location in map.
@@ -121,6 +125,7 @@ const FormStepOne = ({
             className="mb-5 w-full"
             placeholder="Start typing address..."
             {...props}
+            disabled={!canEdit}
           />
         )}
       />
@@ -134,6 +139,7 @@ const FormStepOne = ({
           className="mb-5 flex-1 w-full l:w-auto"
           type="number"
           step="any"
+          disabled={!canEdit}
         />
         <Input
           label={t('form:input-label-longitude')}
@@ -144,6 +150,7 @@ const FormStepOne = ({
           className="mb-5 flex-1 w-full l:w-auto"
           type="number"
           step="any"
+          disabled={!canEdit}
         />
       </div>
       <div className="w-full flex items-center">
@@ -160,6 +167,7 @@ const FormStepOne = ({
           type={'range'}
           variant="none"
           onChange={(event: ChangeEvent<HTMLInputElement>) => setValue('radius', Number(event.target.value))}
+          disabled={!canEdit}
         />
         <div className={styles.radiusBlock}>
           <input
@@ -181,6 +189,7 @@ const FormStepOne = ({
             min={100}
             step={1}
             value={radius || 100}
+            disabled={!canEdit}
           />
           m
         </div>
@@ -196,6 +205,7 @@ const FormStepTwo = ({
   setValue,
   initialUsers,
   initialGroups,
+  canEdit,
 }: {
   control: Control<JobSiteFormValues, any>;
   register: UseFormRegister<JobSiteFormValues>;
@@ -204,6 +214,7 @@ const FormStepTwo = ({
   timecampTasks: TimeCampTask[] | undefined;
   initialUsers?: string[] | undefined;
   initialGroups?: string[] | undefined;
+  canEdit: boolean;
 }) => {
   const { t } = useTranslation();
   const { data: timecampGroups, isFetched: isTcGroupHierarchyLoaded } = useTimeCampGroupHierarchyQuery();
@@ -239,7 +250,7 @@ const FormStepTwo = ({
       <div>
         <Label>{t('form:input-label-notifyOnEntry')}</Label>
         <div className="flex gap-3">
-          <SwitchInput name="notifyOnEntry" control={control} />
+          <SwitchInput disabled={!canEdit} name="notifyOnEntry" control={control} />
           <span className={styles.formLightText}>Track time to selected task or project</span>
           <div id="info-icon">
             <InfoIcon className="cursor-pointer" />
@@ -264,13 +275,13 @@ const FormStepTwo = ({
         {errors?.task?.message && <p className="my-2 text-xs text-start text-red-500">{errors?.task.message}</p>}
       </div>
       <div className="mb-5 flex gap-3">
-        <SwitchInput name="notifyOnExit" control={control} />
+        <SwitchInput disabled={!canEdit} name="notifyOnExit" control={control} />
         <span className={styles.formLightText}>Send users push notification</span>
       </div>
       <div className="mb-5">
         <Label>{t('form:input-label-notifyOnExit')}</Label>
         <div className="flex gap-3">
-          <SwitchInput name="pushNotification" control={control} />
+          <SwitchInput disabled={!canEdit} name="pushNotification" control={control} />
           <span className={styles.formLightText}>Send users push notification and stop timers</span>
         </div>
       </div>
@@ -278,12 +289,12 @@ const FormStepTwo = ({
   );
 };
 
-function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
+function CreateOrUpdateJobSiteForm({ initialValues, onCancel, userId }: IProps) {
   const { t } = useTranslation();
   const [activeStep, setActiveStep] = useState<number>(1);
 
   const { data: timecampTasks } = useTimeCampTaskQuery();
-
+  const isJobsiteCreator: boolean = initialValues?.createdBy ? userId === initialValues?.createdBy : true;
   const {
     register,
     handleSubmit,
@@ -384,7 +395,7 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
   const renderStepOne = ({ show }: { show: boolean }) => {
     return (
       <div className={`w-full h-full flex-col flex-1 ${show ? 'flex' : 'hidden'}`}>
-        <FormStepOne register={register} errors={errors} setValue={setValue} radius={radius} address={address} />
+        <FormStepOne canEdit={isJobsiteCreator} register={register} errors={errors} setValue={setValue} radius={radius} address={address} />
         <div className="mb-4 flex justify-between w-full flex-1 items-end">
           <Button
             type="button"
@@ -413,6 +424,7 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
     return (
       <div className={`w-full h-full flex-col flex-1 ${show ? 'flex' : 'hidden'}`}>
         <FormStepTwo
+          canEdit={isJobsiteCreator}
           control={control}
           register={register}
           errors={errors}
@@ -465,7 +477,7 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel }: IProps) {
           {renderStepTwo({ show: activeStep === 2 })}
         </div>
         <div className="xl:w-1/2 4 xl:mb-0">
-          <LocationPicker height="100%" control={control} setValue={setValue} />
+          <LocationPicker disabled={!isJobsiteCreator} height="100%" control={control} setValue={setValue} />
         </div>
       </form>
     </>

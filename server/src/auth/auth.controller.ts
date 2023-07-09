@@ -5,7 +5,9 @@ import {
   Request,
   Body,
   UseGuards,
+  Inject,
 } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/create-auth.dto';
@@ -20,7 +22,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req, @Body() _body: LoginDto) {
-    return this.authService.login(req.user);
+    return this.authService.login(req.user, _body.token);
   }
 
   @Post('logout')

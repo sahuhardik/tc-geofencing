@@ -24,6 +24,7 @@ import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ErrorMessage from '@components/ui/error-message';
 import Loader from '@components/ui/loader/loader';
+import { getJsonFromUrl } from '@utils/url';
 
 enum GROUP_BY {
   DAY = 'day',
@@ -315,6 +316,13 @@ export default function Report() {
   useEffect(() => {
     refetch();
   }, [dateFilter[0].startDate, jobsiteFilter]);
+  
+  useEffect(() => {
+    const { jobsiteId } = getJsonFromUrl();
+    if(jobsiteId) {
+      setJobsiteFilter(jobsiteId);
+    }
+  }, []);
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;

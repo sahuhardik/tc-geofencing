@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import _ from 'lodash';
 import { JobSiteUser, JobSite as TJobsite, TimeCampEntry } from '@ts-types/generated';
 import { API_ENDPOINTS } from '@utils/api/endpoints';
 import JobSite from '@repositories/jobsite';
@@ -20,8 +21,15 @@ export const getReportEntries = async (
       data: TJobsite[];
     };
   } = await JobSite.all(`${API_ENDPOINTS.JOBSITES}?withUsersLocation=false`);
-  let jobsiteUsers = jobsites
-    .filter((jobsite) => (jobsiteFilter ? jobsite.id === jobsiteFilter : true))
+
+  let filteredJobsites = _.cloneDeep(jobsites);
+
+  if (jobsiteFilter) {
+    filteredJobsites = jobsites
+    .filter((jobsite) => (jobsite.id === jobsiteFilter))
+  }
+
+  let jobsiteUsers = filteredJobsites
     .map((jobsite) => jobsite.jobSiteUsers)
     .flat()
     .filter(Boolean) as JobSiteUser[];
@@ -32,7 +40,7 @@ export const getReportEntries = async (
   let entries = (
     jobsiteUserIds ? (await getMemberEntries(jobsiteUserIds, startDate, endDate)).entries : []
   ) as TimeCampEntry[];
-  const allTasksIds = jobsites.map((jobsite) => String(jobsite.taskId));
+  const allTasksIds = filteredJobsites.map((jobsite) => String(jobsite.taskId));
 
   entries = entries.filter((_timeEntries) => allTasksIds.includes(_timeEntries.task_id));
   return { entries: entries, jobsites, jobsiteUsers };

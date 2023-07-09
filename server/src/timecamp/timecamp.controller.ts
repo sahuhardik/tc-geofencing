@@ -8,7 +8,7 @@ import { GetTimeCampUsersDto } from './dto/get-user.dto';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { IUser } from './types/user.interface';
 import { JobSitesService } from 'src/jobsite/jobsites.service';
-import { ITcLocation, IUserGroupNode } from './types/types';
+import { ITcLocation } from './types/types';
 
 @ApiTags('TimeCamp')
 @ApiBearerAuth()
@@ -81,35 +81,10 @@ export class TimeCampController {
     const timeCampService = new TimeCampService(
       (this.request.user as IUser).token,
     );
-    const users = await timeCampService.getTimeCampUsers();
-    const groups = await timeCampService.getAllGroups();
 
-    const groupSet = groups.reduce((groupSet, group) => {
-      groupSet[group.group_id] = {
-        ...group,
-        childrens: [],
-        users: [],
-      } as IUserGroupNode;
-      return groupSet;
-    }, {} as Record<string, IUserGroupNode>);
-
-    const childrenGroupsIds = [];
-
-    Object.values(groupSet).forEach((group) => {
-      if (group.parent_id != '0' && group.parent_id) {
-        groupSet[group.parent_id].childrens.push(group);
-        childrenGroupsIds.push(group.group_id);
-      }
-    });
-
-    users.data.forEach((user) => {
-      groupSet[user.group_id].users.push(user);
-    });
-
-    childrenGroupsIds.forEach((childrenGroupsId) => {
-      delete groupSet[childrenGroupsId];
-    });
-
+    const groupSet = await timeCampService.getUserGroupsHierarchy(
+      (this.request.user as IUser).adminInGroups,
+    );
     return Object.values(groupSet);
   }
 }

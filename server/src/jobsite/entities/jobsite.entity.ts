@@ -57,6 +57,9 @@ export class JobSite extends CoreEntity {
   @Column({ default: '' })
   createdBy: string;
 
+  @Column({ default: '' })
+  rootGroupId: string;
+
   @Column({ type: 'datetime', default: null })
   whenDeleted: Date;
 

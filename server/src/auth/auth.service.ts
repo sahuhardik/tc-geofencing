@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthResponse } from './dto/create-auth.dto';
 import { IUser } from '../timecamp/types/user.interface';
@@ -8,9 +8,26 @@ import { TimeCampService } from '../timecamp/timecamp.service';
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async login(user: IUser): Promise<AuthResponse> {
+  async login(user: IUser, token: string): Promise<AuthResponse> {
+    const timeCampService = new TimeCampService(token);
+
+    const groups = await timeCampService.getUserGroupsWithPermissions(
+      user.user_id,
+    );
+
+    const usersGroupAsAdmin = Object.values(groups);
+
+    if (Object.keys(groups).length === 0) {
+      throw new HttpException(
+        'Not having access to login',
+        HttpStatus.FORBIDDEN,
+      );
+    }
     const payload = {
-      sub: JSON.stringify(user),
+      sub: JSON.stringify({
+        ...user,
+        adminInGroups: usersGroupAsAdmin.map((group) => group.group_id),
+      }),
       iat: Date.now(),
       type: 'ACCESS',
     };

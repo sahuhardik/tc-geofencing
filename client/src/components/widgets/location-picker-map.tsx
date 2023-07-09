@@ -9,9 +9,10 @@ interface IMaps {
   control: Control<any>;
   setValue: UseFormSetValue<JobSiteFormValues>;
   height?: string;
+  disabled?: boolean;
 }
 
-const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px' }) => {
+const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px', disabled = false }) => {
   const [radius, longitude, latitude] = useWatch({
     control,
     name: ['radius', 'longitude', 'latitude'],
@@ -55,6 +56,9 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px
   }, [window.google]);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
+    if(disabled){
+      return;
+    }
     // avoid directly mutating state
     setClick(e.latLng!);
     setValue('longitude', e.latLng?.lng() || 0);

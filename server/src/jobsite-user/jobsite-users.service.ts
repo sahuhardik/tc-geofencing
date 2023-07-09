@@ -9,6 +9,7 @@ import {
   SaveOptions,
   EntityManager,
   DeleteResult,
+  In,
 } from 'typeorm';
 import { JobSiteUser } from './entities/jobsite-user.entity';
 import { JobSite } from '../jobsite/entities/jobsite.entity';
@@ -80,9 +81,11 @@ export class JobSiteUsersService {
   async deleteJobSiteUserByJobsiteId(
     em: EntityManager,
     jobsiteId: string,
+    userIds: string[],
   ): Promise<DeleteResult> {
     const options: FindOptionsWhere<JobSiteUser> = {
       jobsiteId,
+      userId: In(userIds.map((userId) => Number(userId))),
     };
     return em.delete(JobSiteUser, options);
   }
@@ -90,9 +93,11 @@ export class JobSiteUsersService {
   async deleteJobSiteGroupByJobsiteId(
     em: EntityManager,
     jobsiteId: string,
+    groupIds: string[],
   ): Promise<DeleteResult> {
     const options: FindOptionsWhere<JobSiteGroup> = {
       jobsiteId,
+      groupId: In(groupIds),
     };
     return em.delete(JobSiteGroup, options);
   }

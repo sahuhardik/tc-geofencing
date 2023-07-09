@@ -23,9 +23,11 @@ import { DownloadIconOutline } from '@components/icons/download-icon-outline';
 import classNames from 'classnames';
 import styles from './jobsites.module.css';
 import { BigMarker } from '@components/icons/big-marker';
+import { useMeQuery } from '@data/user/use-me.query';
 
 export default function JobSites() {
   const { t } = useTranslation();
+  const { data: user } = useMeQuery();
   const [filterTerm, setFilterTerm] = useState('');
   const [page, setPage] = useState(1);
   const [orderBy, setOrder] = useState('created_at');
@@ -89,7 +91,7 @@ export default function JobSites() {
     <>
       <Modal open={openJobsiteModal} onClose={onModalClose}>
         <Card className={classNames(['flex flex-wrap flex-row  py-20 px-24', styles.modalContainer])}>
-          <CreateOrUpdateJobSiteForm initialValues={editJobSite} onCancel={onModalClose} />
+          <CreateOrUpdateJobSiteForm userId={user?.user_id || ''} initialValues={editJobSite} onCancel={onModalClose} />
         </Card>
       </Modal>
       {jobsites?.length === 0 && filterTerm === '' && (

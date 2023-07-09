@@ -8,10 +8,11 @@ interface Props {
   errors?: FieldErrors;
   label?: string;
   name: string;
+  disabled?: boolean;
   [key: string]: unknown;
 }
 
-const SwitchInput = ({ control, label, name, errors, ...rest }: Props) => {
+const SwitchInput = ({ control, label, name, errors, disabled = false, ...rest }: Props) => {
   const { t } = useTranslation();
   return (
     <div>
@@ -22,6 +23,7 @@ const SwitchInput = ({ control, label, name, errors, ...rest }: Props) => {
         {...rest}
         render={({ field: { onChange, value } }) => (
           <Switch
+            disabled={disabled}
             checked={value}
             onChange={onChange}
             className={`${

@@ -1,12 +1,20 @@
 import { NotFoundException } from '@nestjs/common/exceptions';
+import {
+  buildGroupHierarchy,
+  filterGroupsWithAccesses,
+} from 'src/utils/groups';
 import { TIMECAMP_HOST_URL, LOCATION_SERVICE_URL } from '../common/constants';
 import { createDataTree } from '../utils/create-data-tree';
 import FetchAPI from '../utils/Fetcher';
 import { GetTimeCampTasksDto, TimeCampTaskPaginator } from './dto/get-task.dto';
 import { TimeCampUserPaginator } from './dto/get-user.dto';
 import { ITask } from './types/task.interface';
-import { ITcLocation, IUserGroup } from './types/types';
-import { IUser } from './types/user.interface';
+import { ITcLocation, IUserGroup, TGroupSet } from './types/types';
+import {
+  IUser,
+  IUserPermissions,
+  IGroupPermissions,
+} from './types/user.interface';
 
 export class TimeCampService {
   private readonly timeCampAxios = new FetchAPI(TIMECAMP_HOST_URL);
@@ -157,5 +165,47 @@ export class TimeCampService {
     );
 
     return data;
+  }
+
+  async getUserGroupsWithPermissions(
+    userId: string,
+  ): Promise<Array<IGroupPermissions>> {
+    const { data } = await this.timeCampAxios.default.get<IUserPermissions>(
+      '/internal/api/people-picker?format=json',
+      {
+        headers: {
+          Accept: 'application/json',
+          'Accept-Encoding': 'gzip,deflate,compress',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+        },
+      },
+    );
+    return Object.values(data.groups).filter((group) => {
+      return Object.values(group.users || {}).find(
+        (user) =>
+          user.user_id === userId &&
+          user.activated === '1' &&
+          user.disabledUser === false &&
+          (user.role_id === '1' || user.role_id === '2'), // Role 1 -> Administrator, 2 -> supervisior
+      );
+    });
+  }
+
+  async getUserGroupsHierarchy(adminInGroups: string[]): Promise<TGroupSet> {
+    const [users, groups] = await Promise.all([
+      this.getTimeCampUsers(),
+      this.getAllGroups(),
+    ]);
+
+    let groupSet = buildGroupHierarchy(groups, users.data);
+
+    const adminInGroupsSet = adminInGroups.reduce((adminInGroups, groupId) => {
+      adminInGroups[groupId] = true;
+      return adminInGroups;
+    }, {});
+
+    groupSet = filterGroupsWithAccesses(groupSet, adminInGroupsSet);
+    return groupSet;
   }
 }
