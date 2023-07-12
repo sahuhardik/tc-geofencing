@@ -62,3 +62,10 @@ export const filterGroupsWithAccesses = (
   filterGroupsHierarchy(Object.values(_groupSet)[0]);
   return _groupSet;
 };
+
+export const getUsersFromGroupSets = (group: IUserGroupNode): IUser[] => {
+  return [
+    ...group.users,
+    ...group.childrens.map((group) => getUsersFromGroupSets(group)).flat(),
+  ];
+};

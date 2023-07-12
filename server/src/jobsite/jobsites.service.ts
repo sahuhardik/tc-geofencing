@@ -20,6 +20,7 @@ import { JobSiteUsersService } from '../jobsite-user/jobsite-users.service';
 import { calculateCoordinateDistance } from '../utils/maps';
 import { TimeCampService } from 'src/timecamp/timecamp.service';
 import { IUserGroupNode } from 'src/timecamp/types/types';
+import { CacheService } from 'src/cache/cache.service';
 
 @Injectable()
 export class JobSitesService {
@@ -31,6 +32,7 @@ export class JobSitesService {
     private readonly jobsiteUsersService: JobSiteUsersService,
     @Inject(DATA_SOURCE)
     private readonly dataSource: DataSource,
+    private readonly cacheService: CacheService,
   ) {}
 
   async create(createJobSiteDto: CreateJobSiteDto) {
@@ -143,11 +145,12 @@ export class JobSitesService {
     if (!limit) limit = 200;
     const skip = (page - 1) * limit;
     const url = `/jobsites?search=${search}&limit=${limit}&page=${page + 1}`;
+    const { root_group_id, token, adminInGroups } = this.request.user as IUser;
     const options: FindManyOptions<JobSite> = {
       take: limit,
       skip,
       where: {
-        rootGroupId: (this.request.user as IUser).root_group_id,
+        rootGroupId: root_group_id,
         whenDeleted: IsNull(),
       },
       relations: {
@@ -166,8 +169,38 @@ export class JobSitesService {
     // eslint-disable-next-line prefer-const
     let [jobsites, total] = await this.jobSiteRepository.findAndCount(options);
 
+    let accessibleUserIds: string[] = [];
+    const cachedAccessibleUsers = await this.cacheService.get(
+      `accessible_user_for_${token}`,
+    );
+    if (cachedAccessibleUsers) {
+      accessibleUserIds = JSON.parse(cachedAccessibleUsers);
+    } else {
+      const timeCampService = new TimeCampService(token);
+      accessibleUserIds = await timeCampService.getAccessibleUserIds(
+        adminInGroups,
+      );
+      this.cacheService.set(
+        `accessible_user_for_${token}`,
+        JSON.stringify(accessibleUserIds),
+        6 * 60 * 60,
+      );
+    }
+
+    jobsites = jobsites.map((jobsite) => {
+      jobsite.jobSiteUsers = jobsite.jobSiteUsers.filter((jobsiteUser) =>
+        accessibleUserIds.find(
+          (accessibleUserId) => accessibleUserId === String(jobsiteUser.userId),
+        ),
+      );
+      return jobsite;
+    });
     if (withUsersLocation === 'true') {
-      jobsites = await this.populateLocationInJobsiteUsers(jobsites);
+      try {
+        jobsites = await this.populateLocationInJobsiteUsers(jobsites);
+      } catch (e) {
+        //TODO: need to remove this try-catch once location api starts giving reponse to supervisior as well
+      }
     }
     await Promise.all(
       jobsites.map(async (jobsite) => {

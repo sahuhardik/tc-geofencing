@@ -1,7 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common/exceptions';
+import { CacheService } from '../cache/cache.service';
 import {
   buildGroupHierarchy,
   filterGroupsWithAccesses,
+  getUsersFromGroupSets,
 } from 'src/utils/groups';
 import { TIMECAMP_HOST_URL, LOCATION_SERVICE_URL } from '../common/constants';
 import { createDataTree } from '../utils/create-data-tree';
@@ -207,5 +210,12 @@ export class TimeCampService {
 
     groupSet = filterGroupsWithAccesses(groupSet, adminInGroupsSet);
     return groupSet;
+  }
+  async getAccessibleUserIds(adminInGroups: string[]): Promise<string[]> {
+    const groupSet = await this.getUserGroupsHierarchy(adminInGroups);
+    const users = Object.values(groupSet)
+      .map((group) => getUsersFromGroupSets(group))
+      .flat();
+    return users.map((user) => user.user_id);
   }
 }
