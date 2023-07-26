@@ -9,6 +9,8 @@ import { useTranslation } from 'next-i18next';
 import { getMemberEntries } from '@data/jobsite/use-jobsite.query';
 import { useEffect, useState } from 'react';
 import { JobSite, TimeCampEntry } from '@ts-types/generated';
+import { ROUTES } from '@utils/routes';
+import { useRouter } from 'next/router';
 
 const WorkStatCard = ({ jobsites }: { jobsites: JobSite[];  }) => {
   const [statsData, setStatsData] = useState<Record<string, string | number> | null>(null);
@@ -112,6 +114,15 @@ export default function JobSitesDashboard() {
     limit: 1000,
     page: 1,
   });
+
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (data?.jobsites.data && data?.jobsites.data.length === 0) {
+      // if there is no jobsites then we will reidirect to jobsties page
+      router.push(ROUTES.JOBSITES);
+    }
+  }, [data?.jobsites.data])
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
