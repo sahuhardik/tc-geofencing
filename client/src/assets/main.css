@@ -260,4 +260,10 @@ input[type='range']:focus::-webkit-slider-runnable-track {
   font-family: 'Poppins';
 }
 
+.reactour__helper {
+  max-width: 500px !important;
+  padding: 0px !important;
+  padding-top: 30px !important;
+  padding-bottom: 30px !important;
+}
 @import './custom-plugins.css';

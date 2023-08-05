@@ -25,3 +25,42 @@
   text-align: center;
   color: #3d3d3d;
 }
+
+.tinyLink {
+  color: #2380E3;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tourContainer {
+  width: 500px;
+  text-align: center;
+}
+
+.tourHeading {
+  font-family: 'Poppins';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25px;
+  letter-spacing: 0px;
+  text-align: center;  
+  width: 100%;;
+  margin: 20px 0px;
+}
+
+.tourTextContainer {
+  width: 100%;
+  padding: 0px 32px;
+  font-family: 'Poppins';
+  font-size: 16px;
+  line-height: 30px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #5F5F5F;
+  display: block;
+}
+
+.boldTourText {
+  font-weight: 800;
+  color: black;
+}
