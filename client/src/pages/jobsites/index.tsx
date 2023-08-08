@@ -3,7 +3,7 @@ import Layout from '@components/layouts/admin';
 import Search from '@components/common/search';
 import JobSiteList from '@components/jobsite/jobsite-list';
 import JobSiteMapWidget from '@components/widgets/jobsite-map-widget';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { LIMIT } from '@utils/constants';
 import ErrorMessage from '@components/ui/error-message';
@@ -82,6 +82,12 @@ export default function JobSites() {
     setEditJobSite(undefined);
   };
 
+  useEffect(() => {
+    if (data?.jobsites.data.length === 0) {
+      setTourOpen(true);
+    }
+  }, [data?.jobsites.data]);
+
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 
@@ -104,7 +110,10 @@ export default function JobSites() {
     </Button>
   );
   const addJobsiteBtn = (
-    <Button size="small" data-tut="tour_button" onClick={() => setOpenJobsiteModal(true)} className="h-9 rounded-3xl">
+    <Button size="small" data-tut="tour_button" onClick={() => {
+      isTourOpen && setTourOpen(false);
+      setOpenJobsiteModal(true);
+      }} className="h-9 rounded-3xl">
       &nbsp; <PlusIcon height={27} /> {t('form:button-label-add-jobsite')} &nbsp;&nbsp;&nbsp;
     </Button>
   );
@@ -123,6 +132,9 @@ export default function JobSites() {
         steps={tourConfig}
         isOpen={isTourOpen}
         rounded={5}
+        showNumber={false}
+        showButtons={false}
+        showNavigation={false}
         accentColor={'#4BB063'}
       />
       <Modal open={openJobsiteModal} onClose={onModalClose}>
@@ -137,7 +149,7 @@ export default function JobSites() {
           <span className={`${styles.emptyCardSubHeading} mt-4`}>
             Set up job sites for your team that automatically start and stop tracking time as they enter or leave.
             <br/>
-            <span onClick={() => setTourOpen(true)} className={styles.tinyLink} >How does it work?</span>
+            <a href='https://help.timecamp.com/help/geofencing' target={'_blank'} className={styles.tinyLink} >How does it work?</a>
           </span>
           <div data-tut="jobsite_tour" className="flex-col flex pt-9 gap-4">
             {addJobsiteBtn}
