@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 export const jobsiteStepOneValidationSchema = yup.object().shape({
   identifier: yup.string().required('Jobsite name is required'),
-  radius: yup.number(),
+  radius: yup.number().min(100).max(100000),
   latitude: yup.number(),
   longitude: yup.number(),
   address: yup.string().required('Jobsite address is required!'),

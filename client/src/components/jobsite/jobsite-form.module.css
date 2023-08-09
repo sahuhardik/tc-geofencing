@@ -52,7 +52,7 @@
   justify-content: center;
   padding: 10px 0px;
   gap: 10px;
-  width: 91px;
+  width: 151px;
   height: 36px;
   background: #ffffff;
   border: 1px solid #dbdbdb;
@@ -66,7 +66,7 @@
 }
 
 .radiusInput {
-  width: 40px;
+  width: 90px;
   height: 30px;
   background: #ffffff;
   text-align: right;

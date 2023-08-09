@@ -152,47 +152,17 @@ const FormStepOne = ({
           step="any"
           disabled={!canEdit}
         />
-      </div>
-      <div className="w-full flex items-center">
         <Input
-          label={t('radius')}
+          label={t('form:input-label-radius')}
           {...register('radius')}
+          placeholder="Radius (in meters)..."
           error={t(errors.radius?.message)}
-          className="mb-5 w-full border-none"
-          inputClassName="px-0 py-0"
-          value={radius}
-          min={'1'}
-          defaultValue={100}
-          max={'1000'}
-          type={'range'}
-          variant="none"
-          onChange={(event: ChangeEvent<HTMLInputElement>) => setValue('radius', Number(event.target.value))}
+          variant="outline"
+          className="mb-5 flex-1 w-full l:w-auto"
+          type="number"
+          step="any"
           disabled={!canEdit}
         />
-        <div className={styles.radiusBlock}>
-          <input
-            type={'number'}
-            className={styles.radiusInput}
-            onChange={(e) => {
-              let _radius = 1;
-              const inputValue = Number(e.target.value);
-              if (inputValue > 1000) {
-                _radius = 1000;
-              } else if (!inputValue) {
-                _radius = 1;
-              } else {
-                _radius = inputValue;
-              }
-              setValue('radius', Number(_radius));
-            }}
-            max={1000}
-            min={100}
-            step={1}
-            value={radius || 100}
-            disabled={!canEdit}
-          />
-          m
-        </div>
       </div>
     </div>
   );
