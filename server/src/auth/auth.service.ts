@@ -26,7 +26,7 @@ export class AuthService {
     const payload = {
       sub: JSON.stringify({
         ...user,
-        adminInGroups: usersGroupAsAdmin.map((group) => group.group_id),
+        adminInGroups: usersGroupAsAdmin.map((group) => group.group_id) || [],
       }),
       iat: Date.now(),
       type: 'ACCESS',
