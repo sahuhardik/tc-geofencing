@@ -144,14 +144,13 @@ export class TimeCampService {
         .filter((userId, i) => userIds.indexOf(userId) == i)
         .join(','),
     };
-    const { data } = await this.timeCampAxios.default.get<ITcLocation[]>(
-      `${LOCATION_SERVICE_URL}/gps/locations/latest/${this.token}`,
-      {
-        params,
-      },
-    );
+    const { data } = await this.timeCampAxios.default.get<{
+      locations: ITcLocation[];
+    }>(`${LOCATION_SERVICE_URL}/gps/locations/latest/${this.token}`, {
+      params,
+    });
 
-    return data;
+    return data.locations;
   }
 
   async getAllGroups(): Promise<IUserGroup[]> {
