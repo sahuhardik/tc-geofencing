@@ -17,6 +17,7 @@ interface IAdvanceMarker {
   map?: google.maps.Map;
   mapRef?: any;
   beforeHover?: (markerView: TMarkerView) => void;
+  onClick?(): void;
 }
 interface IMemberMarker extends IAdvanceMarker {
   avatar?: string;
@@ -45,6 +46,8 @@ interface IJobSiteMap {
   mapRef?: any;
   taskIds: string[];
   hideMembersMarkers?: boolean;
+  disableJobsiteMarkerHoverContent?: boolean;
+  onJobsiteClick?(): void;
 }
 
 const jobsiteIconSvg = `
@@ -105,6 +108,8 @@ export const JobsiteMapWidget = React.memo(
     jobsiteUsers,
     bypassErrorMessage,
     hideJobsiteMembersMarkers,
+    disableJobsiteMembersMarkers,
+    onJobsiteClick,
   }: {
     height: string;
     zoom?: number;
@@ -113,6 +118,8 @@ export const JobsiteMapWidget = React.memo(
     bypassErrorMessage?: boolean;
     jobsiteUsers?: JobSiteUser[];
     hideJobsiteMembersMarkers?: boolean;
+    disableJobsiteMembersMarkers?:  boolean;
+    onJobsiteClick?(jobsite: JobSite): void; 
   }) => {
     const [mapCenter, setMapCenter] = useState<ILatLng>();
 
@@ -182,8 +189,9 @@ export const JobsiteMapWidget = React.memo(
       <div style={{ display: 'flex', height }}>
         <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} libraries={["places"]} version="beta" mapIds={['theuniquemapid']}>
           <Map center={getMapCenter()} zoom={zoom} style={{ flexGrow: '1', height: '100%' }} mapId={'theuniquemapid'}>
-            {jobsiteMapsData.map((jobsiteMap) => (
+            {jobsiteMapsData.map((jobsiteMap, i) => (
               <JobSiteMap
+                onJobsiteClick={onJobsiteClick && ( ()=> onJobsiteClick(jobSites[i]))}
                 key={jobsiteMap.name}
                 markerColor={jobsiteMap.markerColor}
                 position={jobsiteMap.position}
@@ -195,6 +203,7 @@ export const JobsiteMapWidget = React.memo(
                 notifyOnEntry={jobsiteMap.notifyOnEntry}
                 notifyOnExit={jobsiteMap.notifyOnExit}
                 hideMembersMarkers={hideJobsiteMembersMarkers}
+                disableJobsiteMarkerHoverContent={disableJobsiteMembersMarkers}
               />
             ))}
             {jobsiteUsers &&
@@ -366,8 +375,9 @@ const JobSiteMap = (props: IJobSiteMap) => {
         position={props.position}
         markerIconHtml={jobsiteIconSvg}
         markerColor={props.markerColor}
-        detailCardHtml={buildJobsiteCard(props)}
+        detailCardHtml={props.disableJobsiteMarkerHoverContent ? '' : buildJobsiteCard(props)}
         title={props.name}
+        onClick={props.onJobsiteClick}
       />
       {!props.hideMembersMarkers &&
         props.members.map((member, i) => (
@@ -404,9 +414,13 @@ export const AdvanceMarker = (props: IAdvanceMarker) => {
       position: props.position,
       title: props.title ?? '',
     });
+    const element = advancedMarkerView.element as HTMLElement;
+    
+    if(props.onClick) {
+      element.addEventListener('click', props.onClick);
+    }
 
     if (props.detailCardHtml) {
-      const element = advancedMarkerView.element as HTMLElement;
       ['focus', 'pointerenter'].forEach((event) => {
         element.addEventListener(event, () => {
           highlight(advancedMarkerView);

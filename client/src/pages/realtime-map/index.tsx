@@ -22,7 +22,7 @@ const RightSidebar = ({ sidebarOpen, children }: { sidebarOpen: boolean; childre
   return <div className={cn(styles.sidebar, sidebarOpen && styles.opened)}>{children}</div>;
 };
 
-const JobSiteList = ({ jobsites }: { jobsites: JobSite[] }) => {
+const JobSiteList = ({ jobsites, openedJobsite }: { jobsites: JobSite[], openedJobsite:string }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   function handleSearch(e: React.FormEvent<HTMLInputElement>) {
@@ -67,7 +67,7 @@ const JobSiteList = ({ jobsites }: { jobsites: JobSite[] }) => {
       <div className="rounded overflow-hidden mb-6 h-[75vh] overflow-y-scroll">
         {jobsites?.map((jobsite, i) => (
           <JobsiteItem
-            open={!!searchQuery.length}
+            open={openedJobsite === jobsite.id || !!searchQuery.length}
             markerColor={mapMarkerColors[i % mapMarkerColors.length]}
             {...jobsite}
             actionCard={<span>{jobsite.jobSiteUsers?.length}</span>}
@@ -91,6 +91,7 @@ export default function RealtimeMap() {
     page: 1,
   });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openedJobiteInList, setOpenedJobiteInList] = useState<string>('');
 
   useEffect(() => {
     const mapRefreshPoller = setInterval(refetch, 5000);
@@ -156,6 +157,11 @@ export default function RealtimeMap() {
         height={'694px'}
         bypassErrorMessage
         hideJobsiteMembersMarkers
+        disableJobsiteMembersMarkers
+        onJobsiteClick={(jobsite: JobSite) => {
+          setOpenedJobiteInList(jobsite.id);
+          setSidebarOpen(true);
+        }}
       />
       <RightSidebar sidebarOpen={sidebarOpen}>
         <div style={{ backgroundColor: '#fff', width: '100%' }}>
@@ -165,7 +171,7 @@ export default function RealtimeMap() {
               <CrossIcon />
             </span>
           </div>
-          <JobSiteList jobsites={data?.jobsites.data ?? []} />
+          <JobSiteList openedJobsite={openedJobiteInList} jobsites={data?.jobsites.data ?? []} />
         </div>
       </RightSidebar>
     </div>
