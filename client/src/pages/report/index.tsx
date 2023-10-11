@@ -15,6 +15,7 @@ import { CalendarIcon } from '@components/icons/calendar';
 import DropdownMenu from '@components/ui/dropdown-menu';
 import { useTranslation } from 'next-i18next';
 import { EmptyDataTable } from '@components/icons/empty-data-table';
+import { useTimeCampGroupHierarchyQuery } from '@data/timecamp/use-timecamp-users.query';
 
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -25,6 +26,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ErrorMessage from '@components/ui/error-message';
 import Loader from '@components/ui/loader/loader';
 import { getJsonFromUrl } from '@utils/url';
+import GroupPicker from '@components/group-picker';
+import { generateExcel } from '@utils/excel';
 
 enum GROUP_BY {
   DAY = 'day',
@@ -293,7 +296,9 @@ function TimeEntryGroup({ groupName, timeEntries }: ITimeEntryGroupProps) {
 
 export default function Report() {
   const [groupBy, setGroupBy] = useState<GROUP_BY>(GROUP_BY.DAY);
+  const [userFilter, setUserFilter] = useState<string[]>([]);
   const [jobsiteFilter, setJobsiteFilter] = useState<string>(null!);
+  const { data: timecampGroups, isFetched: isTcGroupHierarchyLoaded } = useTimeCampGroupHierarchyQuery();
   const [dateFilter, setDateFilter] = useState<CalendarDateRange[]>([
     {
       startDate: startOfWeek(new Date()),
@@ -316,7 +321,7 @@ export default function Report() {
   useEffect(() => {
     refetch();
   }, [dateFilter[0].startDate, jobsiteFilter]);
-  
+
   useEffect(() => {
     const { jobsiteId } = getJsonFromUrl();
     if(jobsiteId) {
@@ -390,13 +395,47 @@ export default function Report() {
     return timeEntryGroups;
   };
 
-  const timeEntryGroups = getTimeEntryGroups(data?.entries, data?.jobsites, data?.jobsiteUsers);
+  const getFilteredEntries = (entries: TimeCampEntry[]) => {
+    let _entries = [...entries];
+    if (userFilter.length) {
+      _entries = _entries.filter((entry) => userFilter.includes(entry.user_id));
+    }
+
+    return _entries;
+  }
+
+  const timeEntryGroups = getTimeEntryGroups(getFilteredEntries(data?.entries || []), data?.jobsites, data?.jobsiteUsers);
+
+  const downloadReport = () => {
+    const timeEntries = timeEntryGroups.map(timeEntryGroup => timeEntryGroup.timeEntries).flat().map((timeEntry) => ({
+      'Job Site Name': timeEntry.jobsiteName,
+      'Task': timeEntry.name,
+      'Person': timeEntry.userName,
+      'Date': timeEntry.date,
+      'Entry': timeEntry.start_time,
+      'Exit': timeEntry.end_time,
+      'Tracked Time': getTimeText(Number(timeEntry.duration)),
+    }));
+    generateExcel(timeEntries, 'time-report.xlsx');
+
+  }
 
   return (
     <>
       <Card className="flex flex-wrap flex-col items-start mb-8 md:p-4 h-[85vh]">
-        <div className="p-4">
+        <div className="w-full flex p-4 gap-7">
           <DateFilter savedCalendarState={dateFilter} setSavedCalendarState={setDateFilter} />
+          {isTcGroupHierarchyLoaded && (
+            <GroupPicker
+              items={timecampGroups ?? []}
+              onChange={(selectedGroups, selectedUsers) => {
+                setUserFilter(selectedUsers.map((user) => user.user_id));
+              }}
+            />
+          )}
+          <Button onClick={downloadReport}  type="button" size="small" variant="outline" className="h-9 rounded-xl  hover:text-[#4BB063] hover:bg-white hover:border-[#4BB063]"  style={{marginRight: '20px', color: '#4BB063', borderColor: '#4BB063'}} >
+           <img className={styles.imageIcon} src='/image/icons8-excel-48.png'/> &nbsp; Download
+          </Button>
         </div>
 
         <div className="w-full flex justify-between p-3">
