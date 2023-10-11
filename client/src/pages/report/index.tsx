@@ -324,7 +324,7 @@ export default function Report() {
 
   useEffect(() => {
     const { jobsiteId } = getJsonFromUrl();
-    if(jobsiteId) {
+    if (jobsiteId) {
       setJobsiteFilter(jobsiteId);
     }
   }, []);
@@ -339,7 +339,7 @@ export default function Report() {
     }, {} as Record<string, TimeCampUser>) ?? {};
 
   const getJobsiteByTaskId = (taskId: string): JobSite => {
-    return ((data?.jobsites || []).find((jobsite) => String(jobsite.taskId) === taskId) || {}) as JobSite ;
+    return ((data?.jobsites || []).find((jobsite) => String(jobsite.taskId) === taskId) || {}) as JobSite;
   };
 
   const getTimeEntryGroups = (
@@ -380,7 +380,9 @@ export default function Report() {
 
         timeEntryGroups.push({
           groupName: jobsite.identifier,
-          timeEntries: timeEntriesWithJobsite(combinedTimeEntries ?? [], jobsite).filter((_timeEntry) => _timeEntry.task_id === String(jobsite.taskId)),
+          timeEntries: timeEntriesWithJobsite(combinedTimeEntries ?? [], jobsite).filter(
+            (_timeEntry) => _timeEntry.task_id === String(jobsite.taskId)
+          ),
         });
       });
     } else if (groupBy === GROUP_BY.PERSON) {
@@ -402,23 +404,29 @@ export default function Report() {
     }
 
     return _entries;
-  }
+  };
 
-  const timeEntryGroups = getTimeEntryGroups(getFilteredEntries(data?.entries || []), data?.jobsites, data?.jobsiteUsers);
+  const timeEntryGroups = getTimeEntryGroups(
+    getFilteredEntries(data?.entries || []),
+    data?.jobsites,
+    data?.jobsiteUsers
+  );
 
   const downloadReport = () => {
-    const timeEntries = timeEntryGroups.map(timeEntryGroup => timeEntryGroup.timeEntries).flat().map((timeEntry) => ({
-      'Job Site Name': timeEntry.jobsiteName,
-      'Task': timeEntry.name,
-      'Person': timeEntry.userName,
-      'Date': timeEntry.date,
-      'Entry': timeEntry.start_time,
-      'Exit': timeEntry.end_time,
-      'Tracked Time': getTimeText(Number(timeEntry.duration)),
-    }));
+    const timeEntries = timeEntryGroups
+      .map((timeEntryGroup) => timeEntryGroup.timeEntries)
+      .flat()
+      .map((timeEntry) => ({
+        'Job Site Name': timeEntry.jobsiteName,
+        Task: timeEntry.name,
+        Person: timeEntry.userName,
+        Date: timeEntry.date,
+        Entry: timeEntry.start_time,
+        Exit: timeEntry.end_time,
+        'Tracked Time': getTimeText(Number(timeEntry.duration)),
+      }));
     generateExcel(timeEntries, 'time-report.xlsx');
-
-  }
+  };
 
   return (
     <>
@@ -433,8 +441,15 @@ export default function Report() {
               }}
             />
           )}
-          <Button onClick={downloadReport}  type="button" size="small" variant="outline" className="h-9 rounded-xl  hover:text-[#4BB063] hover:bg-white hover:border-[#4BB063]"  style={{marginRight: '20px', color: '#4BB063', borderColor: '#4BB063'}} >
-           <img className={styles.imageIcon} src='/image/icons8-excel-48.png'/> &nbsp; Download
+          <Button
+            onClick={downloadReport}
+            type="button"
+            size="small"
+            variant="outline"
+            className="h-9 rounded-xl  hover:text-[#4BB063] hover:bg-white hover:border-[#4BB063]"
+            style={{ marginRight: '20px', color: '#4BB063', borderColor: '#4BB063' }}
+          >
+            <img className={styles.imageIcon} src="/image/icons8-excel-48.png" /> &nbsp; Download
           </Button>
         </div>
 

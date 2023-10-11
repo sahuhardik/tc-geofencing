@@ -22,7 +22,7 @@ const RightSidebar = ({ sidebarOpen, children }: { sidebarOpen: boolean; childre
   return <div className={cn(styles.sidebar, sidebarOpen && styles.opened)}>{children}</div>;
 };
 
-const JobSiteList = ({ jobsites, openedJobsite }: { jobsites: JobSite[], openedJobsite:string }) => {
+const JobSiteList = ({ jobsites, openedJobsite }: { jobsites: JobSite[]; openedJobsite: string }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   function handleSearch(e: React.FormEvent<HTMLInputElement>) {
@@ -112,7 +112,7 @@ export default function RealtimeMap() {
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 
-  let mapJobsites = (data?.jobsites.data ?? []);
+  let mapJobsites = data?.jobsites.data ?? [];
   let jobsiteUsers = (data?.jobsites.data
     .map((jobsite) => jobsite.jobSiteUsers)
     .flat()

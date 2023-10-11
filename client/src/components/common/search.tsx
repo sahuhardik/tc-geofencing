@@ -70,8 +70,8 @@ const Search: React.FC<ISearchProps> = ({
   function clear() {
     rest?.onChange?.({
       currentTarget: {
-        value: ''
-      }
+        value: '',
+      },
     } as ChangeEvent<HTMLInputElement>);
     reset();
     onSearch?.({ searchText: '' });

@@ -73,12 +73,15 @@ const JobsiteCardDetail = (jobsite: JobSite) => {
         <div className={styles.memberItemWrapper} key={i}>
           <img src="https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584__340.png" className={styles.avatarIcon} />
           <span className={styles.memberName}>{jobSiteUser.user.display_name || jobSiteUser.userEmail}</span>
-          <span style={{
-            height: '10px', width: '10px',
-            borderRadius: '5px',
-            backgroundColor: jobSiteUser.isActive ?  '#008000' : '#b30000',
-             marginLeft: '2px', lineHeight: '12px'
-          }}
+          <span
+            style={{
+              height: '10px',
+              width: '10px',
+              borderRadius: '5px',
+              backgroundColor: jobSiteUser.isActive ? '#008000' : '#b30000',
+              marginLeft: '2px',
+              lineHeight: '12px',
+            }}
           ></span>
         </div>
       ))}
@@ -172,7 +175,12 @@ const JobsiteCardAction = (jobsite: IJobsiteActioncardProps) => {
 
 export const JobsiteItem = (jobsiteProps: IJobsiteItemProps) => {
   return (
-    <Accordion isOn={!!jobsiteProps.open} key={jobsiteProps.id} heading={<JobsiteItemCardHeading {...jobsiteProps} />} actions={jobsiteProps.actionCard}>
+    <Accordion
+      isOn={!!jobsiteProps.open}
+      key={jobsiteProps.id}
+      heading={<JobsiteItemCardHeading {...jobsiteProps} />}
+      actions={jobsiteProps.actionCard}
+    >
       <JobsiteCardDetail {...jobsiteProps} />
     </Accordion>
   );

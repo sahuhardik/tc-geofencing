@@ -42,7 +42,7 @@ export type JobSiteFormValues = {
 };
 
 type IProps = {
-  userId: TUser['user_id']
+  userId: TUser['user_id'];
   initialValues?: JobSite | null;
   onCancel: () => void;
 };
@@ -84,7 +84,7 @@ const FormStepOne = ({
   }, []);
 
   useEffect(() => {
-    if(addressRef.current && lastAddrRef.current && lastAddrRef.current !== address) {
+    if (addressRef.current && lastAddrRef.current && lastAddrRef.current !== address) {
       addressRef.current?.setValue(address);
     }
     lastAddrRef.current = address;
@@ -106,8 +106,8 @@ const FormStepOne = ({
       </span>
       <AddressAutocomplete
         ref={addressRef}
-        setAddress={(_address, isSelected, latLng)=>{
-          if(isSelected) {
+        setAddress={(_address, isSelected, latLng) => {
+          if (isSelected) {
             lastAddrRef.current = _address;
             if (latLng?.lat) {
               setValue('latitude', latLng.lat);
@@ -365,7 +365,14 @@ function CreateOrUpdateJobSiteForm({ initialValues, onCancel, userId }: IProps) 
   const renderStepOne = ({ show }: { show: boolean }) => {
     return (
       <div className={`w-full h-full flex-col flex-1 ${show ? 'flex' : 'hidden'}`}>
-        <FormStepOne canEdit={isJobsiteCreator} register={register} errors={errors} setValue={setValue} radius={radius} address={address} />
+        <FormStepOne
+          canEdit={isJobsiteCreator}
+          register={register}
+          errors={errors}
+          setValue={setValue}
+          radius={radius}
+          address={address}
+        />
         <div className="mb-4 flex justify-between w-full flex-1 items-end">
           <Button
             type="button"

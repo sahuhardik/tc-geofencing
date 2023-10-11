@@ -24,8 +24,14 @@ const Navbar = () => {
         <div className="hidden md:flex ms-5 me-auto">
           <Logo />
         </div>
-        <a href='https://app.timecamp.com' >
-          <Button type="button" size="small" variant="outline" className="h-9 rounded-3xl  hover:text-[#4BB063] hover:bg-white hover:border-[#4BB063]"  style={{marginRight: '20px', color: '#4BB063', borderColor: '#4BB063'}} >
+        <a href="https://app.timecamp.com">
+          <Button
+            type="button"
+            size="small"
+            variant="outline"
+            className="h-9 rounded-3xl  hover:text-[#4BB063] hover:bg-white hover:border-[#4BB063]"
+            style={{ marginRight: '20px', color: '#4BB063', borderColor: '#4BB063' }}
+          >
             <ArrowRight /> &nbsp; Back to TimeCamp
           </Button>
         </a>

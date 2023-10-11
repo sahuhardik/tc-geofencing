@@ -56,7 +56,7 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px
   }, [window.google]);
 
   const onClick = (e: google.maps.MapMouseEvent) => {
-    if(disabled){
+    if (disabled) {
       return;
     }
     // avoid directly mutating state
@@ -76,7 +76,12 @@ const LocationPickerMap: React.FC<IMaps> = ({ control, setValue, height = '500px
 
   return (
     <div style={{ display: 'flex', height }}>
-      <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!} version="beta" libraries={["places"]} mapIds={['theuniquemapid']}>
+      <Wrapper
+        apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!}
+        version="beta"
+        libraries={['places']}
+        mapIds={['theuniquemapid']}
+      >
         <Map center={center} onClick={onClick} onIdle={onIdle} zoom={zoom} style={{ flexGrow: '1', height: '100%' }}>
           {click ? <Marker position={click} /> : null}
           {click && radius ? <Circle center={click} radius={Number(radius)} /> : null}

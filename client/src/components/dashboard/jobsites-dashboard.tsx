@@ -12,18 +12,18 @@ import { JobSite, TimeCampEntry } from '@ts-types/generated';
 import { ROUTES } from '@utils/routes';
 import { useRouter } from 'next/router';
 
-const WorkStatCard = ({ jobsites }: { jobsites: JobSite[];  }) => {
+const WorkStatCard = ({ jobsites }: { jobsites: JobSite[] }) => {
   const [statsData, setStatsData] = useState<Record<string, string | number> | null>(null);
 
   const getTimeText = (duration: number) => {
     const hours = Math.ceil(duration / 3600);
     return `${hours} h`;
   };
-  
+
   const getTotalTrackedTimeOfGroup = (timeEntries: TimeCampEntry[]) => {
     return timeEntries.reduce((sum, { duration }) => sum + Number(duration), 0); // it is in seconds
   };
-  
+
   const initializeStats = async () => {
     if (!statsData && jobsites) {
       const userIds = jobsites
@@ -35,7 +35,7 @@ const WorkStatCard = ({ jobsites }: { jobsites: JobSite[];  }) => {
       const endDate = format(endOfWeek(currentDate), 'yyyy-MM-dd'); // Get end date of the week
       const { entries } = await getMemberEntries(userIds.join(','), startDate, endDate);
 
-      const statsData = { 
+      const statsData = {
         totalTimeDuration: 0,
         activeJobsites: 0,
         totalActiveMembers: 0,
@@ -45,8 +45,12 @@ const WorkStatCard = ({ jobsites }: { jobsites: JobSite[];  }) => {
       statsData.totalTimeDuration = Number(getTotalTrackedTimeOfGroup(entries));
 
       // considering a jobsite active if a jobsite have atleast one active user
-      statsData.activeJobsites = jobsites.filter((jobsite) => jobsite.jobSiteUsers?.find(jobsiteUser => jobsiteUser.isActive)).length;
-      statsData.totalActiveMembers = jobsites.map((jobsite) => jobsite.jobSiteUsers?.filter(jobsiteUser => jobsiteUser.isActive)).flat().length;
+      statsData.activeJobsites = jobsites.filter((jobsite) =>
+        jobsite.jobSiteUsers?.find((jobsiteUser) => jobsiteUser.isActive)
+      ).length;
+      statsData.totalActiveMembers = jobsites
+        .map((jobsite) => jobsite.jobSiteUsers?.filter((jobsiteUser) => jobsiteUser.isActive))
+        .flat().length;
       statsData.totalMembers = jobsites.map((jobsite) => jobsite.jobSiteUsers).flat().length;
       setStatsData(statsData);
       // setStatsData();
@@ -65,7 +69,14 @@ const WorkStatCard = ({ jobsites }: { jobsites: JobSite[];  }) => {
           <div className={styles.clockFontMini}>Your team logged time</div>
         </div>
         <div className={styles.workStatContent}>
-          <span className={styles.clockFont}> &gt;{Math.round((Number(statsData?.totalTimeDuration) / 3600) / ( 5 *(  statsData ? +statsData?.totalMembers : 1)) * 100)/100} h</span>
+          <span className={styles.clockFont}>
+            {' '}
+            &gt;
+            {Math.round(
+              (Number(statsData?.totalTimeDuration) / 3600 / (5 * (statsData ? +statsData?.totalMembers : 1))) * 100
+            ) / 100}{' '}
+            h
+          </span>
           <div className={styles.clockFontMini}>Average per day per person</div>
         </div>
         <div className={styles.workStatContent}>
@@ -116,13 +127,13 @@ export default function JobSitesDashboard() {
   });
 
   const router = useRouter();
-  
+
   useEffect(() => {
     if (data?.jobsites.data && data?.jobsites.data.length === 0) {
       // if there is no jobsites then we will reidirect to jobsties page
       router.push(ROUTES.JOBSITES);
     }
-  }, [data?.jobsites.data])
+  }, [data?.jobsites.data]);
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;

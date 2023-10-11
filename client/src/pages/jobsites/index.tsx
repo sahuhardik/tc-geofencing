@@ -32,19 +32,29 @@ const tourConfig = [
     selector: '[data-tut="tour_button"]',
     className: styles.tourContainer,
     content: () => (
-      <div className={styles.tourContainer} >
-        <span className={styles.tourHeading} >How to use job sites?</span>
-        <div className={styles.tourTextContainer} >
-            <span>1. <span className={styles.boldTourText} >Add</span> Jobsites.</span><br/>
-            <span>2. Install <span className={styles.boldTourText} >mobile app</span> to track time automatically on job sites. All users must have the app.</span><br/>
-            <span>3. Use <span className={styles.boldTourText} >reporting tools</span> on the menu:</span><br/>
-            <div className='pl-[40px]'  >
-              <ul>
-                <li>* Real time map - see users currently present on the job site.</li>
-                <li>* Reports - analyze your team's job site time.</li>
-              </ul>
-            </div>
-            <img className='mt-[20px]' src={mapImage.src} />
+      <div className={styles.tourContainer}>
+        <span className={styles.tourHeading}>How to use job sites?</span>
+        <div className={styles.tourTextContainer}>
+          <span>
+            1. <span className={styles.boldTourText}>Add</span> Jobsites.
+          </span>
+          <br />
+          <span>
+            2. Install <span className={styles.boldTourText}>mobile app</span> to track time automatically on job sites.
+            All users must have the app.
+          </span>
+          <br />
+          <span>
+            3. Use <span className={styles.boldTourText}>reporting tools</span> on the menu:
+          </span>
+          <br />
+          <div className="pl-[40px]">
+            <ul>
+              <li>* Real time map - see users currently present on the job site.</li>
+              <li>* Reports - analyze your team's job site time.</li>
+            </ul>
+          </div>
+          <img className="mt-[20px]" src={mapImage.src} />
         </div>
       </div>
     ),
@@ -72,7 +82,7 @@ export default function JobSites() {
     sortedBy,
   });
 
-  const [isTourOpen, setTourOpen] = useState(false); 
+  const [isTourOpen, setTourOpen] = useState(false);
   const [mapCenter, setMapCenter] = useState<ILatLng>();
   const [editJobSite, setEditJobSite] = useState<JobSite>();
   const [openJobsiteModal, setOpenJobsiteModal] = useState<boolean>(false);
@@ -110,10 +120,15 @@ export default function JobSites() {
     </Button>
   );
   const addJobsiteBtn = (
-    <Button size="small" data-tut="tour_button" onClick={() => {
-      isTourOpen && setTourOpen(false);
-      setOpenJobsiteModal(true);
-      }} className="h-9 rounded-3xl">
+    <Button
+      size="small"
+      data-tut="tour_button"
+      onClick={() => {
+        isTourOpen && setTourOpen(false);
+        setOpenJobsiteModal(true);
+      }}
+      className="h-9 rounded-3xl"
+    >
       &nbsp; <PlusIcon height={27} /> {t('form:button-label-add-jobsite')} &nbsp;&nbsp;&nbsp;
     </Button>
   );
@@ -148,8 +163,10 @@ export default function JobSites() {
           <span className={`${styles.emptyCardHeading} mt-5`}>No job sites yet</span>
           <span className={`${styles.emptyCardSubHeading} mt-4`}>
             Set up job sites for your team that automatically start and stop tracking time as they enter or leave.
-            <br/>
-            <a href='https://help.timecamp.com/help/geofencing' target={'_blank'} className={styles.tinyLink} >How does it work?</a>
+            <br />
+            <a href="https://help.timecamp.com/help/geofencing" target={'_blank'} className={styles.tinyLink}>
+              How does it work?
+            </a>
           </span>
           <div data-tut="jobsite_tour" className="flex-col flex pt-9 gap-4">
             {addJobsiteBtn}

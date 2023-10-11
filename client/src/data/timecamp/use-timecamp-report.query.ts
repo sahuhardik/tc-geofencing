@@ -25,8 +25,7 @@ export const getReportEntries = async (
   let filteredJobsites = _.cloneDeep(jobsites);
 
   if (jobsiteFilter) {
-    filteredJobsites = jobsites
-    .filter((jobsite) => (jobsite.id === jobsiteFilter))
+    filteredJobsites = jobsites.filter((jobsite) => jobsite.id === jobsiteFilter);
   }
 
   let jobsiteUsers = filteredJobsites
